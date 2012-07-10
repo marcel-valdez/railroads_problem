@@ -26,4 +26,11 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 *[Tt]est[Rr]eport*
-*Report*.xml
+StyleCopReport.xml
+FxCopReport.xml
+FunctionalTestReport.xml
+FunctionalTestCoverage.xml
+IntegrationTestReport.xml
+IntegrationTestCoverage.xml
+UnitTestReport.xml
+UnitTestCoverage.xml
