@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>d6beda22-4bce-40ae-b1e5-f597e17412dd</ProjectGuid>
+    <ProjectGuid>{D158B1E3-B359-4070-80FC-C89C700D9C64}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RouteCalculator</RootNamespace>

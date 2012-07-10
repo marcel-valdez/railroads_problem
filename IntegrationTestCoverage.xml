@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageSession xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Modules>
+    <Module skippedDueTo="Filter" hash="F2-B7-6C-91-B2-2A-27-1D-84-DA-D8-01-19-1B-74-D3-A8-5B-ED-15">
+      <FullName>C:\Windows\Microsoft.Net\assembly\GAC_32\mscorlib\v4.0_4.0.0.0__b77a5c561934e089\mscorlib.dll</FullName>
+      <ModuleName>mscorlib</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="2F-E8-B3-2D-79-E6-A3-EB-7F-7C-6D-7B-CD-0C-08-C4-1A-51-17-54">
+      <FullName>D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\bin\Debug\RouteCalculator.IntegrationTest.exe</FullName>
+      <ModuleName>RouteCalculator.IntegrationTest</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="44-96-43-B5-E5-39-0E-45-A3-FD-E1-E7-5A-9C-F7-6A-15-9A-16-18">
+      <FullName>D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\bin\Debug\nunit-console-runner.dll</FullName>
+      <ModuleName>nunit-console-runner</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="7A-99-4B-0E-30-AA-4A-64-F6-D0-5F-F1-41-D9-04-6D-56-99-A6-79">
+      <FullName>D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\bin\Debug\nunit.core.dll</FullName>
+      <ModuleName>nunit.core</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="C6-A4-C6-84-EB-84-41-C4-A9-30-69-92-57-02-1A-EE-1A-09-C1-61">
+      <FullName>D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\bin\Debug\nunit.util.dll</FullName>
+      <ModuleName>nunit.util</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="72-C7-03-3D-46-8A-09-61-49-D7-41-77-D2-AB-3C-B0-58-18-E6-A9">
+      <FullName>D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\bin\Debug\nunit.core.interfaces.dll</FullName>
+      <ModuleName>nunit.core.interfaces</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="6A-CB-9C-23-A1-28-3F-24-11-C3-EA-99-78-1C-2D-0A-DE-D5-1F-6E">
+      <FullName>C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Configuration\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Configuration.dll</FullName>
+      <ModuleName>System.Configuration</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="9B-83-91-0F-3E-E6-E8-C7-49-27-E1-63-6D-0E-97-8C-FF-6F-F7-3E">
+      <FullName>C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</FullName>
+      <ModuleName>System</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="1F-14-6C-92-91-EA-87-77-F2-51-33-42-61-B8-05-25-BA-D7-8B-97">
+      <FullName>C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Xml\v4.0_4.0.0.0__b77a5c561934e089\System.Xml.dll</FullName>
+      <ModuleName>System.Xml</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="E8-47-7A-41-67-F7-5A-91-1D-B2-1A-48-85-F5-81-AF-DE-91-B4-C2">
+      <FullName>C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Runtime.Remoting\v4.0_4.0.0.0__b77a5c561934e089\System.Runtime.Remoting.dll</FullName>
+      <ModuleName>System.Runtime.Remoting</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="7A-99-4B-0E-30-AA-4A-64-F6-D0-5F-F1-41-D9-04-6D-56-99-A6-79">
+      <FullName>C:\Users\Marcel\AppData\Local\Temp\nunit20\ShadowCopyCache\11072_634774676162734021\Tests_566078331\assembly\dl3\e5e57e15\005891de_32f0cc01\nunit.core.DLL</FullName>
+      <ModuleName>nunit.core</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="9B-83-91-0F-3E-E6-E8-C7-49-27-E1-63-6D-0E-97-8C-FF-6F-F7-3E">
+      <FullName>C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</FullName>
+      <ModuleName>System</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="72-C7-03-3D-46-8A-09-61-49-D7-41-77-D2-AB-3C-B0-58-18-E6-A9">
+      <FullName>C:\Users\Marcel\AppData\Local\Temp\nunit20\ShadowCopyCache\11072_634774676162734021\Tests_566078331\assembly\dl3\2e6967d2\005891de_32f0cc01\nunit.core.interfaces.DLL</FullName>
+      <ModuleName>nunit.core.interfaces</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="2F-E8-B3-2D-79-E6-A3-EB-7F-7C-6D-7B-CD-0C-08-C4-1A-51-17-54">
+      <FullName>C:\Users\Marcel\AppData\Local\Temp\nunit20\ShadowCopyCache\11072_634774676162734021\Tests_566078331\assembly\dl3\e5592a8d\cc620530_475ecd01\RouteCalculator.IntegrationTest.EXE</FullName>
+      <ModuleName>RouteCalculator.IntegrationTest</ModuleName>
+      <Classes />
+    </Module>
+    <Module skippedDueTo="Filter" hash="4B-D6-D7-AD-B7-7B-F0-7C-CD-28-8F-3F-5F-53-4E-64-64-A0-62-B4">
+      <FullName>C:\Users\Marcel\AppData\Local\Temp\nunit20\ShadowCopyCache\11072_634774676162734021\Tests_566078331\assembly\dl3\3ba8c444\005891de_32f0cc01\nunit.framework.DLL</FullName>
+      <ModuleName>nunit.framework</ModuleName>
+      <Classes />
+    </Module>
+  </Modules>
+</CoverageSession>
