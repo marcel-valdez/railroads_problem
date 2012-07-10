@@ -78,11 +78,11 @@
 		</XmlPeek>
 		
 		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UnitTestCoveredLines)">
-            <Output TaskParameter="ItemCount" PropertyName="CoveredLines"/>
-        </MsBuildHelper>
+			<Output TaskParameter="ItemCount" PropertyName="CoveredLines"/>
+		</MsBuildHelper>
 		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UnitTestUncoveredLines)">
-            <Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
-        </MsBuildHelper>
+			<Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
+		</MsBuildHelper>
 		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="Unit Test coverage is below 80 percent."></Error>
 		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).IntegrationTest\bin\$(Configuration)\$(ProjectName).IntegrationTest.exe &quot;-targetdir:$(ProjectName).IntegrationTest\bin\$(Configuration)&quot; -output:IntegrationTestCoverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).IntegrationTest*]*&quot;" />
 		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).FunctionalTest\bin\$(Configuration)\$(ProjectName).FunctionalTest.exe &quot;-targetdir:$(ProjectName).FunctionalTest\bin\$(Configuration)&quot; -output:FunctionalTestCoverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).FunctionalTest*]*&quot;" />
@@ -117,7 +117,7 @@
 	</Target>
 	
 	<Target Name="CoverageAnalysis" Inputs="%(TestProjects.Type);%(TestProjects.ReportName)" DependsOnTargets="Build" Outputs="CoveredLines;UncoveredLines">
-		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)\$(ProjectName).%(TestProjects.Type).exe &quot;-targetdir:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)&quot; -output:%(TestProjects.ReportName)Coverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).%(TestProjects.Type)*]*&quot;" />
+		<Exec Command="$(MSBuildProjectDirectory)\tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)\$(ProjectName).%(TestProjects.Type).exe &quot;-targetdir:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)&quot; -output:%(TestProjects.ReportName)Coverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).%(TestProjects.Type)*]*&quot;" />
 		<XmlPeek Condition="Exists('%(TestProjects.ReportName)Coverage.xml')" XmlInputPath="%(TestProjects.ReportName)Coverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc > 0]" >
 			<Output TaskParameter="Result" ItemName="CoveredLinesFound"></Output>
 		</XmlPeek>
@@ -125,11 +125,11 @@
 			<Output TaskParameter="Result" ItemName="UncoveredLinesFound"></Output>
 		</XmlPeek>
 		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(CoveredLinesFound)">
-            <Output TaskParameter="ItemCount" PropertyName="CoveredLines"/>
-        </MsBuildHelper>
+			<Output TaskParameter="ItemCount" PropertyName="CoveredLines"/>
+		</MsBuildHelper>
 		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UncoveredLinesFound)">
-            <Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
-        </MsBuildHelper>
+			<Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
+		</MsBuildHelper>
 		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="Unit Test coverage is below 80 percent. Coverage: $([System.Math]::Round($([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))), 2))"></Error>
 	</Target>
 
