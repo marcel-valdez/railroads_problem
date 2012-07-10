@@ -1,0 +1,7 @@
+%~dp0/FxCopCmd.exe %*
+
+IF 512 == %ERRORLEVEL% GOTO FIX
+GOTO END
+:FIX
+SET ERRORLEVEL=0
+:END
