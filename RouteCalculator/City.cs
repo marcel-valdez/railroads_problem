@@ -8,6 +8,15 @@
     public class City
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="City"/> class.
+        /// </summary>
+        public City()
+        {
+            this.Incoming = new List<Railroad>();
+            this.Outgoing = new List<Railroad>();
+        }
+
+        /// <summary>
         /// Gets or sets the name of the city.
         /// </summary>
         /// <value>
@@ -20,27 +29,27 @@
         }
 
         /// <summary>
-        /// Gets or sets the outgoing railroads.
+        /// Gets the outgoing railroads.
         /// </summary>
         /// <value>
         /// The outgoing railroads.
         /// </value>
-        public IEnumerable<Railroad> Outgoing
+        public IList<Railroad> Outgoing
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
-        /// Gets or sets the incoming railroads.
+        /// Gets the incoming railroads.
         /// </summary>
         /// <value>
         /// The incoming railroads.
         /// </value>
-        public IEnumerable<Railroad> Incoming
+        public IList<Railroad> Incoming
         {
             get;
-            set;
+            private set;
         }
     }
 }

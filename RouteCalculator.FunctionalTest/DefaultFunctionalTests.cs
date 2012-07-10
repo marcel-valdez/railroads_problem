@@ -1,6 +1,7 @@
 ﻿namespace RouteCalculator.FunctionalTest
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
     using NUnit.Framework;
@@ -9,6 +10,11 @@
     /// Uses the default data given by ThoughtWorks to test the application
     /// </summary>
     [TestFixture]
+    [SuppressMessage(
+        category: "Microsoft.Performance",
+        checkId: "CA1822:MarkMembersAsStatic",
+        Justification = "Most methods inside test classes are called by the NUnit framework indirectly.", 
+        Scope = "class")]
     public class DefaultFunctionalTests
     {
         /// <summary>
