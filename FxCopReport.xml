@@ -12,8 +12,8 @@
          <Members>
           <Member Name="#Main(System.String[])" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
            <Messages>
-            <Message Id="args" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Active" Created="2012-07-10 02:55:07Z" FixCategory="NonBreaking">
-             <Issue Certainty="95" Level="Warning" Path="d:\proyects\default\railroad_services\RouteCalculator\RouteCalculator" File="Program.cs" Line="11">Parameter 'args' of 'Program.Main(string[])' is never used. Remove the parameter or use it in the method body.</Issue>
+            <Message Id="args" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Active" Created="2012-07-10 02:57:21Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Warning" Path="d:\proyects\default\railroad_services\RouteCalculator\RouteCalculator" File="Program.cs" Line="18">Parameter 'args' of 'Program.Main(string[])' is never used. Remove the parameter or use it in the method body.</Issue>
             </Message>
            </Messages>
           </Member>
