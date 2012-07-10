@@ -1,8 +1,105 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema targetNamespace="http://tempuri.org/XMLSchema.xsd"
-    elementFormDefault="qualified"
-    xmlns="http://tempuri.org/XMLSchema.xsd"
-    xmlns:mstns="http://tempuri.org/XMLSchema.xsd"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
->
-</xs:schema>
+﻿<Project DefaultTargets="Build;UnitTest;IntegrationTest;Coverage;FunctionalTest" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<UsingTask AssemblyFile="\tools\msbuild_community_tasks\MSBuild.Community.Tasks.dll"
+			TaskName="MSBuild.Community.Tasks.FileUpdate"/>
+	<UsingTask AssemblyFile="\tools\StyleCop\Microsoft.StyleCop.dll" TaskName="StyleCopTask"/>
+	<!-- Had to override the default MSBuild Exec task, because it was using an older version -->
+	<UsingTask AssemblyFile="\tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="Exec" />
+	<!-- Had to add the MSBuild XmlPeek task, because it was using an older version -->
+	<UsingTask AssemblyFile="\tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="XmlPeek" />
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<ProjectName>RouteCalculator</ProjectName>
+	</PropertyGroup>
+	<ItemGroup>
+		<AnalyzedProjects Include="$(ProjectName)">
+			<AnalyzedProject>$(ProjectName)</AnalyzedProject>
+			<AnalyzedAssembly>$(ProjectName).exe</AnalyzedAssembly>
+		</AnalyzedProjects>
+		<AnalyzedProjects Include="$(ProjectName).Test">
+			<AnalyzedProject>$(ProjectName).Test</AnalyzedProject>
+			<AnalyzedAssembly>$(ProjectName).Test.exe</AnalyzedAssembly>
+		</AnalyzedProjects>
+		<AnalyzedProjects Include="$(ProjectName).IntegrationTest">
+			<AnalyzedProject>$(ProjectName).IntegrationTest</AnalyzedProject>
+			<AnalyzedAssembly>$(ProjectName).IntegrationTest.exe</AnalyzedAssembly>
+		</AnalyzedProjects>
+		<AnalyzedProjects Include="$(ProjectName).FunctionalTest">
+			<AnalyzedProject>$(ProjectName).FunctionalTest</AnalyzedProject>
+			<AnalyzedAssembly>$(ProjectName).FunctionalTest.exe</AnalyzedAssembly>
+		</AnalyzedProjects>
+	</ItemGroup>
+	<Target Name="Build">
+		<MSBuild
+			Targets="Clean;Rebuild"
+			Projects="$(ProjectName)\$(ProjectName).csproj;$(ProjectName).Test\$(ProjectName).Test.csproj;$(ProjectName).IntegrationTest\$(ProjectName).IntegrationTest.csproj;$(ProjectName).FunctionalTest\$(ProjectName).FunctionalTest.csproj"
+			Properties="Configuration=$(Configuration)"
+			ContinueOnError="false"/>
+	</Target>
+	<Target Name="UnitTest" DependsOnTargets="Build">
+		<Exec
+			Command="$(ProjectName).Test\bin\$(Configuration)\$(ProjectName).Test.exe /xml=UnitTestReport.xml"
+			ContinueOnError="false" />
+		<XmlPeek Condition="Exists('UnitTestReport.xml')" XmlInputPath="UnitTestReport.xml" Query="//test-case[@executed='True' and @success='False']/failure/message" >
+			<Output TaskParameter="Result" ItemName="Failures"></Output>
+		</XmlPeek>
+		<Error Condition="'@(Failures)' != ''" Text="Unit tests failed: %(Failures.Identity)"></Error>
+	</Target>
+	<Target Name="IntegrationTest" DependsOnTargets="Build">
+		<Exec
+			Command="$(ProjectName).IntegrationTest\bin\$(Configuration)\$(ProjectName).IntegrationTest.exe /xml=IntegrationTestReport.xml"
+			ContinueOnError="false"/>
+		<XmlPeek Condition="Exists('IntegrationTestReport.xml')" XmlInputPath="IntegrationTestReport.xml" Query="//test-case[@executed='True' and @success='False']/failure/message" >
+			<Output TaskParameter="Result" ItemName="Failures"></Output>
+		</XmlPeek>
+		<Error Condition="'@(Failures)' != ''" Text="Integration tests failed: %(Failures.Identity)"></Error>
+	</Target>
+	<Target Name="Coverage" DependsOnTargets="Build">
+		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).Test\bin\$(Configuration)\$(ProjectName).Test.exe &quot;-targetdir:$(ProjectName).Test\bin\$(Configuration)&quot; -output:UnitTestCoverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).Test*]*&quot;" />
+		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).IntegrationTest\bin\$(Configuration)\$(ProjectName).IntegrationTest.exe &quot;-targetdir:$(ProjectName).IntegrationTest\bin\$(Configuration)&quot; -output:IntegrationTestCoverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).IntegrationTest*]*&quot;" />
+		<Exec Command="tools\reportgenerator\ReportGenerator.exe -reports:UnitTestCoverage.xml;IntegrationTestCoverage.xml -targetdir:.\coverage-report -reporttypes:XML;HTML" />
+		<!-- TODO: Add failure if any of the three reports is under 80% coverage. -->
+	</Target>
+	<Target Name="FunctionalTest" DependsOnTargets="Build">
+		<Exec
+			Command="$(ProjectName).FunctionalTest\bin\$(Configuration)\$(ProjectName).FunctionalTest.exe /xml=FunctionalTestReport.xml"
+			ContinueOnError="false"/>
+		<XmlPeek Condition="Exists('FunctionalTestReport.xml')" XmlInputPath="FunctionalTestReport.xml" Query="//test-case[@executed='True' and @success='False']/failure/message" >
+			<Output TaskParameter="Result" ItemName="Failures"></Output>
+		</XmlPeek>
+		<Error Condition="'@(Failures)' != ''" Text="Functional tests failed: %(Failures.Identity)"></Error>
+
+	</Target>
+	<Target Name="Analyze" DependsOnTargets="Build">
+		<!-- FxCopAnalyze all projects -->
+		<CallTarget Targets="RunFxCop"></CallTarget>
+		<!-- StylCop analyze all of the projects -->
+		<CreateItem Include="$(ProjectName)*\**\*.cs;$(ProjectName)*\*.cs;">
+			<Output TaskParameter="Include" ItemName="StyleCopFiles"/>
+		</CreateItem>
+		<StyleCopTask ProjectFullPath="$(MSBuildProjectFile)"
+					  SourceFiles="@(StyleCopFiles)"
+					  ForceFullAnalysis="true"
+					  TreatErrorsAsWarnings="false"
+					  OutputFile="StyleCopReport.xml"
+					  CacheResults="true"
+					  ContinueOnError="false"/>
+	</Target>
+
+	<Target Name="RunFxCop" Inputs="%(AnalyzedProjects.AnalyzedProject);%(AnalyzedProjects.AnalyzedAssembly)" DependsOnTargets="Build" Outputs="Violations">
+		<Delete Condition="Exists('FxCopReport.xml')" Files="FxCopReport.xml" />
+		<Delete Condition="Exists('fxcop_rules_project_artifact.FxCop')" Files="fxcop_rules_project_artifact.FxCop" />
+		<Copy SourceFiles="fxcop_rules_project.FxCop" DestinationFiles="fxcop_rules_project_artifact.FxCop" />
+		<FileUpdate Files="fxcop_rules_project_artifact.FxCop"
+					Regex="(.*Target Name=&quot;)([^&quot;]*)(&quot;.*)"
+					ReplacementText="$1$(MSBuildProjectDirectory)\%(AnalyzedProjects.AnalyzedProject)\bin\$(Configuration)\%(AnalyzedProjects.AnalyzedAssembly)$3"/>
+
+		<Exec Command="tools\fxcop\FxCopCmdCaller.bat /project:$(MSBuildProjectDirectory)\fxcop_rules_project_artifact.FxCop /out:FxCopReport.xml"
+			  CustomErrorRegularExpression="(CA(?!0060)([0-9]{4})){1,}"/>
+
+		<Delete Condition="Exists('fxcop_rules_project_artifact.FxCop')" Files="fxcop_rules_project_artifact.FxCop" />
+		<XmlPeek Condition="Exists('FxCopReport.xml')" XmlInputPath="FxCopReport.xml" Query="//Exception[@Keyword!='CA0060' and @Keyword!='CA0058' and @Keyword!='CA0001']/ExceptionMessage | //Rule/Name" >
+			<Output TaskParameter="Result" ItemName="Violations"></Output>
+		</XmlPeek>
+		<Error Condition="'@(Violations)' != ''" Text="FxCop found rule violations: @(Violations)"></Error>
+	</Target>
+</Project>
