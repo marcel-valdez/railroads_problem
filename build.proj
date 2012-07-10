@@ -6,6 +6,7 @@
 	<UsingTask AssemblyFile="tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="Exec" />
 	<!-- Had to add the MSBuild XmlPeek task, because it was using an older version -->
 	<UsingTask AssemblyFile="tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="XmlPeek" />
+	<UsingTask AssemblyFile="tools\msbuild_community_tasks\MSBuild.ExtensionPack.dll"  TaskName="MsBuildHelper" />
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<ProjectName>RouteCalculator</ProjectName>
@@ -27,6 +28,18 @@
 			<AnalyzedProject>$(ProjectName).FunctionalTest</AnalyzedProject>
 			<AnalyzedAssembly>$(ProjectName).FunctionalTest.exe</AnalyzedAssembly>
 		</AnalyzedProjects>
+		<TestProjects Include="UnitTest">
+			<Type>Test</Type>
+			<ReportName>UnitTest</ReportName>
+		</TestProjects>
+		<TestProjects Include="IntegrationTest">
+			<Type>IntegrationTest</Type>
+			<ReportName>IntegrationTest</ReportName>
+		</TestProjects>
+		<TestProjects Include="FunctionalTest">
+			<Type>FunctionalTest</Type>
+			<ReportName>FunctionalTest</ReportName>
+		</TestProjects>
 	</ItemGroup>
 	<Target Name="Build">
 		<MSBuild
@@ -54,10 +67,28 @@
 		<Error Condition="'@(Failures)' != ''" Text="Integration tests failed: %(Failures.Identity)"></Error>
 	</Target>
 	<Target Name="Coverage" DependsOnTargets="Build">
+		<CallTarget Targets="CoverageAnalysis"></CallTarget>
+		<!--
 		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).Test\bin\$(Configuration)\$(ProjectName).Test.exe &quot;-targetdir:$(ProjectName).Test\bin\$(Configuration)&quot; -output:UnitTestCoverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).Test*]*&quot;" />
+		<XmlPeek Condition="Exists('UnitTestCoverage.xml')" XmlInputPath="UnitTestCoverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc > 0]" >
+			<Output TaskParameter="Result" ItemName="UnitTestCoveredLines"></Output>
+		</XmlPeek>
+		<XmlPeek Condition="Exists('UnitTestCoverage.xml')" XmlInputPath="UnitTestCoverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc = 0]" >
+			<Output TaskParameter="Result" ItemName="UnitTestUncoveredLines"></Output>
+		</XmlPeek>
+		
+		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UnitTestCoveredLines)">
+            <Output TaskParameter="ItemCount" PropertyName="CoveredLines"/>
+        </MsBuildHelper>
+		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UnitTestUncoveredLines)">
+            <Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
+        </MsBuildHelper>
+		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="Unit Test coverage is below 80 percent."></Error>
 		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).IntegrationTest\bin\$(Configuration)\$(ProjectName).IntegrationTest.exe &quot;-targetdir:$(ProjectName).IntegrationTest\bin\$(Configuration)&quot; -output:IntegrationTestCoverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).IntegrationTest*]*&quot;" />
-		<Exec Command="tools\reportgenerator\ReportGenerator.exe -reports:UnitTestCoverage.xml;IntegrationTestCoverage.xml -targetdir:.\coverage-report -reporttypes:XML;HTML" />
-		<!-- TODO: Add failure if any of the three reports is under 80% coverage. -->
+		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).FunctionalTest\bin\$(Configuration)\$(ProjectName).FunctionalTest.exe &quot;-targetdir:$(ProjectName).FunctionalTest\bin\$(Configuration)&quot; -output:FunctionalTestCoverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).FunctionalTest*]*&quot;" />
+		-->
+		<Exec Command="tools\reportgenerator\ReportGenerator.exe -reports:UnitTestCoverage.xml;IntegrationTestCoverage.xml;FunctionalTestCoverage.xml -targetdir:.\coverage-report -reporttypes:XML;HTML" />
+		
 	</Target>
 	<Target Name="FunctionalTest" DependsOnTargets="Build">
 		<Exec
@@ -83,6 +114,23 @@
 					  OutputFile="StyleCopReport.xml"
 					  CacheResults="true"
 					  ContinueOnError="false"/>
+	</Target>
+	
+	<Target Name="CoverageAnalysis" Inputs="%(TestProjects.Type);%(TestProjects.ReportName)" DependsOnTargets="Build" Outputs="CoveredLines;UncoveredLines">
+		<Exec Command="tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)\$(ProjectName).%(TestProjects.Type).exe &quot;-targetdir:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)&quot; -output:%(TestProjects.ReportName)Coverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).%(TestProjects.Type)*]*&quot;" />
+		<XmlPeek Condition="Exists('%(TestProjects.ReportName)Coverage.xml')" XmlInputPath="%(TestProjects.ReportName)Coverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc > 0]" >
+			<Output TaskParameter="Result" ItemName="CoveredLinesFound"></Output>
+		</XmlPeek>
+		<XmlPeek Condition="Exists('%(TestProjects.ReportName)Coverage.xml')" XmlInputPath="%(TestProjects.ReportName)Coverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc = 0]" >
+			<Output TaskParameter="Result" ItemName="UncoveredLinesFound"></Output>
+		</XmlPeek>
+		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(CoveredLinesFound)">
+            <Output TaskParameter="ItemCount" PropertyName="CoveredLines"/>
+        </MsBuildHelper>
+		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UncoveredLinesFound)">
+            <Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
+        </MsBuildHelper>
+		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="Unit Test coverage is below 80 percent. Coverage: $([System.Math]::Round($([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))), 2))"></Error>
 	</Target>
 
 	<Target Name="RunFxCop" Inputs="%(AnalyzedProjects.AnalyzedProject);%(AnalyzedProjects.AnalyzedAssembly)" DependsOnTargets="Build" Outputs="Violations">
