@@ -32,6 +32,10 @@
             new object[] 
             {
                 new string[] { "AB", "BC", "CD" }, new string[] { "A", "B", "C", "E" }, false
+            },
+            new object[] 
+            {
+                new string[] { "AE", "EB", "BC", "CD" }, new string[] { "A", "E", "B", "C", "D" }, true
             }
         };
 
@@ -46,23 +50,9 @@
         public void TestIfTripSpecificationCanSpecifyACitiesRoute(string[] routeConfiguration, string[] citiesRoute, bool expectedResult)
         {
             // Arrange
-            PathSpecification pathSpec = new PathSpecification(citiesRoute);            
-            var route = Substitute.For<IRoute>();
-            IList<Railroad> legs = new List<Railroad>();
-            foreach (string railroadConfiguration in routeConfiguration)
-            {
-                legs.Add(new Railroad()
-                {
-                    Origin = new City()
-                    {
-                        Name = railroadConfiguration[0].ToString()
-                    },
-                    Destination = new City()
-                    {
-                        Name = railroadConfiguration[1].ToString()
-                    }
-                });
-            }
+            PathSpecification pathSpec = new PathSpecification(citiesRoute);
+            IRoute route = Substitute.For<IRoute>();
+            IList<Railroad> legs = TestHelper.GenerateLegs(routeConfiguration);
 
             route.Legs.Returns(legs);
             

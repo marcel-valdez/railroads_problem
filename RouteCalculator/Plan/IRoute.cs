@@ -18,5 +18,21 @@
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets the origin.
+        /// </summary>
+        City Origin
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the destination.
+        /// </summary>
+        City Destination
+        {
+            get;
+        }
     }
 }

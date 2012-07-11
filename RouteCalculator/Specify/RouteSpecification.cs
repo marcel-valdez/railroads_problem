@@ -1,10 +1,32 @@
 ﻿namespace RouteCalculator.Specify
 {
+    using RouteCalculator.Plan;
+
     /// <summary>
     /// A specification that applies to a Route
     /// </summary>
-    public class RouteSpecification : ISpecification
+    public class OriginAndEndSpecification : ISpecification
     {
+        /// <summary>
+        /// The origin city name
+        /// </summary>
+        private string originName;
+
+        /// <summary>
+        /// The destination city name
+        /// </summary>
+        private string destinationName;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OriginAndEndSpecification"/> class.
+        /// </summary>
+        /// <param name="origin">The origin.</param>
+        /// <param name="destination">The destination.</param>
+        public OriginAndEndSpecification(string origin, string destination)
+        {
+            this.originName = origin;
+            this.destinationName = destination;
+        }
         #region ISpecification Members
 
         /// <summary>
@@ -16,7 +38,7 @@
         /// </returns>
         public bool AppliesTo(object appliedTo)
         {
-            throw new System.NotImplementedException();
+            return typeof(IRoute).IsInstanceOfType(appliedTo);
         }
 
         /// <summary>
@@ -28,7 +50,8 @@
         /// </returns>
         public bool Validate(object validatedOn)
         {
-            throw new System.NotImplementedException();
+            IRoute route = (IRoute)validatedOn;
+            return route.Destination.Name == this.destinationName && route.Origin.Name == this.originName;
         }
 
         #endregion

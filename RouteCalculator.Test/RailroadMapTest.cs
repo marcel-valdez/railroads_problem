@@ -110,7 +110,7 @@
         public void TestIfItCanReadFileContent()
         {
             // Arrange
-            var method = Extensions.GetPrivateStaticMethod<RailroadMap>("ReadContent");
+            var method = TestHelper.GetPrivateStaticMethod<RailroadMap>("ReadContent");
             string content = String.Empty;
             string expected = "AB1";
 

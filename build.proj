@@ -1,12 +1,4 @@
 ﻿<Project DefaultTargets="Build;Analyze;UnitTest;IntegrationTest;FunctionalTest;Coverage" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<UsingTask AssemblyFile="tools\msbuild_community_tasks\MSBuild.Community.Tasks.dll"
-			TaskName="MSBuild.Community.Tasks.FileUpdate"/>
-	<UsingTask AssemblyFile="tools\StyleCop\Microsoft.StyleCop.dll" TaskName="StyleCopTask"/>
-	<!-- Had to override the default MSBuild Exec task, because it was using an older version -->
-	<UsingTask AssemblyFile="tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="Exec" />
-	<!-- Had to add the MSBuild XmlPeek task, because it was using an older version -->
-	<UsingTask AssemblyFile="tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="XmlPeek" />
-	<UsingTask AssemblyFile="tools\msbuild_community_tasks\MSBuild.ExtensionPack.dll"  TaskName="MsBuildHelper" />
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<ProjectName>RouteCalculator</ProjectName>
@@ -41,12 +33,22 @@
 			<ReportName>FunctionalTest</ReportName>
 		</TestProjects>
 	</ItemGroup>
+	<UsingTask AssemblyFile="tools\msbuild_community_tasks\MSBuild.Community.Tasks.dll"
+			TaskName="MSBuild.Community.Tasks.FileUpdate"/>
+	<UsingTask AssemblyFile="tools\StyleCop\Microsoft.StyleCop.dll" TaskName="StyleCopTask"/>
+	<!-- Had to override the default MSBuild Exec task, because it was using an older version -->
+	<UsingTask AssemblyFile="tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="Exec" />
+	<!-- Had to add the MSBuild XmlPeek task, because it was using an older version -->
+	<UsingTask AssemblyFile="tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="XmlPeek" />
+	<UsingTask AssemblyFile="tools\msbuild_community_tasks\MSBuild.ExtensionPack.dll"  TaskName="MsBuildHelper" />
+	
 	<Target Name="Build">
 		<MSBuild
 			Targets="Clean;Rebuild"
 			Projects="$(ProjectName)\$(ProjectName).csproj;$(ProjectName).Test\$(ProjectName).Test.csproj;$(ProjectName).IntegrationTest\$(ProjectName).IntegrationTest.csproj;$(ProjectName).FunctionalTest\$(ProjectName).FunctionalTest.csproj"
 			Properties="Configuration=$(Configuration)"
-			ContinueOnError="false"/>
+			ContinueOnError="false"
+			/>
 	</Target>
 	<Target Name="UnitTest" DependsOnTargets="Build">
 		<Exec
@@ -111,7 +113,7 @@
 		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UncoveredLinesFound)">
 			<Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
 		</MsBuildHelper>
-		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="Unit Test coverage is below 80 percent. Coverage: $([System.Math]::Round($([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))), 2))"></Error>
+		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="%(TestProjects.ReportName) coverage is below 80 percent. Coverage: $([System.Math]::Round($([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))), 2))"></Error>
 	</Target>
 
 	<Target Name="RunFxCop" Inputs="%(AnalyzedProjects.AnalyzedProject);%(AnalyzedProjects.AnalyzedAssembly)" DependsOnTargets="Build" Outputs="Violations">
