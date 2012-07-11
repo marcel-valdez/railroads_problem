@@ -58,7 +58,7 @@
         /// </returns>
         public bool MightBeSatisfiedBy(IRoute route)
         {
-            throw new System.NotImplementedException();
+            return route.Origin.Name == this.originName;
         }
 
         #endregion

@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="helpers\TestHelper.cs" />
     <Compile Include="Plan\RouteTest.cs" />
     <Compile Include="Plan\TripPlanTest.cs" />
     <Compile Include="Program.cs" />
@@ -66,6 +65,10 @@
     <Compile Include="Specify\StopsCountSpecificationTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RouteCalculator.TestHelper\RouteCalculator.TestHelper.csproj">
+      <Project>{D8227B33-F575-4E6A-947B-921D5C5D3E4B}</Project>
+      <Name>RouteCalculator.TestHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RouteCalculator\RouteCalculator.csproj">
       <Project>{D158B1E3-B359-4070-80FC-C89C700D9C64}</Project>
       <Name>RouteCalculator</Name>

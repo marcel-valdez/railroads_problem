@@ -1,7 +1,7 @@
 ﻿namespace RouteCalculator.Plan
 {
     /// <summary>
-    /// The trip plan for an origin and start.
+    /// The trip plan for a trip with a specification
     /// </summary>
     public class TripPlan
     {
