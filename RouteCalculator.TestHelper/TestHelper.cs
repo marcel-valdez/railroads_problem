@@ -1,8 +1,9 @@
-﻿namespace RouteCalculator.Test
+﻿namespace RouteCalculator.Testing
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
+    using NSubstitute;
     using RouteCalculator.Map;
 
     /// <summary>
@@ -59,23 +60,20 @@
         /// </summary>
         /// <param name="routeConfiguration">The route configuration.</param>
         /// <returns>The legs configured</returns>
-        public static IList<Railroad> GenerateLegs(string[] routeConfiguration)
+        public static IList<IRailroad> GenerateLegs(string[] routeConfiguration)
         {
-            IList<Railroad> legs = new List<Railroad>();
+            IList<IRailroad> legs = new List<IRailroad>();
 
             foreach (string railroadConfiguration in routeConfiguration)
             {
-                legs.Add(new Railroad()
-                {
-                    Origin = new City()
-                    {
-                        Name = railroadConfiguration[0].ToString()
-                    },
-                    Destination = new City()
-                    {
-                        Name = railroadConfiguration[1].ToString()
-                    }
-                });
+                IRailroad railroad = Substitute.For<IRailroad>();
+                ICity originCity = Substitute.For<ICity>();
+                ICity destinationCity = Substitute.For<ICity>();
+                originCity.Name.Returns(railroadConfiguration[0].ToString());
+                destinationCity.Name.Returns(railroadConfiguration[1].ToString());
+                railroad.Origin.Returns(originCity);
+                railroad.Destination.Returns(destinationCity);
+                legs.Add(railroad);
             }
 
             return legs;

@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Test.Plan
+﻿namespace RouteCalculator.Testing.Plan
 {
     using System;
     using System.Collections.Generic;
@@ -199,16 +199,16 @@
             };
 
             // Act
-            var map = BuildSimpleMap(paths);
+            IRailroadMap map = BuildSimpleMap(paths);
 
             // Assert
             CollectionAssert.AreEquivalent(expectedCityNames, map.Cities.Select(city => city.Name));
             CollectionAssert.AreEquivalent(expectedRailroadLengths, map.Railroads.Select(rr => rr.Length));
             for (int i = 0; i < expectedRailroadCities.Length; i++)
             {
-                Railroad railroad = map.Railroads.ElementAt(i);
-                City origin = railroad.Origin;
-                City destination = railroad.Destination;
+                IRailroad railroad = map.Railroads.ElementAt(i);
+                ICity origin = railroad.Origin;
+                ICity destination = railroad.Destination;
 
                 // Assert they connect correctly
                 Assert.AreEqual(expectedRailroadCities[i][0], origin.Name);
@@ -225,17 +225,17 @@
         private static IRailroadMap BuildSimpleMap(object[][] paths)
         {
             IRailroadMap map = Substitute.For<IRailroadMap>();
-            IList<City> cities = new List<City>();
-            IList<Railroad> railroads = new List<Railroad>();
+            IList<ICity> cities = new List<ICity>();
+            IList<IRailroad> railroads = new List<IRailroad>();
             foreach (object[] pathConfig in paths)
             {
                 string originCityName = (string)pathConfig[0];
                 string destinationCityName = (string)pathConfig[1];
                 int railroadLength = (int)pathConfig[2];
 
-                City originCity = GetOrCreateCity(cities, originCityName);
-                City destinationCity = GetOrCreateCity(cities, destinationCityName);
-                Railroad newRailroad = new Railroad();
+                ICity originCity = GetOrCreateCity(cities, originCityName);
+                ICity destinationCity = GetOrCreateCity(cities, destinationCityName);
+                IRailroad newRailroad = Substitute.For<IRailroad>();
                 newRailroad.Origin = originCity;
                 newRailroad.Destination = destinationCity;
                 newRailroad.Length = railroadLength;
@@ -253,17 +253,19 @@
         /// Gets or creates a city.
         /// </summary>
         /// <param name="cities">The cities.</param>
-        /// <param name="originCityName">Name of the origin city.</param>
+        /// <param name="cityName">Name of the origin city.</param>
         /// <returns>
-        /// The city with the name <paramref name="originCityName"/>
+        /// The city with the name <paramref name="cityName"/>
         /// </returns>
-        private static City GetOrCreateCity(IList<City> cities, string originCityName)
+        private static ICity GetOrCreateCity(IList<ICity> cities, string cityName)
         {
-            City city = cities.FirstOrDefault(item => item.Name == originCityName);
+            ICity city = cities.FirstOrDefault(item => item.Name == cityName);
             if (city == null)
             {
-                city = new City();
-                city.Name = originCityName;
+                city = Substitute.For<ICity>();
+                city.Name = cityName;
+                IList<IRailroad> outgoing = new List<IRailroad>();
+                city.Outgoing.Returns(outgoing);
                 cities.Add(city);
             }
 

@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Test.Map
+﻿namespace RouteCalculator.Testing.Map
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -68,7 +68,7 @@
             // Assert
             Assert.AreEqual(1, target.Railroads.Count());
             Assert.AreEqual(2, target.Cities.Count());
-            Railroad railroad = target.Railroads.ElementAt(0);
+            IRailroad railroad = target.Railroads.ElementAt(0);
             Assert.AreEqual(1, railroad.Length);
             var cityA = target.Cities.ElementAt(0);
             Assert.AreEqual("A", cityA.Name);

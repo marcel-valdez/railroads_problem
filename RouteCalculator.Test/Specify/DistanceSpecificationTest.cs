@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Test.Specify
+﻿namespace RouteCalculator.Testing.Specify
 {
     using NSubstitute;
     using NUnit.Framework;

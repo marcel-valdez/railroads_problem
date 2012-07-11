@@ -1,9 +1,9 @@
-﻿namespace RouteCalculator.Map
+namespace RouteCalculator.Map
 {
     /// <summary>
-    /// This class will represent the railroad connecting two cities.
+    /// The interface for a railroad
     /// </summary>
-    public class Railroad : IRailroad
+    public interface IRailroad
     {
         /// <summary>
         /// Gets or sets the length of the railroad.
@@ -11,7 +11,7 @@
         /// <value>
         /// The length.
         /// </value>
-        public virtual int Length
+        int Length
         {
             get;
             set;
@@ -23,7 +23,7 @@
         /// <value>
         /// The origin.
         /// </value>
-        public ICity Origin
+        ICity Origin
         {
             get;
             set;
@@ -35,7 +35,7 @@
         /// <value>
         /// The destination.
         /// </value>
-        public ICity Destination
+        ICity Destination
         {
             get;
             set;

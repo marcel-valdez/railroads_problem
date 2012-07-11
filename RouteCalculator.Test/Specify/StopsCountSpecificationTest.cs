@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Test.Specify
+﻿namespace RouteCalculator.Testing.Specify
 {
     using System.Collections.Generic;
     using NSubstitute;
@@ -82,10 +82,10 @@
             // Arrange
             var target = new StopsCountSpecification(minimumStopCount, maximumStopCount);
             var route = Substitute.For<IRoute>();
-            var legs = new List<Railroad>();
+            var legs = new List<IRailroad>();
             for (int i = 0; i < actualStopCount; i++)
             {
-                legs.Add(new Railroad());
+                legs.Add(Substitute.For<IRailroad>());
             }
 
             route.Legs.Returns(legs);
@@ -111,10 +111,10 @@
             // Arrange
             var target = new StopsCountSpecification(minimumStopCount, maximumStopCount);
             var route = Substitute.For<IRoute>();
-            var legs = new List<Railroad>();
+            var legs = new List<IRailroad>();
             for (int i = 0; i < specStopCount; i++)
             {
-                legs.Add(new Railroad());
+                legs.Add(Substitute.For<IRailroad>());
             }
 
             route.Legs.Returns(legs);

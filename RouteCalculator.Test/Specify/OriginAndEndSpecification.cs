@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Test.Specify
+﻿namespace RouteCalculator.Testing.Specify
 {
     using NSubstitute;
     using NUnit.Framework;
@@ -75,14 +75,12 @@
             // Arrange
             var target = new OriginAndDestinationSpecification(origin, destination);
             IRoute route = Substitute.For<IRoute>();
-            route.Origin.Returns(new City()
-            {
-                Name = routeOrigin
-            });
-            route.Destination.Returns(new City()
-            {
-                Name = routeDestination
-            });
+            var originCity = Substitute.For<ICity>();
+            var destinationCity = Substitute.For<ICity>();
+            originCity.Name = routeOrigin;
+            destinationCity.Name = routeDestination;
+            route.Origin.Returns(originCity);
+            route.Destination.Returns(destinationCity);
 
             // Act
             bool actual = target.IsSatisfiedBy(route);
@@ -111,14 +109,12 @@
             // Arrange
             var target = new OriginAndDestinationSpecification(origin, destination);
             IRoute route = Substitute.For<IRoute>();
-            route.Origin.Returns(new City()
-            {
-                Name = routeOrigin
-            });
-            route.Destination.Returns(new City()
-            {
-                Name = routeDestination
-            });
+            var originCity = Substitute.For<ICity>();
+            var destinationCity = Substitute.For<ICity>();
+            originCity.Name = routeOrigin;
+            destinationCity.Name = routeDestination;
+            route.Origin.Returns(originCity);
+            route.Destination.Returns(destinationCity);
 
             // Act
             bool actual = target.MightBeSatisfiedBy(route);

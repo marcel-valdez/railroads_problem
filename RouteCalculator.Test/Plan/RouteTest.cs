@@ -1,6 +1,7 @@
-﻿namespace RouteCalculator.Test.Plan
+﻿namespace RouteCalculator.Testing.Plan
 {
     using System.Linq;
+    using NSubstitute;
     using NUnit.Framework;
     using RouteCalculator.Map;
     using RouteCalculator.Plan;
@@ -47,7 +48,7 @@
             var target = new Route();
             for (int i = 0; i < legDistances.Length; i++)
             {
-                Railroad mockRailRoad = new Railroad();
+                IRailroad mockRailRoad = Substitute.For<IRailroad>();
                 mockRailRoad.Length = legDistances[i];
                 target.AddLeg(mockRailRoad);
             }
@@ -77,17 +78,13 @@
             // Act
             for (int i = 0; i < cityNames.Length - 1; i++)
             {
-                var leg = new Railroad()
-                {
-                    Origin = new City()
-                    {
-                        Name = cityNames[i]
-                    },
-                    Destination = new City()
-                    {
-                        Name = cityNames[i + 1]
-                    }
-                };
+                var originCity = Substitute.For<ICity>();
+                originCity.Name = cityNames[i];
+                var destinationCity = Substitute.For<ICity>();
+                destinationCity.Name = cityNames[i + 1];
+                IRailroad leg = Substitute.For<IRailroad>();
+                leg.Origin = originCity;
+                leg.Destination = destinationCity;
                 target.AddLeg(leg);
             }
 

@@ -36,6 +36,9 @@
     <CodeAnalysisRuleSet>ExtendedCorrectnessRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\tools\nunit\lib\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="nunit-console-runner">
       <HintPath>..\tools\nunit\lib\nunit-console-runner.dll</HintPath>
     </Reference>
@@ -51,9 +54,13 @@
     <Compile Include="ISpecification.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Specifications_And_Routes_IntegrationTest.cs" />
+    <Compile Include="Specifications_And_Route_IntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RouteCalculator.TestHelper\RouteCalculator.TestHelper.csproj">
+      <Project>{D8227B33-F575-4E6A-947B-921D5C5D3E4B}</Project>
+      <Name>RouteCalculator.TestHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RouteCalculator\RouteCalculator.csproj">
       <Project>{D158B1E3-B359-4070-80FC-C89C700D9C64}</Project>
       <Name>RouteCalculator</Name>

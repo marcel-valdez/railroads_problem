@@ -42,7 +42,7 @@
         /// </returns>
         public bool IsSatisfiedBy(IRoute route)
         {
-            IEnumerable<Railroad> legs = route.Legs;
+            IEnumerable<IRailroad> legs = route.Legs;
 
             if (legs.Count() + 1 != this.citiesRoute.Length)
             {
@@ -76,7 +76,7 @@
                 return false;
             }
 
-            foreach (Railroad leg in route.Legs)
+            foreach (IRailroad leg in route.Legs)
             {
                 if (leg.Origin.Name != this.citiesRoute[i] ||
                    leg.Destination.Name != this.citiesRoute[i + 1])

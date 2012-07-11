@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Test
+﻿namespace RouteCalculator.Testing
 {
     using System;
     using System.Collections.Generic;

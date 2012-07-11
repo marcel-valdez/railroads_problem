@@ -11,14 +11,14 @@
         /// <summary>
         /// The legs that make up this Route
         /// </summary>
-        private IList<Railroad> legs;
+        private IList<IRailroad> legs;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Route"/> class.
         /// </summary>
         public Route()
         {
-            this.legs = new List<Railroad>();
+            this.legs = new List<IRailroad>();
         }
 
         #region IRoute Members
@@ -29,7 +29,7 @@
         /// <value>
         /// The legs that conform the route.
         /// </value>
-        public IEnumerable<Railroad> Legs
+        public IEnumerable<IRailroad> Legs
         {
             get
             {
@@ -49,7 +49,7 @@
         /// <summary>
         /// Gets the origin.
         /// </summary>
-        public City Origin
+        public ICity Origin
         {
             get
             {
@@ -60,7 +60,7 @@
         /// <summary>
         /// Gets the destination.
         /// </summary>
-        public City Destination
+        public ICity Destination
         {
             get
             {
@@ -68,16 +68,15 @@
             }
         }
 
-        #endregion
-
         /// <summary>
         /// Adds a leg to the route.
         /// </summary>
-        /// <param name="leg">The leg to be added.</param>
-        public void AddLeg(Railroad leg)
+        /// <param name="railroad">The railroad leg to be added.</param>
+        public void AddLeg(IRailroad railroad)
         {
-            this.Distance += leg.Length;
-            this.legs.Add(leg);
+            this.Distance += railroad.Length;
+            this.legs.Add(railroad);
         }
+        #endregion
     }
 }

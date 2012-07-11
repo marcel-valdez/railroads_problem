@@ -10,7 +10,7 @@ namespace RouteCalculator.Map
         /// <summary>
         /// Gets the rail roads read from the file stream.
         /// </summary>
-        IEnumerable<Railroad> Railroads
+        IEnumerable<IRailroad> Railroads
         {
             get;
         }
@@ -18,7 +18,7 @@ namespace RouteCalculator.Map
         /// <summary>
         /// Gets the cities read from the file stream.
         /// </summary>
-        IEnumerable<City> Cities
+        IEnumerable<ICity> Cities
         {
             get;
         }

@@ -13,27 +13,27 @@
         /// <summary>
         /// The railroads in the map
         /// </summary>
-        private IList<Railroad> railroads;
+        private IList<IRailroad> railroads;
 
         /// <summary>
         /// The cities in the map
         /// </summary>
-        private IList<City> cities;
+        private IList<ICity> cities;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RailroadMap"/> class.
         /// </summary>
         public RailroadMap()
         {
-            this.railroads = new List<Railroad>();
-            this.cities = new List<City>();
+            this.railroads = new List<IRailroad>();
+            this.cities = new List<ICity>();
         }
 
         #region Properties
         /// <summary>
         /// Gets the rail roads read from the file stream.
         /// </summary>        
-        public IEnumerable<Railroad> Railroads
+        public IEnumerable<IRailroad> Railroads
         {
             get
             {
@@ -44,7 +44,7 @@
         /// <summary>
         /// Gets the cities read from the file stream.
         /// </summary>
-        public IEnumerable<City> Cities
+        public IEnumerable<ICity> Cities
         {
             get
             {
@@ -86,10 +86,10 @@
         /// </summary>
         /// <param name="originCityName">Name of the origin city.</param>
         /// <returns>The city with the name <paramref name="originCityName"/></returns>
-        private City GetOrCreateCity(string originCityName)
+        private ICity GetOrCreateCity(string originCityName)
         {
-            City city = this.cities.FirstOrDefault(item => item.Name == originCityName);
-            if (city == default(City))
+            ICity city = this.cities.FirstOrDefault(item => item.Name == originCityName);
+            if (city == default(ICity))
             {
                 city = new City();
                 city.Name = originCityName;
@@ -112,9 +112,9 @@
                 string destinationCityName = path.Substring(1, 1);
                 int railroadLength = Int32.Parse(path.Substring(2));
 
-                City originCity = this.GetOrCreateCity(originCityName);
-                City destinationCity = this.GetOrCreateCity(destinationCityName);
-                Railroad newRailroad = new Railroad();
+                ICity originCity = this.GetOrCreateCity(originCityName);
+                ICity destinationCity = this.GetOrCreateCity(destinationCityName);
+                IRailroad newRailroad = new Railroad();
                 newRailroad.Origin = originCity;
                 newRailroad.Destination = destinationCity;
                 newRailroad.Length = railroadLength;

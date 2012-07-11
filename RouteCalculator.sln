@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteCalculator.IntegrationTest", "RouteCalculator.IntegrationTest\RouteCalculator.IntegrationTest.csproj", "{006706B3-29E8-4A4A-BBA5-D8D241DDC8C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteCalculator.FunctionalTest", "RouteCalculator.FunctionalTest\RouteCalculator.FunctionalTest.csproj", "{458404C8-1858-4B55-9539-8D00D9169091}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D8227B33-F575-4E6A-947B-921D5C5D3E4B} = {D8227B33-F575-4E6A-947B-921D5C5D3E4B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{37B8E9EF-D21C-4128-B19A-5A862C9D1B9F}"
 	ProjectSection(SolutionItems) = preProject

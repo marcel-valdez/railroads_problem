@@ -1,27 +1,19 @@
-﻿namespace RouteCalculator.Map
+namespace RouteCalculator.Map
 {
     using System.Collections.Generic;
 
     /// <summary>
-    /// This class represents a city in the railroad calculator (a node)
+    /// The interface for a city.
     /// </summary>
-    public class City : ICity
+    public interface ICity
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="City"/> class.
-        /// </summary>
-        public City()
-        {
-            this.Outgoing = new List<IRailroad>();
-        }
-
         /// <summary>
         /// Gets or sets the name of the city.
         /// </summary>
         /// <value>
         /// The name of the city.
         /// </value>
-        public string Name
+        string Name
         {
             get;
             set;
@@ -33,10 +25,9 @@
         /// <value>
         /// The outgoing railroads.
         /// </value>
-        public IList<IRailroad> Outgoing
+        IList<IRailroad> Outgoing
         {
             get;
-            private set;
         }
     }
 }

@@ -20,11 +20,11 @@
         {
             // Arrange
             RailroadMap map;
-            IEnumerable<Railroad> railroads;
-            Railroad railroad;
-            IEnumerable<City> cities;
-            City originCity;
-            City destinationCity;
+            IEnumerable<IRailroad> railroads;
+            IRailroad railroad;
+            IEnumerable<ICity> cities;
+            ICity originCity;
+            ICity destinationCity;
             int expectedLength = 1;
             int expectedRailRoadCount = 1;
             int expectedCityCount = 2;

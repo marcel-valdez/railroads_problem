@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Test.Specify
+﻿namespace RouteCalculator.Testing.Specify
 {
     using System.Collections.Generic;
     using NSubstitute;
@@ -116,8 +116,7 @@
             // Arrange
             PathSpecification pathSpec = new PathSpecification(specifiedRoute);
             IRoute route = Substitute.For<IRoute>();
-            IList<Railroad> legs = TestHelper.GenerateLegs(actualRoute);
-
+            IList<IRailroad> legs = TestHelper.GenerateLegs(actualRoute);
             route.Legs.Returns(legs);
 
             // Act
@@ -141,7 +140,7 @@
             // Arrange
             PathSpecification pathSpec = new PathSpecification(citiesRoute);
             IRoute route = Substitute.For<IRoute>();
-            IList<Railroad> legs = TestHelper.GenerateLegs(routeConfiguration);
+            IList<IRailroad> legs = TestHelper.GenerateLegs(routeConfiguration);
 
             route.Legs.Returns(legs);
 

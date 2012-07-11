@@ -14,7 +14,7 @@
         /// <value>
         /// The legs that conform the route.
         /// </value>
-        IEnumerable<Railroad> Legs
+        IEnumerable<IRailroad> Legs
         {
             get;
         }
@@ -30,7 +30,7 @@
         /// <summary>
         /// Gets the origin.
         /// </summary>
-        City Origin
+        ICity Origin
         {
             get;
         }
@@ -38,9 +38,16 @@
         /// <summary>
         /// Gets the destination.
         /// </summary>
-        City Destination
+        ICity Destination
         {
             get;
         }
+
+        /// <summary>
+        /// Adds the railroad leg stop.
+        /// NOTE: Legs can repeat, as long as they are not continuous.
+        /// </summary>
+        /// <param name="railroad">The railroad to add.</param>
+        void AddLeg(IRailroad railroad);
     }
 }
