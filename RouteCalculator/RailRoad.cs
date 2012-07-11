@@ -11,7 +11,7 @@
         /// <value>
         /// The length.
         /// </value>
-        public int Length
+        public virtual int Length
         {
             get;
             set;

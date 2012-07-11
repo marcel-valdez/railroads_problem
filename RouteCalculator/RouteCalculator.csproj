@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Plan\IRoute.cs" />
+    <Compile Include="Plan\Route.cs" />
     <Compile Include="Specify\AndSpecification.cs" />
     <Compile Include="City.cs" />
     <Compile Include="RailroadMap.cs" />
