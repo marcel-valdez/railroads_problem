@@ -1,6 +1,7 @@
 ﻿namespace RouteCalculator.Plan
 {
     using System.Collections.Generic;
+    using RouteCalculator.Map;
 
     /// <summary>
     /// This class represnts a set of connected and directed railroads.

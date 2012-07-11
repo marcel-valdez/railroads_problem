@@ -1,6 +1,7 @@
 ﻿namespace RouteCalculator.Plan
 {
     using System.Collections.Generic;
+    using RouteCalculator.Map;
 
     /// <summary>
     /// Represents a single route from an origin to a destination

@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using NUnit.Framework;
+    using RouteCalculator.Map;
 
     /// <summary>
     /// This class contains the integration tests between the FileParser, RailRoad and City class

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
+    using RouteCalculator.Map;
 
     /// <summary>
     /// Represents a reflected method call

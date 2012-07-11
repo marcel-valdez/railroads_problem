@@ -73,9 +73,10 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="helpers\TestHelper.cs" />
     <Compile Include="Plan\RouteTest.cs" />
+    <Compile Include="Plan\TripPlanTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RailroadMapTest.cs" />
+    <Compile Include="Map\RailroadMapTest.cs" />
     <Compile Include="Specify\AndSpecificationTest.cs" />
     <Compile Include="Specify\DistanceSpecificationTest.cs" />
     <Compile Include="Specify\OriginAndEndSpecification.cs" />

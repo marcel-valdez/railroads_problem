@@ -49,14 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Map\IRailroadMap.cs" />
     <Compile Include="Plan\IRoute.cs" />
     <Compile Include="Plan\Route.cs" />
     <Compile Include="Specify\AndSpecification.cs" />
-    <Compile Include="City.cs" />
-    <Compile Include="RailroadMap.cs" />
+    <Compile Include="Map\City.cs" />
+    <Compile Include="Map\RailroadMap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RailRoad.cs" />
+    <Compile Include="Map\RailRoad.cs" />
     <Compile Include="Specify\DistanceSpecification.cs" />
     <Compile Include="Specify\RouteSpecification.cs" />
     <Compile Include="Specify\IRouteSpecification.cs" />

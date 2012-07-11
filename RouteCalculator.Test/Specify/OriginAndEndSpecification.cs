@@ -2,6 +2,7 @@
 {
     using NSubstitute;
     using NUnit.Framework;
+    using RouteCalculator.Map;
     using RouteCalculator.Plan;
     using RouteCalculator.Specify;
 

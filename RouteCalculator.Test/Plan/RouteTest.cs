@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using NUnit.Framework;
+    using RouteCalculator.Map;
     using RouteCalculator.Plan;
 
     /// <summary>
