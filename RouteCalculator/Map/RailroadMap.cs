@@ -88,16 +88,12 @@
         /// <returns>The city with the name <paramref name="originCityName"/></returns>
         private City GetOrCreateCity(string originCityName)
         {
-            City city = null;
-            if (!this.cities.Any(item => item.Name == originCityName))
+            City city = this.cities.FirstOrDefault(item => item.Name == originCityName);
+            if (city == default(City))
             {
                 city = new City();
                 city.Name = originCityName;
                 this.cities.Add(city);
-            }
-            else
-            {
-                city = this.cities.First(item => item.Name == originCityName);
             }
 
             return city;
@@ -124,7 +120,6 @@
                 newRailroad.Length = railroadLength;
                 this.railroads.Add(newRailroad);
                 originCity.Outgoing.Add(newRailroad);
-                destinationCity.Incoming.Add(newRailroad);
             }
         }
         #endregion

@@ -16,6 +16,7 @@
         /// </summary>
         private static object[] specificationData = 
         {
+            // Predicate1, Predicate 2, Expected Result
             new bool[] { true, true, true },
             new bool[] { true, false, false },
             new bool[] { false, true, false },
@@ -35,20 +36,27 @@
             // Arrange
             var predicate1 = Substitute.For<IRouteSpecification>();
             var predicate2 = Substitute.For<IRouteSpecification>();
-            predicate1.Validate(Arg.Any<IRoute>()).Returns(predicate1Validates);
-            predicate2.Validate(Arg.Any<IRoute>()).Returns(predicate2Validates);
+            predicate1.IsSatisfiedBy(Arg.Any<IRoute>()).Returns(predicate1Validates);
+            predicate2.IsSatisfiedBy(Arg.Any<IRoute>()).Returns(predicate2Validates);
+            predicate1.MightBeSatisfiedBy(Arg.Any<IRoute>()).Returns(predicate1Validates);
+            predicate2.MightBeSatisfiedBy(Arg.Any<IRoute>()).Returns(predicate2Validates);
             var andSpecification = new AndSpecification(predicate1, predicate2);
-            bool actual = false;
+            bool satisfiedBy = false;
+            bool mightBeSatisfiedBy = false;
 
             // Act
-            actual = andSpecification.Validate(Substitute.For<IRoute>());
+            satisfiedBy = andSpecification.IsSatisfiedBy(Substitute.For<IRoute>());
+            mightBeSatisfiedBy = andSpecification.MightBeSatisfiedBy(Substitute.For<IRoute>());
 
             // Assert
-            Assert.AreEqual(expectedResult, actual);
-            predicate1.ReceivedWithAnyArgs().Validate(null);
+            Assert.AreEqual(expectedResult, satisfiedBy);
+            Assert.AreEqual(expectedResult, mightBeSatisfiedBy);
+            predicate1.ReceivedWithAnyArgs().IsSatisfiedBy(null);
+            predicate1.ReceivedWithAnyArgs().MightBeSatisfiedBy(null);
             if (predicate1Validates)
             {
-                predicate2.ReceivedWithAnyArgs().Validate(null);
+                predicate2.ReceivedWithAnyArgs().IsSatisfiedBy(null);
+                predicate2.ReceivedWithAnyArgs().MightBeSatisfiedBy(null);
             }
         }
     }

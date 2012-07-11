@@ -41,16 +41,13 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Map\IRailroadMap.cs" />
     <Compile Include="Plan\IRoute.cs" />
+    <Compile Include="Plan\IRouteFinder.cs" />
     <Compile Include="Plan\Route.cs" />
     <Compile Include="Specify\AndSpecification.cs" />
     <Compile Include="Map\City.cs" />
@@ -59,7 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Map\RailRoad.cs" />
     <Compile Include="Specify\DistanceSpecification.cs" />
-    <Compile Include="Specify\RouteSpecification.cs" />
+    <Compile Include="Specify\OriginAndEndSpecification.cs" />
     <Compile Include="Specify\IRouteSpecification.cs" />
     <Compile Include="Plan\TripPlan.cs" />
     <Compile Include="Specify\PathSpecification.cs" />

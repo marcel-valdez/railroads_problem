@@ -12,7 +12,6 @@
         /// </summary>
         public City()
         {
-            this.Incoming = new List<Railroad>();
             this.Outgoing = new List<Railroad>();
         }
 
@@ -35,18 +34,6 @@
         /// The outgoing railroads.
         /// </value>
         public IList<Railroad> Outgoing
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the incoming railroads.
-        /// </summary>
-        /// <value>
-        /// The incoming railroads.
-        /// </value>
-        public IList<Railroad> Incoming
         {
             get;
             private set;

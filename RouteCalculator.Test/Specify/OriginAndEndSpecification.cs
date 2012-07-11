@@ -13,9 +13,9 @@
     public class OriginAndEndSpecificationTest
     {
         /// <summary>
-        /// It contains the test data used for configuring the routes ofr this PathSpecificationTest
+        /// It contains the test data used for configuring the routes for this PathSpecificationTest
         /// </summary>
-        private static object[] routesTestDataConfiguration =
+        private static object[] testDataForSatisfiedBy =
         {
             new object[] 
             {
@@ -44,11 +44,11 @@
         /// <param name="destination">The destination.</param>
         /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
         [Test]
-        [TestCaseSource("routesTestDataConfiguration")]
+        [TestCaseSource("testDataForSatisfiedBy")]
         public void TestIfItCanSpecifyOriginAndDestinationCorrectly(string routeOrigin, string routeDestination, string origin, string destination, bool expectedResult)
         {
             // Arrange
-            var target = new OriginAndEndSpecification(origin, destination);
+            var target = new OriginAndDestinationSpecification(origin, destination);
             IRoute route = Substitute.For<IRoute>();
             route.Origin.Returns(new City()
             {
@@ -60,7 +60,7 @@
             });
 
             // Act
-            bool actual = target.Validate(route);
+            bool actual = target.IsSatisfiedBy(route);
 
             // Assert
             Assert.AreEqual(expectedResult, actual);

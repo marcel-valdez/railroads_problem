@@ -3,36 +3,36 @@
     using RouteCalculator.Plan;
 
     /// <summary>
-    /// This class is used to specify the minimum and maximum distance of a route
+    /// A specification that applies to a Route
     /// </summary>
-    public class DistanceSpecification : IRouteSpecification
+    public class OriginAndDestinationSpecification : IRouteSpecification
     {
         /// <summary>
-        /// The minimum total distance specified for a route
+        /// The origin city name
         /// </summary>
-        private int minDistance;
+        private string originName;
 
         /// <summary>
-        /// The maximum total distance specified for a route
+        /// The destination city name
         /// </summary>
-        private int maxDistance;
+        private string destinationName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DistanceSpecification"/> class.
+        /// Initializes a new instance of the <see cref="OriginAndDestinationSpecification"/> class.
         /// </summary>
-        public DistanceSpecification()
+        public OriginAndDestinationSpecification()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DistanceSpecification"/> class.
+        /// Initializes a new instance of the <see cref="OriginAndDestinationSpecification"/> class.
         /// </summary>
-        /// <param name="minDistance">The min route distance.</param>
-        /// <param name="maxDistance">The max route distance.</param>
-        public DistanceSpecification(int minDistance, int maxDistance)
+        /// <param name="origin">The origin.</param>
+        /// <param name="destination">The destination.</param>
+        public OriginAndDestinationSpecification(string origin, string destination)
         {
-            this.minDistance = minDistance;
-            this.maxDistance = maxDistance;
+            this.originName = origin;
+            this.destinationName = destination;
         }
 
         #region IRouteSpecification Members
@@ -46,7 +46,7 @@
         /// </returns>
         public bool IsSatisfiedBy(IRoute route)
         {
-            return route.Distance <= this.maxDistance && route.Distance >= this.minDistance;
+            return route.Destination.Name == this.destinationName && route.Origin.Name == this.originName;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@
         /// </returns>
         public bool MightBeSatisfiedBy(IRoute route)
         {
-            return route.Distance <= this.maxDistance;
+            throw new System.NotImplementedException();
         }
 
         #endregion

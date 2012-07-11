@@ -54,7 +54,6 @@
             Assert.AreEqual(originCity, railroad.Origin);
             Assert.AreEqual(destinationCity, railroad.Destination);
             Assert.AreEqual(originCity.Outgoing.ElementAt(0), railroad);
-            Assert.AreEqual(destinationCity.Incoming.ElementAt(0), railroad);
         }
     }
 }

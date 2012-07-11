@@ -42,15 +42,27 @@
         /// <summary>
         /// Validates the specified the object.
         /// </summary>
-        /// <param name="validatedOn">The object to validate with this specification.</param>
+        /// <param name="route">The object to validate with this specification.</param>
         /// <returns>
         /// true if the object conforms to this specification
         /// </returns>
-        public bool Validate(IRoute validatedOn)
+        public bool IsSatisfiedBy(IRoute route)
         {
-            IRoute route = (IRoute)validatedOn;
             int legsCount = route.Legs.Count();
             return legsCount <= this.maxStopsCount && legsCount >= this.minStopsCount;
+        }
+
+        /// <summary>
+        /// Determines if the route might satisfy the RouteSpecification
+        /// </summary>
+        /// <param name="route">The route.</param>
+        /// <returns>
+        /// true if it might satisfy this specification, false if there's no way.
+        /// </returns>
+        public bool MightBeSatisfiedBy(IRoute route)
+        {
+            int legsCount = route.Legs.Count();
+            return legsCount <= this.maxStopsCount;
         }
 
         #endregion

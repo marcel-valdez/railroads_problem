@@ -26,15 +26,35 @@
         /// <summary>
         /// Validates the specified the object.
         /// </summary>
-        /// <param name="validatedOn">The object to validate with this specification.</param>
+        /// <param name="route">The object to validate with this specification.</param>
         /// <returns>
         /// true if the object conforms to this specification
         /// </returns>
-        public bool Validate(IRoute validatedOn)
+        public bool IsSatisfiedBy(IRoute route)
         {
             foreach (IRouteSpecification specification in this.specifications)
             {
-                if (!specification.Validate(validatedOn))
+                if (!specification.IsSatisfiedBy(route))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Determines if the route might satisfy the RouteSpecification
+        /// </summary>
+        /// <param name="route">The route.</param>
+        /// <returns>
+        /// true if it might satisfy this specification, false if there's no way.
+        /// </returns>
+        public bool MightBeSatisfiedBy(IRoute route)
+        {
+            foreach (IRouteSpecification specification in this.specifications)
+            {
+                if (!specification.MightBeSatisfiedBy(route))
                 {
                     return false;
                 }

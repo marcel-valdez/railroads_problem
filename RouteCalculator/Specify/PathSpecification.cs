@@ -36,13 +36,12 @@
         /// <summary>
         /// Validates the specified the object.
         /// </summary>
-        /// <param name="validatedOn">The object to validate with this specification.</param>
+        /// <param name="route">The object to validate with this specification.</param>
         /// <returns>
         /// true if the object conforms to this specification
         /// </returns>
-        public bool Validate(IRoute validatedOn)
+        public bool IsSatisfiedBy(IRoute route)
         {
-            IRoute route = (IRoute)validatedOn;
             IEnumerable<Railroad> legs = route.Legs;
 
             if (legs.Count() + 1 != this.citiesRoute.Length)
@@ -57,6 +56,35 @@
                 {
                     return false;
                 }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Determines if the route might satisfy the RouteSpecification
+        /// </summary>
+        /// <param name="route">The route.</param>
+        /// <returns>
+        /// true if it might satisfy this specification, false if there's no way.
+        /// </returns>
+        public bool MightBeSatisfiedBy(IRoute route)
+        {
+            int i = 0;
+            if (route.Legs.Count() > this.citiesRoute.Length)
+            {
+                return false;
+            }
+
+            foreach (Railroad leg in route.Legs)
+            {
+                if (leg.Origin.Name != this.citiesRoute[i] ||
+                   leg.Destination.Name != this.citiesRoute[i + 1])
+                {
+                    return false;
+                }
+
+                i++;
             }
 
             return true;
