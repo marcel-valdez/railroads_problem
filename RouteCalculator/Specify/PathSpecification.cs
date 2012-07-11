@@ -1,6 +1,5 @@
 ﻿namespace RouteCalculator.Specify
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using RouteCalculator.Plan;
@@ -8,12 +7,19 @@
     /// <summary>
     /// A trip specification that delimits the possible routes to a destination from an origin.
     /// </summary>
-    public class PathSpecification : ISpecification
+    public class PathSpecification : IRouteSpecification
     {
         /// <summary>
         /// The city route to specify
         /// </summary>
-        private string[] citiesRoute = null;
+        private string[] citiesRoute;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PathSpecification"/> class.
+        /// </summary>
+        public PathSpecification()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PathSpecification"/> class.
@@ -24,18 +30,7 @@
             this.citiesRoute = cityNames;
         }
 
-        #region ISpecification Members
-        /// <summary>
-        /// Determins wether this Specification applies to a given object
-        /// </summary>
-        /// <param name="appliedTo">The object to determine if this specification applies to.</param>
-        /// <returns>
-        /// true if this specification applies to <paramref name="theObject"/>
-        /// </returns>
-        public bool AppliesTo(object appliedTo)
-        {
-            return typeof(IRoute).IsInstanceOfType(appliedTo);
-        }
+        #region IRouteSpecification Members
 
         /// <summary>
         /// Validates the specified the object.
@@ -44,7 +39,7 @@
         /// <returns>
         /// true if the object conforms to this specification
         /// </returns>
-        public bool Validate(object validatedOn)
+        public bool Validate(IRoute validatedOn)
         {
             IRoute route = (IRoute)validatedOn;
             IEnumerable<Railroad> legs = route.Legs;

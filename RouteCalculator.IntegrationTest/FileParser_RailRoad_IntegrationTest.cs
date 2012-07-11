@@ -1,7 +1,6 @@
 ﻿namespace RouteCalculator.IntegrationTest
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using NUnit.Framework;
@@ -18,7 +17,7 @@
         [Test]
         public void TestCanGenerateASingleRailroad()
         {
-            //// Arrange
+            // Arrange
             RailroadMap map;
             IEnumerable<Railroad> railroads;
             Railroad railroad;
@@ -33,22 +32,24 @@
             string filePath = "test_data/single_railroad_two_cities.txt";
             var testDataFileStream = File.OpenRead(filePath);
 
-            //// Act
+            // Act
             map = new RailroadMap();
             map.Init(testDataFileStream);
             railroads = map.Railroads;
             cities = map.Cities;
 
-            //// Assert
-            //// Verify that collections are obtained correctly.
+            // Assert
+            // Verify that collections are obtained correctly.
             Assert.AreEqual(expectedRailRoadCount, railroads.Count());
             Assert.AreEqual(expectedCityCount, cities.Count());
-            //// Verify that cities and railroads are read correctly
+
+            // Verify that cities and railroads are read correctly
             railroad = railroads.ElementAt(0);
             originCity = cities.First(city => city.Name == expectedOriginCityName);
             destinationCity = cities.First(city => city.Name == expectedDesintationCityName);
             Assert.AreEqual(expectedLength, railroad.Length);
-            //// Verify cities and railroads are connected correctly
+
+            // Verify cities and railroads are connected correctly
             Assert.AreEqual(originCity, railroad.Origin);
             Assert.AreEqual(destinationCity, railroad.Destination);
             Assert.AreEqual(originCity.Outgoing.ElementAt(0), railroad);

@@ -63,37 +63,5 @@
             Assert.AreEqual(expectedResult, actual);
             Assert.Null(route.ReceivedWithAnyArgs().Legs);
         }
-
-        /// <summary>
-        /// Tests if it applies to A route
-        /// </summary>
-        [Test]
-        public void TestIfItAppliesToARoute()
-        {
-            // Arrange
-            var spec = new PathSpecification();
-
-            // Act
-            bool actual = spec.AppliesTo(Substitute.For<IRoute>());
-
-            // Assert
-            Assert.IsTrue(actual);
-        }
-
-        /// <summary>
-        /// Tests if it doesn't apply to an object
-        /// </summary>
-        [Test]
-        public void TestIfItDoesNotApplyToAnObject()
-        {
-            // Arrange
-            var spec = new PathSpecification();
-
-            // Act
-            bool actual = spec.AppliesTo(new object());
-
-            // Assert
-            Assert.IsFalse(actual);
-        }
     }
 }

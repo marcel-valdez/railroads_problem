@@ -8,7 +8,7 @@
     public interface IRoute
     {
         /// <summary>
-        /// Gets or sets the legs that conform the route.
+        /// Gets the legs that conform the route.
         /// </summary>
         /// <value>
         /// The legs that conform the route.
@@ -16,7 +16,14 @@
         IEnumerable<Railroad> Legs
         {
             get;
-            set;
+        }
+
+        /// <summary>
+        /// Gets the total distance.
+        /// </summary>
+        int Distance
+        {
+            get;
         }
 
         /// <summary>

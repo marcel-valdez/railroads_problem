@@ -1,6 +1,5 @@
 ﻿namespace RouteCalculator.Test.Specify
 {
-    using System;
     using NSubstitute;
     using NUnit.Framework;
     using RouteCalculator.Plan;
@@ -69,38 +68,6 @@
             {
                 Assert.Null(route.Received().Origin);
             }
-        }
-
-        /// <summary>
-        /// Tests if it applies to A route
-        /// </summary>
-        [Test]
-        public void TestIfItAppliesToARoute()
-        {
-            // Arrange
-            var target = new OriginAndEndSpecification(String.Empty, String.Empty);
-
-            // Act
-            bool actual = target.AppliesTo(Substitute.For<IRoute>());
-
-            // Assert
-            Assert.IsTrue(actual);
-        }
-
-        /// <summary>
-        /// Tests if it does not apply to an object
-        /// </summary>
-        [Test]
-        public void TestIfItDoesNotApplyToAnObject()
-        {
-            // Arrange
-            var target = new OriginAndEndSpecification(String.Empty, String.Empty);
-
-            // Act
-            bool actual = target.AppliesTo(new object());
-
-            // Assert
-            Assert.IsFalse(actual);
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿namespace RouteCalculator
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// The main program in charge of execution.

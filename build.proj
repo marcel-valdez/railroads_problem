@@ -86,7 +86,7 @@
 	<Target Name="Analyze" DependsOnTargets="Build">
 		<!-- FxCopAnalyze all projects -->
 		<CallTarget Targets="RunFxCop"></CallTarget>
-		<!-- StylCop analyze all of the projects -->
+		<!-- StyleCop analyze all of the projects -->
 		<CreateItem Include="$(ProjectName)*\**\*.cs;$(ProjectName)*\*.cs;">
 			<Output TaskParameter="Include" ItemName="StyleCopFiles"/>
 		</CreateItem>
@@ -100,34 +100,44 @@
 	</Target>
 	
 	<Target Name="CoverageAnalysis" Inputs="%(TestProjects.Type);%(TestProjects.ReportName)" DependsOnTargets="Build" Outputs="CoveredLines;UncoveredLines">
+		<!-- Execute current test with Code Coverage, using OpenCover -->
 		<Exec Command="$(MSBuildProjectDirectory)\tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)\$(ProjectName).%(TestProjects.Type).exe &quot;-targetdir:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)&quot; -output:%(TestProjects.ReportName)Coverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).%(TestProjects.Type)*]*&quot;" />
+		<!-- Get all lines covered -->
 		<XmlPeek Condition="Exists('%(TestProjects.ReportName)Coverage.xml')" XmlInputPath="%(TestProjects.ReportName)Coverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc > 0]" >
 			<Output TaskParameter="Result" ItemName="CoveredLinesFound"></Output>
-		</XmlPeek>
-		<XmlPeek Condition="Exists('%(TestProjects.ReportName)Coverage.xml')" XmlInputPath="%(TestProjects.ReportName)Coverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc = 0]" >
-			<Output TaskParameter="Result" ItemName="UncoveredLinesFound"></Output>
 		</XmlPeek>
 		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(CoveredLinesFound)">
 			<Output TaskParameter="ItemCount" PropertyName="CoveredLines"/>
 		</MsBuildHelper>
+		
+		<!-- Get all lines not covered -->
+		<XmlPeek Condition="Exists('%(TestProjects.ReportName)Coverage.xml')" XmlInputPath="%(TestProjects.ReportName)Coverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc = 0]" >
+			<Output TaskParameter="Result" ItemName="UncoveredLinesFound"></Output>
+		</XmlPeek>
 		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UncoveredLinesFound)">
 			<Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
 		</MsBuildHelper>
+		
+		<!-- Calculate code coverage-->		
 		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="%(TestProjects.ReportName) coverage is below 80 percent. Coverage: $([System.Math]::Round($([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))), 2))"></Error>
 	</Target>
 
 	<Target Name="RunFxCop" Inputs="%(AnalyzedProjects.AnalyzedProject);%(AnalyzedProjects.AnalyzedAssembly)" DependsOnTargets="Build" Outputs="Violations">
+		<!-- Delete last FxCop Report -->
 		<Delete Condition="Exists('FxCopReport.xml')" Files="FxCopReport.xml" />
+		<!-- Delete last FxCop project artifact -->
 		<Delete Condition="Exists('fxcop_rules_project_artifact.FxCop')" Files="fxcop_rules_project_artifact.FxCop" />
+		<!-- Make new FxCop project artifact for current analyzed assembly -->
 		<Copy SourceFiles="fxcop_rules_project.FxCop" DestinationFiles="fxcop_rules_project_artifact.FxCop" />
 		<FileUpdate Files="fxcop_rules_project_artifact.FxCop"
 					Regex="(.*Target Name=&quot;)([^&quot;]*)(&quot;.*)"
 					ReplacementText="$1$(MSBuildProjectDirectory)\%(AnalyzedProjects.AnalyzedProject)\bin\$(Configuration)\%(AnalyzedProjects.AnalyzedAssembly)$3"/>
-
+		<!-- Execute FxCop using new FxCop project artifact -->
 		<Exec Command="tools\fxcop\FxCopCmdCaller.bat /project:$(MSBuildProjectDirectory)\fxcop_rules_project_artifact.FxCop /out:FxCopReport.xml"
 			  CustomErrorRegularExpression="(CA(?!0060)([0-9]{4})){1,}"/>
-
+		<!-- Delete FxCop project artifact -->
 		<Delete Condition="Exists('fxcop_rules_project_artifact.FxCop')" Files="fxcop_rules_project_artifact.FxCop" />
+		<!-- If an FxCopReport was generated, determine the rule violations  -->
 		<XmlPeek Condition="Exists('FxCopReport.xml')" XmlInputPath="FxCopReport.xml" Query="//Exception[@Keyword!='CA0060' and @Keyword!='CA0058' and @Keyword!='CA0001']/ExceptionMessage | //Rule/Name" >
 			<Output TaskParameter="Result" ItemName="Violations"></Output>
 		</XmlPeek>

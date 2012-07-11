@@ -2,6 +2,7 @@
 {
     using NSubstitute;
     using NUnit.Framework;
+    using RouteCalculator.Plan;
     using RouteCalculator.Specify;
 
     /// <summary>
@@ -15,55 +16,39 @@
         /// </summary>
         private static object[] specificationData = 
         {
-            new bool[] { true, true, true, true, true },
-            new bool[] { true, true, false, true, true },
-            new bool[] { false, true, false, true, true },
-            new bool[] { true, true, true, false, false },
-            new bool[] { true, false, true, false, false },
-            new bool[] { false, false, false, false, true }
+            new bool[] { true, true, true },
+            new bool[] { true, false, false },
+            new bool[] { false, true, false },
+            new bool[] { false, false, false }
         };
 
         /// <summary>
         /// Tests if it connects two specifications correctly
         /// </summary>
-        /// <param name="predicate1Applies">if set to <c>true</c> [predicate1 applies].</param>
         /// <param name="predicate1Validates">if set to <c>true</c> [predicate1 validates].</param>
-        /// <param name="predicate2Applies">if set to <c>true</c> [predicate2 applies].</param>
         /// <param name="predicate2Validates">if set to <c>true</c> [predicate2 validates].</param>
         /// <param name="expectedResult">Expected result of the validation</param>
         [Test]
         [TestCaseSource("specificationData")]
-        public void TestIfItConnectsTwoSpecificationsCorrectly(bool predicate1Applies, bool predicate1Validates, bool predicate2Applies, bool predicate2Validates, bool expectedResult)
+        public void TestIfItConnectsTwoSpecificationsCorrectly(bool predicate1Validates, bool predicate2Validates, bool expectedResult)
         {
             // Arrange
-            var predicate1 = Substitute.For<ISpecification>();
-            var predicate2 = Substitute.For<ISpecification>();
-            predicate1.AppliesTo(Arg.Any<object>()).Returns(predicate1Applies);
-            predicate2.AppliesTo(Arg.Any<object>()).Returns(predicate2Applies);
-            predicate1.Validate(Arg.Any<object>()).Returns(predicate1Validates);
-            predicate2.Validate(Arg.Any<object>()).Returns(predicate2Validates);
+            var predicate1 = Substitute.For<IRouteSpecification>();
+            var predicate2 = Substitute.For<IRouteSpecification>();
+            predicate1.Validate(Arg.Any<IRoute>()).Returns(predicate1Validates);
+            predicate2.Validate(Arg.Any<IRoute>()).Returns(predicate2Validates);
             var andSpecification = new AndSpecification(predicate1, predicate2);
             bool actual = false;
 
             // Act
-            actual = andSpecification.Validate(new object());
+            actual = andSpecification.Validate(Substitute.For<IRoute>());
 
             // Assert
             Assert.AreEqual(expectedResult, actual);
-            predicate1.ReceivedWithAnyArgs().AppliesTo(Arg.Any<object>());
-            if (predicate1Applies)
+            predicate1.ReceivedWithAnyArgs().Validate(null);
+            if (predicate1Validates)
             {
-                predicate1.ReceivedWithAnyArgs().Validate(Arg.Any<object>());
-            }
-
-            if (!predicate1Applies || (predicate1Applies && predicate1Validates))
-            {
-                predicate2.ReceivedWithAnyArgs().AppliesTo(Arg.Any<object>());
-
-                if (predicate2Applies)
-                {
-                    predicate2.ReceivedWithAnyArgs().Validate(Arg.Any<object>());
-                }
+                predicate2.ReceivedWithAnyArgs().Validate(null);
             }
         }
     }
