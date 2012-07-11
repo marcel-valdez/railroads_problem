@@ -48,11 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Plan\IRoute.cs" />
+    <Compile Include="Specify\AndSpecification.cs" />
     <Compile Include="City.cs" />
     <Compile Include="RailroadMap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RailRoad.cs" />
+    <Compile Include="Specify\RouteSpecification.cs" />
+    <Compile Include="Specify\ISpecification.cs" />
+    <Compile Include="Plan\TripPlan.cs" />
+    <Compile Include="Specify\PathSpecification.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="default_data.txt">

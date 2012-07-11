@@ -40,6 +40,9 @@
     <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\tools\nunit\lib\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="nunit-console-runner">
       <HintPath>..\tools\nunit\lib\nunit-console-runner.dll</HintPath>
     </Reference>
@@ -72,6 +75,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RailroadMapTest.cs" />
+    <Compile Include="Specify\AndSpecificationTest.cs" />
+    <Compile Include="Specify\PathSpecificationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RouteCalculator\RouteCalculator.csproj">

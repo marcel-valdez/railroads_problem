@@ -27,9 +27,10 @@
         private static object[] buildRailroadsTestData =
         {
             new object[] { "AB1", new string[] { "A", "B" }, new int[] { 1 } },
-            new object[] { "AB1 CD2", new string[] { "A", "B", "C", "D" }, new int[] { 1, 2 } },
-            new object[] { "AB1 BA1", new string[] { "A", "B" }, new int[] { 1, 1 } },
-            new object[] { "AB1 CD2 BA2", new string[] { "A", "B", "C", "D" }, new int[] { 1, 2, 2 } }
+            new object[] { "AB1, CD2", new string[] { "A", "B", "C", "D" }, new int[] { 1, 2 } },
+            new object[] { "AB1, BA1", new string[] { "A", "B" }, new int[] { 1, 1 } },
+            new object[] { "AB1, CD2, BA2", new string[] { "A", "B", "C", "D" }, new int[] { 1, 2, 2 } },
+            new object[] { "AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7", new string[] { "A", "B", "C", "D", "E" }, new int[] { 5, 4, 8, 8, 6, 5, 2, 3, 7 } }
         };
 
         /// <summary>

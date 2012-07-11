@@ -73,12 +73,9 @@
         private static string ReadContent(FileStream stream)
         {
             string configPath;
-            using (stream)
+            using (var reader = new StreamReader(stream))
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    configPath = reader.ReadLine();
-                }
+                configPath = reader.ReadLine();
             }
 
             return configPath.Replace("Graph: ", String.Empty);
@@ -112,7 +109,7 @@
         /// <param name="graph">The string with the railroads configuration graph.</param>
         private void BuildMap(string graph)
         {
-            string[] paths = graph.Split(' ');
+            string[] paths = graph.Split(new string[] { ", ", "," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string path in paths)
             {
                 string originCityName = path.Substring(0, 1);
