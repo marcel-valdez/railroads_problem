@@ -40,7 +40,7 @@
         /// <summary>
         /// Tests the output of the application with default test data.
         /// </summary>
-        [Test]
+        [TestCase(Ignore = true)]
         public void TestOutputWithDefaultData()
         {
             // Arrange            
@@ -59,11 +59,40 @@
                 Environment.NewLine);
 
             // Act
-            RouteCalculator.Program.Main(new string[] { });
+            RouteCalculator.Program.Main(new string[] { "default_data.txt" });
             output = this.testOutput.ToString();
 
             // Assert
             StringAssert.Contains(expected, output);
+        }
+
+        /// <summary>
+        /// Tests the route calculator results.
+        /// </summary>
+        /// <param name="filename">The filename with the test data.</param>
+        /// <param name="expectedOutput">The expected output of the target.</param>
+        [Test]
+        [TestCase("default_data.txt", "Output #1: 9")]
+        [TestCase("default_data.txt", "Output #2: 5")]
+        [TestCase("default_data.txt", "Output #3: 13")]
+        [TestCase("default_data.txt", "Output #4: 22")]
+        [TestCase("default_data.txt", "Output #5: NO SUCH ROUTE")]
+        [TestCase("default_data.txt", "Output #6: 2")]
+        [TestCase("default_data.txt", "Output #7: 3")]
+        [TestCase("default_data.txt", "Output #8: 9", Ignore = true)]
+        [TestCase("default_data.txt", "Output #9: 9", Ignore = true)]
+        [TestCase("default_data.txt", "Output #10: 7", Ignore = true)]
+        public void TestRouteCalculatorResults(string filename, string expectedOutput)
+        {
+            // Arrange            
+            string output = string.Empty;
+
+            // Act
+            RouteCalculator.Program.Main(new string[] { filename });
+            output = this.testOutput.ToString();
+
+            // Assert
+            StringAssert.Contains(expectedOutput, output);
         }
     }
 }

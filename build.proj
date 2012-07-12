@@ -104,7 +104,9 @@
 	
 	<Target Name="CoverageAnalysis" Inputs="%(TestProjects.Type);%(TestProjects.ReportName)" DependsOnTargets="Build" Outputs="CoveredLines;UncoveredLines">
 		<!-- Execute current test with Code Coverage, using OpenCover -->
-		<Exec Command="$(MSBuildProjectDirectory)\tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)\$(ProjectName).%(TestProjects.Type).exe &quot;-targetdir:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)&quot; -output:%(TestProjects.ReportName)Coverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).%(TestProjects.Type)*]*&quot;" />
+		<Exec 
+			ContinueOnError="true"
+			Command="$(MSBuildProjectDirectory)\tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)\$(ProjectName).%(TestProjects.Type).exe &quot;-targetdir:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)&quot; -output:%(TestProjects.ReportName)Coverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).%(TestProjects.Type)*]*&quot;" />
 		<!-- Get all lines covered -->
 		<XmlPeek Condition="Exists('%(TestProjects.ReportName)Coverage.xml')" XmlInputPath="%(TestProjects.ReportName)Coverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc > 0]" >
 			<Output TaskParameter="Result" ItemName="CoveredLinesFound"></Output>
@@ -126,8 +128,12 @@
 		<Exec 
 			Condition="'@(CoverageReports)' != ''"
 			Command="tools\reportgenerator\ReportGenerator.exe -reports:@(CoverageReports) -targetdir:.\coverage-report -reporttypes:XML;HTML" />
-		<!-- Calculate code coverage-->		
-		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="%(TestProjects.ReportName) coverage is below 80 percent. Coverage: $([System.Math]::Round($([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))), 2))"></Error>
+		<!-- Calculate code coverage-->
+		<PropertyGroup>
+			<CoveragePercent>$([System.Math]::Round($([MSBuild]::Divide($(CoveredLines), $([MSBuild]::Add($(UncoveredLines), $(CoveredLines))))), 2))</CoveragePercent>
+		</PropertyGroup>
+		<Error Condition="$(CoveragePercent) &lt;  0.8" Text="%(TestProjects.ReportName) coverage is below 80 percent. Coverage: $(CoveragePercent)"></Error>
+		<Message Importance="high" Text="%(TestProjects.ReportName) coverage is: $(CoveragePercent)" ></Message>
 	</Target>
 
 	<Target Name="RunFxCop" Inputs="%(AnalyzedProjects.AnalyzedProject);%(AnalyzedProjects.AnalyzedAssembly)" DependsOnTargets="Build" Outputs="Violations">
