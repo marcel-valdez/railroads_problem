@@ -44,7 +44,7 @@
         public void TestOutputWithDefaultData()
         {
             // Arrange            
-            string output = String.Empty;
+            string output = string.Empty;
             string expected = string.Format(
                 "Output #1: 9{0}" +
                 "Output #2: 5{0}" +

@@ -37,7 +37,7 @@
 	</ItemGroup>
 	<UsingTask AssemblyFile="tools\msbuild_community_tasks\MSBuild.Community.Tasks.dll"
 			TaskName="MSBuild.Community.Tasks.FileUpdate"/>
-	<UsingTask AssemblyFile="tools\StyleCop\Microsoft.StyleCop.dll" TaskName="StyleCopTask"/>
+	<UsingTask AssemblyFile="tools\stylecop\StyleCop.dll" TaskName="StyleCopTask"/>
 	<!-- Had to override the default MSBuild Exec task, because it was using an older version -->
 	<UsingTask AssemblyFile="tools\msbuild_community_tasks\Microsoft.Build.Tasks.v4.0.dll"  TaskName="Exec" />
 	<!-- Had to add the MSBuild XmlPeek task, because it was using an older version -->
@@ -83,7 +83,6 @@
 			<Output TaskParameter="Result" ItemName="Failures"></Output>
 		</XmlPeek>
 		<Error Condition="'@(Failures)' != ''" Text="Functional tests failed: %(Failures.Identity)"></Error>
-
 	</Target>
 	<Target Name="Analyze" DependsOnTargets="Build">
 		<!-- FxCopAnalyze all projects -->

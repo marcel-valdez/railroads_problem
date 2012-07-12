@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+
 [module: SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Most methods inside test classes are called by the NUnit framework indirectly.", Scope = "Member", Target = "RouteCalculator.Test.Map.RailroadMapTest.#TestIfItCanBuildASingleRailroad()")]
 [assembly: SuppressMessage("Microsoft.Design", "CA1014:MarkAssembliesWithClsCompliant")]
 [assembly: SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Scope = "member", Target = "RouteCalculator.Test.Map.RailroadMapTest.#TestIfItCanReadFileContent()")]

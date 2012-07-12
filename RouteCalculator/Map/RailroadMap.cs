@@ -59,7 +59,7 @@
         /// <param name="stream">The stream of the configuration file.</param>
         public void Init(FileStream stream)
         {
-            string configGraph = String.Empty;
+            string configGraph = string.Empty;
             configGraph = RailroadMap.ReadContent(stream);
             this.BuildMap(configGraph);
         }
@@ -78,7 +78,7 @@
                 configPath = reader.ReadLine();
             }
 
-            return configPath.Replace("Graph: ", String.Empty);
+            return configPath.Replace("Graph: ", string.Empty);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@
             {
                 string originCityName = path.Substring(0, 1);
                 string destinationCityName = path.Substring(1, 1);
-                int railroadLength = Int32.Parse(path.Substring(2));
+                int railroadLength = int.Parse(path.Substring(2));
 
                 ICity originCity = this.GetOrCreateCity(originCityName);
                 ICity destinationCity = this.GetOrCreateCity(destinationCityName);

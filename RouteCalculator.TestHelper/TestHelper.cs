@@ -74,7 +74,7 @@
                 destinationCity.Name.Returns(railroadConfiguration[1].ToString());
                 if (railroadConfiguration.Length > 2)
                 {
-                    railroad.Length = Int32.Parse(railroadConfiguration.Substring(2));
+                    railroad.Length = int.Parse(railroadConfiguration.Substring(2));
                 }
 
                 railroad.Origin.Returns(originCity);

@@ -112,7 +112,7 @@
         {
             // Arrange
             var method = TestHelper.GetPrivateStaticMethod<RailroadMap>("ReadContent");
-            string content = String.Empty;
+            string content = string.Empty;
             string expected = "AB1";
 
             // Act
