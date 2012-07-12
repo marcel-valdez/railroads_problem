@@ -1,5 +1,6 @@
 ﻿namespace RouteCalculator.Testing
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
@@ -71,6 +72,11 @@
                 ICity destinationCity = Substitute.For<ICity>();
                 originCity.Name.Returns(railroadConfiguration[0].ToString());
                 destinationCity.Name.Returns(railroadConfiguration[1].ToString());
+                if (railroadConfiguration.Length > 2)
+                {
+                    railroad.Length = Int32.Parse(railroadConfiguration.Substring(2));
+                }
+
                 railroad.Origin.Returns(originCity);
                 railroad.Destination.Returns(destinationCity);
                 legs.Add(railroad);

@@ -54,7 +54,8 @@
     <Compile Include="ISpecification.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Specifications_And_Route_IntegrationTest.cs" />
+    <Compile Include="AndSpec_OriginDestSpec_DistanceSpec_Route_IntegrationTest.cs" />
+    <Compile Include="Specification_Route_IntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RouteCalculator.TestHelper\RouteCalculator.TestHelper.csproj">

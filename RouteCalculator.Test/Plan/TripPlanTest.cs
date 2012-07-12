@@ -160,6 +160,7 @@
         [Test]
         public void TestIfItCanCalculatePossibleRoutes()
         {
+            // TODO: Define this test (or remove it)
             // Arrange
             // Create the mock Map using a received Railroad and City configuration (create each railroad and city manually?)
 
