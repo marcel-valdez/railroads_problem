@@ -1,6 +1,5 @@
 ﻿namespace RouteCalculator.Testing.Plan
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using NSubstitute;

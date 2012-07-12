@@ -49,5 +49,11 @@
         /// </summary>
         /// <param name="railroad">The railroad to add.</param>
         void AddLeg(IRailroad railroad);
+
+        /// <summary>
+        /// Creates a flyweight copy of this instance.
+        /// </summary>
+        /// <returns>A fly weight copy</returns>
+        IRoute FlyweightCopy();
     }
 }

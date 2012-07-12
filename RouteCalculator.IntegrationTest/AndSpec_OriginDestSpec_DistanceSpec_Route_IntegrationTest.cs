@@ -172,7 +172,7 @@
         /// <param name="badDistance">if set to <c>true</c> [bad distance].</param>
         /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
         [TestCase(true, true, false, false, true)] // Valid behavior
-        [TestCase(true, false, true, false, false, true)] // Valid behavior
+        [TestCase(true, false, false, false, true)] // Valid behavior
         [TestCase(false, true, false, false, false)] // Valid behavior
         [TestCase(true, true, true, false, true, ExpectedException = typeof(CallNotReceivedException))] // Invalid behavior
         [TestCase(true, true, false, true, true, ExpectedException = typeof(CallNotReceivedException))] // Invalid behavior

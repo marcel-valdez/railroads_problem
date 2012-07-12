@@ -1,9 +1,9 @@
 ﻿namespace RouteCalculator.Testing
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
+    using System.Linq;
+    using System.Reflection;    
     using NSubstitute;
     using RouteCalculator.Map;
 
@@ -60,29 +60,74 @@
         /// Generates the legs using the routeConfiguration.
         /// </summary>
         /// <param name="routeConfiguration">The route configuration.</param>
-        /// <returns>The legs configured</returns>
-        public static IList<IRailroad> GenerateLegs(string[] routeConfiguration)
+        /// <param name="cities">The preconfigured cities.</param>
+        /// <returns>
+        /// The legs configured
+        /// </returns>
+        public static IList<IRailroad> GenerateLegs(string[] routeConfiguration, IList<ICity> cities = null)
         {
             IList<IRailroad> legs = new List<IRailroad>();
+            if (cities == null)
+            {
+                cities = GenerateCities(routeConfiguration);
+            }
 
             foreach (string railroadConfiguration in routeConfiguration)
             {
                 IRailroad railroad = Substitute.For<IRailroad>();
-                ICity originCity = Substitute.For<ICity>();
-                ICity destinationCity = Substitute.For<ICity>();
-                originCity.Name.Returns(railroadConfiguration[0].ToString());
-                destinationCity.Name.Returns(railroadConfiguration[1].ToString());
+                string originName = railroadConfiguration[0].ToString();
+                string destinationName = railroadConfiguration[1].ToString();
+                ICity originCity = cities.First(city => city.Name.Equals(originName));
+                ICity destinationCity = cities.First(city => city.Name.Equals(destinationName));
                 if (railroadConfiguration.Length > 2)
                 {
-                    railroad.Length = int.Parse(railroadConfiguration.Substring(2));
+                    railroad.Length.Returns(int.Parse(railroadConfiguration.Substring(2)));
                 }
 
                 railroad.Origin.Returns(originCity);
                 railroad.Destination.Returns(destinationCity);
                 legs.Add(railroad);
+                originCity.Outgoing.Add(railroad);
             }
 
             return legs;
+        }
+
+        /// <summary>
+        /// Generates the cities using the routeConfiguration.
+        /// </summary>
+        /// <param name="routeConfiguration">The route configuration.</param>
+        /// <returns>The cities identified</returns>
+        public static IList<ICity> GenerateCities(string[] routeConfiguration)
+        {
+            IList<ICity> cities = new List<ICity>();
+
+            foreach (string railroadConfiguration in routeConfiguration)
+            {
+                string originCityName = railroadConfiguration[0].ToString();
+                string destinationCityName = railroadConfiguration[1].ToString();
+                AddIfNotIncluded(cities, originCityName);
+                AddIfNotIncluded(cities, destinationCityName);                
+            }
+
+            return cities;
+        }
+
+        /// <summary>
+        /// Adds a city with the <paramref name="originCityName"/> if not included already in the city list.
+        /// </summary>
+        /// <param name="cities">The city list.</param>
+        /// <param name="originCityName">Name of the city.</param>
+        private static void AddIfNotIncluded(IList<ICity> cities, string originCityName)
+        {
+            if (!cities.Any(city => city.Name.Equals(originCityName)))
+            {
+                ICity city = Substitute.For<ICity>();
+                city.Name.Returns(originCityName);
+                IList<IRailroad> railroadList = new List<IRailroad>();
+                city.Outgoing.Returns(railroadList);
+                cities.Add(city);
+            }
         }
     }
 }

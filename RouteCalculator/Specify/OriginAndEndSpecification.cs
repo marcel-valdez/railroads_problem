@@ -20,13 +20,6 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="OriginAndDestinationSpecification"/> class.
         /// </summary>
-        public OriginAndDestinationSpecification()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OriginAndDestinationSpecification"/> class.
-        /// </summary>
         /// <param name="origin">The origin.</param>
         /// <param name="destination">The destination.</param>
         public OriginAndDestinationSpecification(string origin, string destination)

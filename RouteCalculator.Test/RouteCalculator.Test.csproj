@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Plan\RouteFinderTest.cs" />
     <Compile Include="Plan\RouteTest.cs" />
     <Compile Include="Plan\TripPlanTest.cs" />
     <Compile Include="Program.cs" />

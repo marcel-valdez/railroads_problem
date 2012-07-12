@@ -20,13 +20,6 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="DistanceSpecification"/> class.
         /// </summary>
-        public DistanceSpecification()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DistanceSpecification"/> class.
-        /// </summary>
         /// <param name="minDistance">The min route distance.</param>
         /// <param name="maxDistance">The max route distance.</param>
         public DistanceSpecification(int minDistance, int maxDistance)

@@ -18,13 +18,6 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PathSpecification"/> class.
         /// </summary>
-        public PathSpecification()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PathSpecification"/> class.
-        /// </summary>
         /// <param name="cityNames">The city names.</param>
         public PathSpecification(params string[] cityNames)
         {

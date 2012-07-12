@@ -23,7 +23,7 @@
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +51,7 @@
     <Compile Include="Plan\IRoute.cs" />
     <Compile Include="Plan\IRouteFinder.cs" />
     <Compile Include="Plan\Route.cs" />
+    <Compile Include="Plan\RouteFinder.cs" />
     <Compile Include="Specify\AndSpecification.cs" />
     <Compile Include="Map\City.cs" />
     <Compile Include="Map\RailroadMap.cs" />

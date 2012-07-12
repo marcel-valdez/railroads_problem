@@ -53,6 +53,11 @@
         {
             get
             {
+                if (this.legs.Count == 0)
+                {
+                    return default(ICity);
+                }
+
                 return this.legs[0].Origin;
             }
         }
@@ -64,6 +69,11 @@
         {
             get
             {
+                if (this.legs.Count == 0)
+                {
+                    return default(ICity);
+                }
+
                 return this.legs[this.legs.Count - 1].Destination;
             }
         }
@@ -76,6 +86,21 @@
         {
             this.Distance += railroad.Length;
             this.legs.Add(railroad);
+        }
+
+        /// <summary>
+        /// Creates a fly weight copy of this instance.
+        /// </summary>
+        /// <returns>
+        /// A fly weight copy
+        /// </returns>
+        public IRoute FlyweightCopy()
+        {
+            Route flyCopy = new Route();
+            flyCopy.legs = new List<IRailroad>(this.legs);
+            flyCopy.Distance = this.Distance;
+
+            return flyCopy;
         }
         #endregion
     }

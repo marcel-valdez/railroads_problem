@@ -46,7 +46,7 @@
 	
 	<Target Name="Build">
 		<MSBuild
-			Targets="Clean;Rebuild"
+			Targets="Clean;Build"
 			Projects="$(ProjectName)\$(ProjectName).csproj;$(ProjectName).Test\$(ProjectName).Test.csproj;$(ProjectName).IntegrationTest\$(ProjectName).IntegrationTest.csproj;$(ProjectName).FunctionalTest\$(ProjectName).FunctionalTest.csproj"
 			Properties="Configuration=$(Configuration)"
 			ContinueOnError="false"
@@ -71,9 +71,11 @@
 		<Error Condition="'@(Failures)' != ''" Text="Integration tests failed: %(Failures.Identity)"></Error>
 	</Target>
 	<Target Name="Coverage" DependsOnTargets="Build">
+		<ItemGroup>
+			<CoverageReports Include="*Coverage.xml"/>
+		</ItemGroup>
+		<Delete Condition="'@(CoverageReports)' != ''" Files="@(CoverageReports)" />
 		<CallTarget Targets="CoverageAnalysis"></CallTarget>
-		<Exec Command="tools\reportgenerator\ReportGenerator.exe -reports:UnitTestCoverage.xml;IntegrationTestCoverage.xml;FunctionalTestCoverage.xml -targetdir:.\coverage-report -reporttypes:XML;HTML" />
-		
 	</Target>
 	<Target Name="FunctionalTest" DependsOnTargets="Build">
 		<Exec
@@ -118,7 +120,12 @@
 		<MsBuildHelper TaskAction="GetItemCount" InputItems1="@(UncoveredLinesFound)">
 			<Output TaskParameter="ItemCount" PropertyName="UncoveredLines"/>
 		</MsBuildHelper>
-		
+		<ItemGroup>
+			<CoverageReports Include="*Coverage.xml"/>
+		</ItemGroup>
+		<Exec 
+			Condition="'@(CoverageReports)' != ''"
+			Command="tools\reportgenerator\ReportGenerator.exe -reports:@(CoverageReports) -targetdir:.\coverage-report -reporttypes:XML;HTML" />
 		<!-- Calculate code coverage-->		
 		<Error Condition="$([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))) &lt;  0.8" Text="%(TestProjects.ReportName) coverage is below 80 percent. Coverage: $([System.Math]::Round($([MSBuild]::Divide($(CoveredLines),$(UncoveredLines))), 2))"></Error>
 	</Target>

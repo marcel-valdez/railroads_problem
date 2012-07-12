@@ -21,14 +21,6 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="StopsCountSpecification"/> class.
         /// </summary>
-        public StopsCountSpecification()
-        {
-            this.maxStopsCount = -1;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StopsCountSpecification"/> class.
-        /// </summary>
         /// <param name="minStops">The minimum number of stops.</param>
         /// <param name="maxStops">The maximum number of stops.</param>
         public StopsCountSpecification(int minStops, int maxStops)
