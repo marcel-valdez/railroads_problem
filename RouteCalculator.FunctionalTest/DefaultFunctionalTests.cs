@@ -79,9 +79,9 @@
         [TestCase("default_data.txt", "Output #5: NO SUCH ROUTE")]
         [TestCase("default_data.txt", "Output #6: 2")]
         [TestCase("default_data.txt", "Output #7: 3")]
-        [TestCase("default_data.txt", "Output #8: 9", Ignore = true)]
-        [TestCase("default_data.txt", "Output #9: 9", Ignore = true)]
-        [TestCase("default_data.txt", "Output #10: 7", Ignore = true)]
+        [TestCase("default_data.txt", "Output #8: 9")]
+        [TestCase("default_data.txt", "Output #9: 9")]
+        [TestCase("default_data.txt", "Output #10: 7")]
         public void TestRouteCalculatorResults(string filename, string expectedOutput)
         {
             // Arrange            

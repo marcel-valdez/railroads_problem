@@ -1,12 +1,12 @@
 ﻿namespace RouteCalculator
 {
     using System;
-    using RouteCalculator.Map;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using RouteCalculator.Specify;
-    using System.Collections.Generic;
+    using RouteCalculator.Map;
     using RouteCalculator.Plan;
+    using RouteCalculator.Specify;
 
     /// <summary>
     /// The main program in charge of execution.
@@ -16,7 +16,7 @@
         /// <summary>
         /// The format for the console messages.
         /// </summary>
-        private const string outputMessageFormat = "Output #{0}: {1}";
+        private const string OUTPUT_MESSAGE_FORMAT = "Output #{0}: {1}";
 
         /// <summary>
         /// The output count for the console messages format.
@@ -36,7 +36,7 @@
         /// <param name="args">The console arguments.</param>
         public static void Main(string[] args)
         {
-            string filename = "";
+            string filename = string.Empty;
             if (args.Length > 0)
             {
                 filename = args[0];
@@ -56,9 +56,61 @@
 
             // Run the route finder for each path specification
             RouteFinder finder = new RouteFinder(map);
-            foreach (IRouteSpecification spec in pathSpecs)
+            FindFirstConformingRoute(finder, pathSpecs);
+
+            // TODO: Add finder functionality for multiple results.
+            var tripCountSpecs = new List<IRouteSpecification>();
+            tripCountSpecs.Add(
+                new AndSpecification(
+                    new OriginAndDestinationSpecification("C", "C"),
+                    new StopsCountSpecification(0, 3)));
+            tripCountSpecs.Add(
+                new AndSpecification(
+                    new OriginAndDestinationSpecification("A", "C"),
+                    new StopsCountSpecification(4, 3)));
+            FindConformingRouteCount(finder, tripCountSpecs);
+
+            // TODO: Add a shortest route finder
+            IRouteFinder shortestRouteFinder = new ShortestRouteFinder(map);
+            var shortestRouteSpecs = new List<IRouteSpecification>();
+            shortestRouteSpecs.Add(
+                new OriginAndDestinationSpecification("A", "C"));
+            shortestRouteSpecs.Add(
+                new OriginAndDestinationSpecification("B", "B"));
+
+            tripCountSpecs.Clear();
+            tripCountSpecs.Add(
+                new AndSpecification(
+                    new OriginAndDestinationSpecification("C", "C"),
+                    new DistanceSpecification(0, 29)));
+            FindConformingRouteCount(finder, tripCountSpecs);
+        }
+
+        /// <summary>
+        /// Finds the conforming route count.
+        /// </summary>
+        /// <param name="finder">The route finder.</param>
+        /// <param name="specifications">The route specifications.</param>
+        private static void FindConformingRouteCount(IRouteFinder finder, IList<IRouteSpecification> specifications)
+        {
+            foreach (IRouteSpecification spec in specifications)
             {
-                IRoute route = finder.FindFirstSatisfyingRoute(spec);
+                IEnumerable<IRoute> routes = finder.FindRoutes(spec);
+                WriteMessage(routes.Count());
+            }
+        }
+
+        /// <summary>
+        /// Finds the first conforming route.
+        /// </summary>
+        /// <param name="routeFinder">The route finder.</param>
+        /// <param name="specifications">The specifications.</param>
+        private static void FindFirstConformingRoute(IRouteFinder routeFinder, IList<IRouteSpecification> specifications)
+        {
+            foreach (IRouteSpecification spec in specifications)
+            {
+                IRoute route = routeFinder.FindFirstSatisfyingRoute(spec);
+
                 if (route != null)
                 {
                     WriteMessage(route.Distance);
@@ -68,22 +120,6 @@
                     WriteMessage("NO SUCH ROUTE");
                 }
             }
-            
-            // TODO: Add finder functionality for multiple results.
-            IList<IRouteSpecification> tripCountSpecs = new List<IRouteSpecification>();
-            tripCountSpecs.Add(
-                new AndSpecification(
-                    new OriginAndDestinationSpecification("C", "C"),
-                    new StopsCountSpecification(0, 3)));
-            tripCountSpecs.Add(
-                new AndSpecification(
-                    new OriginAndDestinationSpecification("A", "C"),
-                    new StopsCountSpecification(4, 3)));
-            foreach (IRouteSpecification spec in tripCountSpecs)
-            {
-                IEnumerable<IRoute> routes = finder.FindRoutes(spec);
-                WriteMessage(routes.Count());                
-            }
         }
 
         /// <summary>
@@ -92,7 +128,7 @@
         /// <param name="result">The operation result.</param>
         private static void WriteMessage(object result)
         {
-            Console.WriteLine(outputMessageFormat, outputCount++, result.ToString());
+            Console.WriteLine(OUTPUT_MESSAGE_FORMAT, outputCount++, result.ToString());
         }
     }
 }

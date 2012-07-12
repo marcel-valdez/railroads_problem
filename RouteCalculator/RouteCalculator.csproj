@@ -52,6 +52,7 @@
     <Compile Include="Plan\IRouteFinder.cs" />
     <Compile Include="Plan\Route.cs" />
     <Compile Include="Plan\RouteFinder.cs" />
+    <Compile Include="ShortestRouteFinder.cs" />
     <Compile Include="Specify\AndSpecification.cs" />
     <Compile Include="Map\City.cs" />
     <Compile Include="Map\RailroadMap.cs" />
