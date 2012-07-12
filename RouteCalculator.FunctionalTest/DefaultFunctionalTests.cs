@@ -38,35 +38,6 @@
         }
 
         /// <summary>
-        /// Tests the output of the application with default test data.
-        /// </summary>
-        [TestCase(Ignore = true)]
-        public void TestOutputWithDefaultData()
-        {
-            // Arrange            
-            string output = string.Empty;
-            string expected = string.Format(
-                "Output #1: 9{0}" +
-                "Output #2: 5{0}" +
-                "Output #3: 13{0}" +
-                "Output #4: 22{0}" +
-                "Output #5: NO SUCH ROUTE{0}" +
-                "Output #6: 2{0}" +
-                "Output #7: 3{0}" +
-                "Output #8: 9{0}" +
-                "Output #9: 9{0}" +
-                "Output #10: 7{0}",
-                Environment.NewLine);
-
-            // Act
-            RouteCalculator.Program.Main(new string[] { "default_data.txt" });
-            output = this.testOutput.ToString();
-
-            // Assert
-            StringAssert.Contains(expected, output);
-        }
-
-        /// <summary>
         /// Tests the route calculator results.
         /// </summary>
         /// <param name="filename">The filename with the test data.</param>
