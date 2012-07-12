@@ -89,7 +89,6 @@
         /// </summary>
         /// <param name="andSpecResult">if set to <c>true</c> [and spec result].</param>
         /// <param name="originAndDestinationResult">if set to <c>true</c> [origin and destination result].</param>
-        /// <param name="distanceResult">if set to <c>true</c> [distance result].</param>
         /// <param name="badOrigin">if set to <c>true</c> [bad origin].</param>
         /// <param name="badDistance">if set to <c>true</c> [bad distance].</param>
         /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
