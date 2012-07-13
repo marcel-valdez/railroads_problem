@@ -43,19 +43,19 @@
         /// <param name="fileName">The filename with the test data.</param>
         /// <param name="expectedOutput">The expected output of the target.</param>
         [Test]
-        [TestCase("bad_data.txt", "An error ocurred while trying to read the specified file: bad_data.txt")]
+        [TestCase("test_data/bad_data.txt", "An error ocurred while trying to read the specified file: test_data/bad_data.txt")]
         [TestCase("unexistant_file", "The specified file: unexistant_file does not exist.")]
-        [TestCase("default_data.txt", "Output #1: 9")]
-        [TestCase("default_data.txt", "Output #2: 5")]
-        [TestCase("default_data.txt", "Output #3: 13")]
-        [TestCase("default_data.txt", "Output #4: 22")]
-        [TestCase("default_data.txt", "Output #5: NO SUCH ROUTE")]
-        [TestCase("default_data.txt", "Output #6: 2")]
-        [TestCase("default_data.txt", "Output #7: 3")]
-        [TestCase("default_data.txt", "Output #8: 9")]
-        [TestCase("default_data.txt", "Output #9: 9")]
-        [TestCase("default_data.txt", "Output #10: 7")]
-        [TestCase("default_data.txt", " ========== ")]
+        [TestCase("test_data/default_data.txt", "Output #1: 9")]
+        [TestCase("test_data/default_data.txt", "Output #2: 5")]
+        [TestCase("test_data/default_data.txt", "Output #3: 13")]
+        [TestCase("test_data/default_data.txt", "Output #4: 22")]
+        [TestCase("test_data/default_data.txt", "Output #5: NO SUCH ROUTE")]
+        [TestCase("test_data/default_data.txt", "Output #6: 2")]
+        [TestCase("test_data/default_data.txt", "Output #7: 3")]
+        [TestCase("test_data/default_data.txt", "Output #8: 9")]
+        [TestCase("test_data/default_data.txt", "Output #9: 9")]
+        [TestCase("test_data/default_data.txt", "Output #10: 7")]
+        [TestCase("test_data/default_data.txt", " ========== ")]
         public void TestRouteCalculatorResults(string fileName, string expectedOutput)
         {
             // Arrange            

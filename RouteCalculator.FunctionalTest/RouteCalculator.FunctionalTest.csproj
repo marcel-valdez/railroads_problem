@@ -56,7 +56,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="default_data.txt">
+    <Content Include="test_data\bad_data.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="test_data\default_data.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
