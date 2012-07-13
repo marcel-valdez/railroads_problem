@@ -72,9 +72,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="test_data\default_data.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="test_data\single_railroad_two_cities.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
