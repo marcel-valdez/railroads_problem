@@ -93,6 +93,8 @@
             {
                 Console.WriteLine("An error ocurred while trying to find routes.");
             }
+
+            Console.Write(" ========== ");
         }
 
         /// <summary>

@@ -53,6 +53,7 @@
         [TestCase("default_data.txt", "Output #8: 9")]
         [TestCase("default_data.txt", "Output #9: 9")]
         [TestCase("default_data.txt", "Output #10: 7")]
+        [TestCase("default_data.txt", " ========== ")]
         public void TestRouteCalculatorResults(string fileName, string expectedOutput)
         {
             // Arrange            
