@@ -22,21 +22,6 @@ namespace RouteCalculator.Test.Plan
     public class RouteFinderTest
     {
         /// <summary>
-        /// It represents a city specification to ignore.
-        /// </summary>
-        private const string IGNORED_CITY = "Z";
-
-        /// <summary>
-        /// It represents an ignored railroad length.
-        /// </summary>
-        private const int IGNORED_LENGTH = 0;
-
-        /// <summary>
-        /// It represents the count of ignored route legs specification
-        /// </summary>
-        private const int IGNORED_LEGS_COUNT = 0;
-
-        /// <summary>
         /// A test count used to know the test case number.
         /// </summary>
         private int testCount = 1;        
@@ -92,7 +77,7 @@ namespace RouteCalculator.Test.Plan
         {
             // Arrange
             // Arrange the expected route
-            IRoute expectedRoute = BuildRoute(expectedRouteGraph);
+            IRoute expectedRoute = TestHelper.BuildMockRoute(expectedRouteGraph);
 
             // Arrange the map
             IRailroadMap map = Substitute.For<IRailroadMap>();
@@ -103,16 +88,16 @@ namespace RouteCalculator.Test.Plan
 
             // Arrange the specification
             IRouteSpecification specification = Substitute.For<IRouteSpecification>();
-            IRoute routeSpec = BuildRoute(specifiedRoute);
+            IRoute routeSpec = TestHelper.BuildMockRoute(specifiedRoute);
             specification
                 .IsSatisfiedBy(null)
-                .ReturnsForAnyArgs(method => SatisfiesSpecification(routeSpec, method.Arg<IRoute>()));
+                .ReturnsForAnyArgs(method => FinderTestHelper.SatisfiesSpecification(routeSpec, method.Arg<IRoute>()));
 
             // Arrange the specification that "might" be satisfied
-            IRoute routeMightBeSpec = BuildRoute(specifiedRoute);
+            IRoute routeMightBeSpec = TestHelper.BuildMockRoute(specifiedRoute);
             specification
                 .MightBeSatisfiedBy(null)
-                .ReturnsForAnyArgs(method => MightSatisfySpecification(routeMightBeSpec, method.Arg<IRoute>()));
+                .ReturnsForAnyArgs(method => FinderTestHelper.MightSatisfySpecification(routeMightBeSpec, method.Arg<IRoute>()));
 
             // Arrange the target
             IRouteFinder target = Substitute.For<RouteFinder>(map);
@@ -128,7 +113,7 @@ namespace RouteCalculator.Test.Plan
             if (shouldFindAValidRoute)
             {
                 Assert.IsNotNull(actualResult);
-                Assert.IsTrue(SatisfiesSpecification(expectedRoute, actualResult));
+                Assert.IsTrue(FinderTestHelper.SatisfiesSpecification(expectedRoute, actualResult));
             }
             else
             {
@@ -287,16 +272,16 @@ namespace RouteCalculator.Test.Plan
 
             // Arrange the specification
             IRouteSpecification specification = Substitute.For<IRouteSpecification>();
-            IRoute routeSpec = BuildRoute(specifiedRoute);
+            IRoute routeSpec = TestHelper.BuildMockRoute(specifiedRoute);
             specification
                 .IsSatisfiedBy(null)
-                .ReturnsForAnyArgs(method => SatisfiesSpecification(routeSpec, method.Arg<IRoute>()));
+                .ReturnsForAnyArgs(method => FinderTestHelper.SatisfiesSpecification(routeSpec, method.Arg<IRoute>()));
 
             // Arrange the specification that "might" be satisfied
-            IRoute routeMightBeSpec = BuildRoute(specifiedRoute);
+            IRoute routeMightBeSpec = TestHelper.BuildMockRoute(specifiedRoute);
             specification
                 .MightBeSatisfiedBy(null)
-                .ReturnsForAnyArgs(method => MightSatisfySpecification(routeMightBeSpec, method.Arg<IRoute>()));
+                .ReturnsForAnyArgs(method => FinderTestHelper.MightSatisfySpecification(routeMightBeSpec, method.Arg<IRoute>()));
 
             // Arrange the target
             IRouteFinder target = Substitute.For<RouteFinder>(map);
@@ -312,12 +297,12 @@ namespace RouteCalculator.Test.Plan
             if (shouldFindAValidRoute)
             {
                 Assert.IsNotNull(actualResult);
-                Assert.IsTrue(actualResult.All(route => SatisfiesSpecification(routeSpec, route)));
+                Assert.IsTrue(actualResult.All(route => FinderTestHelper.SatisfiesSpecification(routeSpec, route)));
                 IList<IRoute> results = actualResult.ToList();
                 foreach (string[] expectedRouteGraph in expectedRoutes)
                 {
-                    IRoute expectedRoute = BuildRoute(expectedRouteGraph);
-                    IRoute foundRoute = results.FirstOrDefault(route => SatisfiesSpecification(expectedRoute, route));
+                    IRoute expectedRoute = TestHelper.BuildMockRoute(expectedRouteGraph);
+                    IRoute foundRoute = results.FirstOrDefault(route => FinderTestHelper.SatisfiesSpecification(expectedRoute, route));
                     Assert.IsNotNull(foundRoute);
                     Assert.IsTrue(results.Remove(foundRoute));
                 }
@@ -330,117 +315,6 @@ namespace RouteCalculator.Test.Plan
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("#{0}: --- Test passed ---", this.testCount - 1);
             Console.ResetColor();
-        }
-
-        /// <summary>
-        /// Determines if a route might satisfy a specification
-        /// </summary>
-        /// <param name="routeSpec">The route spec.</param>
-        /// <param name="route">The route.</param>
-        /// <returns>true if it might satisfy the specification, false otherwise</returns>
-        private static bool MightSatisfySpecification(IRoute routeSpec, IRoute route)
-        {
-            if (routeSpec.Distance > IGNORED_LENGTH && route.Distance > routeSpec.Distance)
-            {
-                return false;
-            }
-
-            if (routeSpec.Legs.Count() != IGNORED_LEGS_COUNT && route.Legs.Count() > routeSpec.Legs.Count())
-            {
-                return false;
-            }
-
-            if (!SatisfiesSpecification(routeSpec.Origin, route.Origin))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Determines if a route satisfies a specification
-        /// </summary>
-        /// <param name="routeSpec">The route specification.</param>
-        /// <param name="route">The route to compare.</param>
-        /// <returns>true if it satisfies the specification, false otherwise.</returns>
-        private static bool SatisfiesSpecification(IRoute routeSpec, IRoute route)
-        {
-            if (!SatisfiesSpecification(routeSpec.Destination, route.Destination)
-              || !SatisfiesSpecification(routeSpec.Origin, route.Origin))
-            {
-                return false;
-            }
-
-            if (routeSpec.Legs.Count() != IGNORED_LEGS_COUNT)
-            {
-                if (routeSpec.Legs.Count() != route.Legs.Count())
-                {
-                    return false;
-                }
-
-                for (int i = 0; i < routeSpec.Legs.Count(); i++)
-                {
-                    IRailroad specRailroad = routeSpec.Legs.ElementAt(i);
-                    IRailroad routeRailroad = route.Legs.ElementAt(i);
-
-                    if (!SatisfiesSpecification(specRailroad, routeRailroad))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Determines if a railroad statisfies a specification
-        /// </summary>
-        /// <param name="specRailroad">The specified railroad.</param>
-        /// <param name="routeRailroad">The actual railroad.</param>
-        /// <returns>true if it satisfies the specification, false otherwise.</returns>
-        private static bool SatisfiesSpecification(IRailroad specRailroad, IRailroad routeRailroad)
-        {
-            return SatisfiesSpecification(specRailroad.Origin, routeRailroad.Origin) &&
-                   SatisfiesSpecification(specRailroad.Destination, routeRailroad.Destination);
-        }
-
-        /// <summary>
-        /// Determines if a city satisfies a specification
-        /// </summary>
-        /// <param name="specifiedCity">The specified city.</param>
-        /// <param name="city">The city to check.</param>
-        /// <returns>true if it satisfies the specification.</returns>
-        private static bool SatisfiesSpecification(ICity specifiedCity, ICity city)
-        {
-            return specifiedCity.Name == IGNORED_CITY || specifiedCity.Name == city.Name;
-        }
-
-        /// <summary>
-        /// Builds the route.
-        /// </summary>
-        /// <param name="specifiedRoute">The specified route.</param>
-        /// <returns>The built route.</returns>
-        private static IRoute BuildRoute(string[] specifiedRoute)
-        {
-            IRoute routeSpec = Substitute.For<IRoute>();
-            IList<IRailroad> specifiedLegs = TestHelper.GenerateLegs(specifiedRoute);
-            routeSpec.Legs.ReturnsForAnyArgs(specifiedLegs);
-
-            // Specify distance
-            int distance = specifiedLegs.Sum(leg => leg.Length);
-            routeSpec.Distance.ReturnsForAnyArgs(distance);
-
-            // Specify origin
-            ICity origin = specifiedLegs.First().Origin;
-            routeSpec.Origin.ReturnsForAnyArgs(origin);
-
-            // Specify destination
-            ICity destination = specifiedLegs.Last().Destination;
-            routeSpec.Destination.ReturnsForAnyArgs(destination);
-
-            return routeSpec;
-        }
+        }        
     }
 }

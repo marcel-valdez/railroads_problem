@@ -20,8 +20,6 @@
         /// </summary>
         private const string NONE = "";
 
-        // Tests for OriginAndDestinationSpecificationSpecification
-        //// Found tests
         [TestCase(typeof(OriginAndDestinationSpecification), "AB1", "AB1", "A", "B"),
         TestCase(typeof(OriginAndDestinationSpecification), "AB1, BC1", "AB1", "A", "B"),
         TestCase(typeof(OriginAndDestinationSpecification), "AB1, BC1", "BC1", "B", "C"),
@@ -30,7 +28,7 @@
         TestCase(typeof(OriginAndDestinationSpecification), "AB1, BC1, CD1", "BC1", "B", "C"),
         TestCase(typeof(OriginAndDestinationSpecification), "AB1, BC1, CD1", "BC1, CD1", "B", "D"),
         TestCase(typeof(OriginAndDestinationSpecification), "AB1, BC1, CD1, DE1", "BC1, CD1", "B", "D"),
-        //// Not found tests
+            //// Not found tests
         TestCase(typeof(OriginAndDestinationSpecification), "AB1", NONE, "A", "C"),
         TestCase(typeof(OriginAndDestinationSpecification), "AB1", NONE, "B", "B"),
         TestCase(typeof(OriginAndDestinationSpecification), "AB1, BC1", NONE, "A", "D"),
@@ -55,7 +53,7 @@
         TestCase(typeof(DistanceSpecification), "AB1, BC1, CA1", "AB1, BC1, CA1, AB1", 4, 4),
         TestCase(typeof(DistanceSpecification), "CD7, AB1, BC1, CA1, DA7", "CA1, AB1, BC1, CA1, AB1, BC1", 6, 6),
         TestCase(typeof(DistanceSpecification), "AD7, AB1, BC1, CA1, DA7", "AB1, BC1, CA1, AB1, BC1, CA1", 6, 6),
-        //// Not found tests
+            //// Not found tests
         TestCase(typeof(DistanceSpecification), "AB1", NONE, 0, 0),
         TestCase(typeof(DistanceSpecification), "AB2", NONE, 0, 1),
         TestCase(typeof(DistanceSpecification), "AB1", NONE, 2, 3),
@@ -74,7 +72,7 @@
         TestCase(typeof(PathSpecification), "AB1, BC1, CD1", "AB1, BC1", "A", "B", "C"),
         TestCase(typeof(PathSpecification), "AB1, BC1, CD1", "BC1, CD1", "B", "C", "D"),
         TestCase(typeof(PathSpecification), "AB1, BC1, CD1, DE1", "BC1, CD1", "B", "C", "D"),
-        //// Not found tests
+            //// Not found tests
         TestCase(typeof(PathSpecification), "AB1", NONE, "A", "C"),
         TestCase(typeof(PathSpecification), "AC1", NONE, "B", "C"),
         TestCase(typeof(PathSpecification), "AB1", NONE, "A", "B", "C"),
@@ -90,7 +88,7 @@
         TestCase(typeof(StopsCountSpecification), "AB1, BC1", "AB1", 1, 2),
         TestCase(typeof(StopsCountSpecification), "AB1, BC1", "AB1", 0, 2),
         TestCase(typeof(StopsCountSpecification), "AB1, BC1", "AB1, BC1", 2, 2),
-        //// Not found tests
+            //// Not found tests
         TestCase(typeof(StopsCountSpecification), "AB1", NONE, 0, 0),
         TestCase(typeof(StopsCountSpecification), "AB1", NONE, 2, 2),
         TestCase(typeof(StopsCountSpecification), "AB1, CD1", NONE, 2, 2),
@@ -102,7 +100,7 @@
         /// <summary>
         /// Tests if route finder execute simple single result specifications
         /// </summary>
-        /// <typeparam name="T">The type of the IRouteSpecification implementation</typeparam>
+        /// <param name="specificationType">The type of the specificaiton to create.</param>
         /// <param name="graph">The railroad map graph.</param>
         /// <param name="expectedRouteGraph">The expected route.</param>
         /// <param name="specCtorArgs">The specification constructor arguments.</param>
@@ -129,8 +127,8 @@
         [TestCase(
             "AB1",
             "AB1",
-            new Type[] { typeof(PathSpecification), typeof(DistanceSpecification) },            
-            new object [] { "A", "B" },
+            new Type[] { typeof(PathSpecification), typeof(DistanceSpecification) },
+            new object[] { "A", "B" },
             new object[] { 0, 1 }), // Simplest possible that passes
         TestCase(
             "AB1, BC1",
@@ -145,7 +143,7 @@
             new object[] { "A", "B", "C" },
             new object[] { 0, 2 }), // Two legs
 
-        //Not found
+        // Not found
         TestCase(
             "AC1",
             NONE,
@@ -176,41 +174,41 @@
         [TestCase(
             "AB1",
             "AB1",
-            new Type[] { typeof(OriginAndDestinationSpecification), typeof(StopsCountSpecification) },            
-            new object [] { "A", "B" },
-            new object[] { 0, 1 }),// Simplest possible that passes
+            new Type[] { typeof(OriginAndDestinationSpecification), typeof(StopsCountSpecification) },
+            new object[] { "A", "B" },
+            new object[] { 0, 1 }), // Simplest possible that passes
         TestCase(
             "AB1, BC1",
             "AB1",
             new Type[] { typeof(OriginAndDestinationSpecification), typeof(StopsCountSpecification) },
             new object[] { "A", "B" },
-            new object[] { 1, 1 }),// Simplest possible that passes with an extra leg
+            new object[] { 1, 1 }), // Simplest possible that passes with an extra leg
         TestCase(
             "AB1, BC1",
             "AB1, BC1",
             new Type[] { typeof(OriginAndDestinationSpecification), typeof(StopsCountSpecification) },
             new object[] { "A", "C" },
-            new object[] { 0, 2 }),// Simplest possible that passes that includes two legs
+            new object[] { 0, 2 }), // Simplest possible that passes that includes two legs
 
         // Route not found
         TestCase(
             "AB1",
             NONE,
-            new Type[] { typeof(OriginAndDestinationSpecification), typeof(StopsCountSpecification) },            
-            new object [] { "A", "C" },
-            new object[] { 0, 1 }),// Simplest possible that does not pass because of first spec
+            new Type[] { typeof(OriginAndDestinationSpecification), typeof(StopsCountSpecification) },
+            new object[] { "A", "C" },
+            new object[] { 0, 1 }), // Simplest possible that does not pass because of first spec
         TestCase(
             "AB1",
             NONE,
             new Type[] { typeof(OriginAndDestinationSpecification), typeof(StopsCountSpecification) },
             new object[] { "A", "B" },
-            new object[] { 2, 2 }),// Simplest possible that does not pass because of second spec
+            new object[] { 2, 2 }), // Simplest possible that does not pass because of second spec
         TestCase(
             "AB1, BC1",
             NONE,
             new Type[] { typeof(OriginAndDestinationSpecification), typeof(StopsCountSpecification) },
             new object[] { "A", "D" },
-            new object[] { 0, 2 }),// Simplest possible that does not pass because of first that considers two legs
+            new object[] { 0, 2 }), // Simplest possible that does not pass because of first that considers two legs
         TestCase(
             "AB1, BC1",
             NONE,
@@ -221,9 +219,9 @@
         /// <summary>
         /// Tests if route finder executes compound single result specifications
         /// </summary>
-        /// <param name="specificationTypes">The specification types.</param>
         /// <param name="graph">The railroad map graph.</param>
         /// <param name="expectedRouteGraph">The expected route graph.</param>
+        /// <param name="specificationTypes">The specification types.</param>
         /// <param name="specsCtorsArgs">The specifications constructors arguments.</param>
         [Test]
         public void TestIfRouteFinderExecutesCompoundSingleResultSpecifications(string graph, string expectedRouteGraph, Type[] specificationTypes, params object[][] specsCtorsArgs)

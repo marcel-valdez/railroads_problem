@@ -9,4 +9,4 @@
 // You do not need to add suppressions to this file manually.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1014:MarkAssembliesWithClsCompliant")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Is", Scope = "member", Target = "RouteCalculator.Plan.IRouteComparer.#Is(RouteCalculator.Plan.IRoute)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Scope = "member", Target = "RouteCalculator.Testing.TestHelper.#GenerateLegs(System.String[],System.Collections.Generic.IList`1<RouteCalculator.Map.ICity>)")]

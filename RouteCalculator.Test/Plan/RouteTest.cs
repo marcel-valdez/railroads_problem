@@ -108,11 +108,47 @@
             // Arrange
             Route route = TestHelper.BuildRouteFromString(routePath);
             string expectedString = string.IsNullOrEmpty(routePath) ? "{ }" : "{ " + routePath + " }";
+
             // Act
             string actualString = route.ToString();
 
             // Assert
             Assert.AreEqual(expectedString, actualString);
+        }
+
+        /// <summary>
+        /// Tests if it knows when another instance is equal
+        /// </summary>
+        /// <param name="routeAGraph">The route A graph.</param>
+        /// <param name="routeBGraph">The route B graph.</param>
+        /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
+        [TestCase("AB1 BC1", "AB1 BD1", false)]
+        [TestCase("AB1 BC2", "AB1 BC1", false)]
+        [TestCase("AB1", "AB1 BC1", false)]
+        [TestCase("AB2", "AB1", false)]
+        [TestCase("AC1", "AB1", false)]
+        [TestCase("AB1 BC1", "AB1 BC1", true)]
+        [TestCase("AB1", "AB1", true)]
+        [Test]
+        public void TestIfItKnowsWhenAnotherInstanceIsEqual(string routeAGraph, string routeBGraph, bool expectedResult)
+        {
+            // Arrange
+            Route routeA = TestHelper.BuildRouteFromString(routeAGraph);
+            Route routeB = TestHelper.BuildRouteFromString(routeBGraph);
+
+            // Act
+            bool actualResult = routeA.Equals(routeB);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+            if (expectedResult)
+            {
+                Assert.AreEqual(routeA.GetHashCode(), routeB.GetHashCode());
+            }
+            else
+            {
+                Assert.AreNotEqual(routeA.GetHashCode(), routeB.GetHashCode());
+            }
         }
     }
 }

@@ -55,7 +55,11 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Plan\RouteFinderTest.cs" />
+    <Compile Include="Plan\RouteFinderTestHelper.cs" />
     <Compile Include="Plan\RouteTest.cs" />
+    <Compile Include="Plan\ShortestRouteComparerTest.cs" />
+    <Compile Include="Plan\ShortestRouteComparisonTest.cs" />
+    <Compile Include="Plan\ShortestRouteFinderTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

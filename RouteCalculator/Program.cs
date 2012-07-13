@@ -64,8 +64,7 @@
                 // Run the route finder for multiple results.
                 WriteOperationsResults(RunRouteCountUseCases(routeFinder));
 
-                // TODO: Add a shortest route finder
-                IRouteFinder shortestRouteFinder = new ShortestRouteFinder(map);
+                IRouteFinder shortestRouteFinder = new ShortestRouteFinder(map, new ShortestRouteComparer());
                 WriteOperationsResults(RunShortestRouteUseCases(shortestRouteFinder));
 
                 WriteOperationsResults(RunCompoundSpecificationCountRoutesUseCase(routeFinder));
@@ -121,7 +120,7 @@
             tripCountSpecs.Add(
                 new AndSpecification(
                     new OriginAndDestinationSpecification("A", "C"),
-                    new StopsCountSpecification(4, 3)));
+                    new StopsCountSpecification(4, 4)));
             return FindConformingRouteCount(routeFinder, tripCountSpecs);
         }
 

@@ -8,26 +8,61 @@
     using RouteCalculator.Specify;
     using RouteCalculator.Testing;
 
+    // StopsCountSpecification test cases
+    // Satisfying
+    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB1" }, true, 1, 1)]
+    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB1", "BC1" }, true, 1, 2)]
+    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB1", "BC1" }, true, 1, 3)]
+    //// Non satisfying
+    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB1", "BC1" }, false, 3, 4)]
+    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB4", "BC1" }, false, 3, 4)]
+
+    // PathSpecification test cases
+    // Satisfying
+    [TestFixture(typeof(PathSpecification), new string[] { "AB" }, true, "A", "B")]
+    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BC" }, true, "A", "B", "C")]
+    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BA" }, true, "A", "B", "A")]
+    //// Non satisfying
+    [TestFixture(typeof(PathSpecification), new string[] { "AB" }, false, "A", "C")]
+    [TestFixture(typeof(PathSpecification), new string[] { "AB" }, false, "C", "B")]
+    [TestFixture(typeof(PathSpecification), new string[] { "AB" }, false, "A", "B", "C")]
+    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BC" }, false, "A", "B")]
+    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BD" }, false, "A", "B", "C")]
+    [TestFixture(typeof(PathSpecification), new string[] { "DB", "BC" }, false, "A", "B", "C")]
+    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BC" }, false, "A", "B", "D")]
+    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BC", "CD" }, false, "A", "B", "C")]
+
+    // DistanceSpecification test cases
+    // Satisfying
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1" }, true, 0, 1)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1" }, true, 1, 1)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1" }, true, 0, 2)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1", "BC1" }, true, 0, 2)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1", "BC1" }, true, 0, 3)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1", "BC1" }, true, 1, 2)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1", "BC1" }, true, 2, 2)]
+    //// Non satisfying
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB2" }, false, 0, 1)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB2" }, false, 3, 3)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1", "BC1" }, false, 0, 1)]
+    [TestFixture(typeof(DistanceSpecification), new string[] { "AB1", "BC1" }, false, 3, 3)]
+
+    // OriginAndEndSpecification test cases
+    // Satisfying
+    [TestFixture(typeof(OriginAndDestinationSpecification), "AB1", true, "A", "B")]
+    [TestFixture(typeof(OriginAndDestinationSpecification), "AB1 BC1", true, "A", "C")]
+    [TestFixture(typeof(OriginAndDestinationSpecification), "AB1 BC1 CD", true, "A", "D")]
+    //// Non satisfying
+    [TestFixture(typeof(OriginAndDestinationSpecification), "AB1", false, "A", "C")]
+    [TestFixture(typeof(OriginAndDestinationSpecification), "AB1", false, "C", "B")]
+    [TestFixture(typeof(OriginAndDestinationSpecification), "AB1 BD1", false, "A", "C")]
+    [TestFixture(typeof(OriginAndDestinationSpecification), "AB1 BC1 CA1", false, "A", "C")]
+    [TestFixture(typeof(OriginAndDestinationSpecification), "AB1 DC1 CB1", false, "C", "B")]
+
     /// <summary>
     /// This class does integration tests between each IRouteSpecification implementation and the Route class
     /// </summary>
     /// <typeparam name="T">Type of the IRouteSpecification implementation</typeparam>
-    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB1" }, new object[] { 1, 1 }, true)]
-    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB1", "BC1" }, new object[] { 1, 2 }, true)]
-    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB1", "BC1" }, new object[] { 1, 3 }, true)]
-    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB1", "BC1" }, new object[] { 3, 4 }, false)]
-    [TestFixture(typeof(StopsCountSpecification), new string[] { "AB4", "BC1" }, new object[] { 3, 4 }, false)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB" }, new object[] { "A", "B" }, true)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BC" }, new object[] { "A", "B", "C" }, true)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BA" }, new object[] { "A", "B", "A" }, true)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB" }, new object[] { "A", "C" }, false)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB" }, new object[] { "C", "B" }, false)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB" }, new object[] { "A", "B", "C" }, false)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BC" }, new object[] { "A", "B" }, false)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BD" }, new object[] { "A", "B", "C" }, false)]
-    [TestFixture(typeof(PathSpecification), new string[] { "DB", "BC" }, new object[] { "A", "B", "C" }, false)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BC" }, new object[] { "A", "B", "D" }, false)]
-    [TestFixture(typeof(PathSpecification), new string[] { "AB", "BC", "CD" }, new object[] { "A", "B", "C" }, false)]
     public class Specification_Route_IntegrationTest<T>
         where T : class, IRouteSpecification
     {
@@ -40,9 +75,21 @@
         /// Initializes a new instance of the <see cref="Specification_Route_IntegrationTest&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="path">The graph path.</param>
-        /// <param name="constructorArguments">The constructor arguments for the specification.</param>
         /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
-        public Specification_Route_IntegrationTest(string[] path, object[] constructorArguments, bool expectedResult)
+        /// <param name="constructorArguments">The constructor arguments for the specification.</param>
+        public Specification_Route_IntegrationTest(string path, bool expectedResult, params object[] constructorArguments)
+        {
+            string[] tokens = path.Split(' ');
+            this.testArguments = new object[][] { new object[] { tokens, expectedResult, constructorArguments } };
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Specification_Route_IntegrationTest&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="path">The graph path.</param>
+        /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
+        /// <param name="constructorArguments">The constructor arguments for the specification.</param>
+        public Specification_Route_IntegrationTest(string[] path, bool expectedResult, params object[] constructorArguments)
         {
             this.testArguments = new object[][] { new object[] { path, expectedResult, constructorArguments } };
         }

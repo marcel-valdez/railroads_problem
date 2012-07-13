@@ -67,6 +67,19 @@
         /// <returns>
         /// The legs configured
         /// </returns>
+        public static IList<IRailroad> GenerateLegs(string routeConfiguration, IList<ICity> cities = null)
+        {
+            return GenerateLegs(routeConfiguration.Split(' ', ','), cities);
+        }
+
+        /// <summary>
+        /// Generates the legs using the routeConfiguration.
+        /// </summary>
+        /// <param name="routeConfiguration">The route configuration.</param>
+        /// <param name="cities">The preconfigured cities.</param>
+        /// <returns>
+        /// The legs configured
+        /// </returns>
         public static IList<IRailroad> GenerateLegs(string[] routeConfiguration, IList<ICity> cities = null)
         {
             IList<IRailroad> legs = new List<IRailroad>();
@@ -84,20 +97,31 @@
                 ICity destinationCity = cities.First(city => city.Name.Equals(destinationName));
                 if (railroadConfiguration.Length > 2)
                 {
-                    railroad.Length.Returns(int.Parse(railroadConfiguration.Substring(2)));
+                    railroad.Length.ReturnsForAnyArgs(int.Parse(railroadConfiguration.Substring(2)));
                 }
 
-                railroad.Origin.Returns(originCity);
-                railroad.Destination.Returns(destinationCity);
+                railroad.Origin.ReturnsForAnyArgs(originCity);
+                railroad.Destination.ReturnsForAnyArgs(destinationCity);
                 legs.Add(railroad);
-                originCity.Outgoing.Add(railroad);
+                IList<IRailroad> outgoingRailroads = originCity.Outgoing;
+                outgoingRailroads.Add(railroad);
             }
 
             return legs;
         }
 
         /// <summary>
-        /// Generates the cities using the routeConfiguration.
+        /// Generates the cities using the graph configuration.
+        /// </summary>
+        /// <param name="graphConfiguration">The graph configuration.</param>
+        /// <returns>The cities identified</returns>
+        public static IList<ICity> GenerateCities(string graphConfiguration)
+        {
+            return GenerateCities(graphConfiguration.Split(' ', ','));
+        }
+
+        /// <summary>
+        /// Generates the cities using the route configuration.
         /// </summary>
         /// <param name="routeConfiguration">The route configuration.</param>
         /// <returns>The cities identified</returns>
@@ -147,6 +171,42 @@
         }
 
         /// <summary>
+        /// Builds the mock route.
+        /// </summary>
+        /// <param name="specifiedRoute">The specified route.</param>
+        /// <returns>The build route</returns>
+        public static IRoute BuildMockRoute(string specifiedRoute)
+        {
+            return BuildMockRoute(specifiedRoute.Split(' ', ','));
+        }
+
+        /// <summary>
+        /// Builds a mock IRoute.
+        /// </summary>
+        /// <param name="specifiedRoute">The specified route.</param>
+        /// <returns>The built route.</returns>
+        public static IRoute BuildMockRoute(string[] specifiedRoute)
+        {
+            IRoute routeSpec = Substitute.For<IRoute>();
+            IList<IRailroad> specifiedLegs = TestHelper.GenerateLegs(specifiedRoute);
+            routeSpec.Legs.ReturnsForAnyArgs(specifiedLegs);
+
+            // Specify distance
+            int distance = specifiedLegs.Sum(leg => leg.Length);
+            routeSpec.Distance.ReturnsForAnyArgs(distance);
+
+            // Specify origin
+            ICity origin = specifiedLegs.First().Origin;
+            routeSpec.Origin.ReturnsForAnyArgs(origin);
+
+            // Specify destination
+            ICity destination = specifiedLegs.Last().Destination;
+            routeSpec.Destination.ReturnsForAnyArgs(destination);
+
+            return routeSpec;
+        }
+
+        /// <summary>
         /// Adds a city with the <paramref name="originCityName"/> if not included already in the city list.
         /// </summary>
         /// <param name="cities">The city list.</param>
@@ -158,7 +218,7 @@
                 ICity city = Substitute.For<ICity>();
                 city.Name.Returns(originCityName);
                 IList<IRailroad> railroadList = new List<IRailroad>();
-                city.Outgoing.Returns(railroadList);
+                city.Outgoing.ReturnsForAnyArgs(railroadList);
                 cities.Add(city);
             }
         }

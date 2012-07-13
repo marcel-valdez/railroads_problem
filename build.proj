@@ -22,10 +22,10 @@
 			<AnalyzedProject>$(ProjectName).FunctionalTest</AnalyzedProject>
 			<AnalyzedAssembly>$(ProjectName).FunctionalTest.exe</AnalyzedAssembly>
 		</AnalyzedProjects>
-		<TestProjects Include="UnitTest">
+		<!--<TestProjects Include="UnitTest">
 			<Type>Test</Type>
 			<ReportName>UnitTest</ReportName>
-		</TestProjects>
+		</TestProjects> -->
 		<TestProjects Include="IntegrationTest">
 			<Type>IntegrationTest</Type>
 			<ReportName>IntegrationTest</ReportName>
