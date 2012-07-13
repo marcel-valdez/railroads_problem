@@ -43,6 +43,8 @@
         /// <param name="fileName">The filename with the test data.</param>
         /// <param name="expectedOutput">The expected output of the target.</param>
         [Test]
+        [TestCase("bad_data.txt", "An error ocurred while trying to read the specified file: bad_data.txt")]
+        [TestCase("unexistant_file", "The specified file: unexistant_file does not exist.")]
         [TestCase("default_data.txt", "Output #1: 9")]
         [TestCase("default_data.txt", "Output #2: 5")]
         [TestCase("default_data.txt", "Output #3: 13")]
