@@ -52,7 +52,7 @@
     <Compile Include="Plan\IRouteFinder.cs" />
     <Compile Include="Plan\Route.cs" />
     <Compile Include="Plan\RouteFinder.cs" />
-    <Compile Include="ShortestRouteFinder.cs" />
+    <Compile Include="Plan\ShortestRouteFinder.cs" />
     <Compile Include="Specify\AndSpecification.cs" />
     <Compile Include="Map\City.cs" />
     <Compile Include="Map\RailroadMap.cs" />
@@ -62,7 +62,6 @@
     <Compile Include="Specify\DistanceSpecification.cs" />
     <Compile Include="Specify\OriginAndEndSpecification.cs" />
     <Compile Include="Specify\IRouteSpecification.cs" />
-    <Compile Include="Plan\TripPlan.cs" />
     <Compile Include="Specify\PathSpecification.cs" />
     <Compile Include="Specify\StopsCountSpecification.cs" />
   </ItemGroup>

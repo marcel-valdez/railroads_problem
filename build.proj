@@ -106,7 +106,7 @@
 		<!-- Execute current test with Code Coverage, using OpenCover -->
 		<Exec 
 			ContinueOnError="true"
-			Command="$(MSBuildProjectDirectory)\tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)\$(ProjectName).%(TestProjects.Type).exe &quot;-targetdir:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)&quot; -output:%(TestProjects.ReportName)Coverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).%(TestProjects.Type)*]*&quot;" />
+			Command="$(MSBuildProjectDirectory)\tools\OpenCover\OpenCover.Console.exe -register:user -target:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)\$(ProjectName).%(TestProjects.Type).exe &quot;-targetdir:$(ProjectName).%(TestProjects.Type)\bin\$(Configuration)&quot; -output:%(TestProjects.ReportName)Coverage.xml &quot;-filter:+[$(ProjectName)*]* -[$(ProjectName).*Test*]*&quot;" /><!--%(TestProjects.Type)*-->
 		<!-- Get all lines covered -->
 		<XmlPeek Condition="Exists('%(TestProjects.ReportName)Coverage.xml')" XmlInputPath="%(TestProjects.ReportName)Coverage.xml" Query="//CoverageSession/Modules/Module/Classes/Class/Methods/Method/SequencePoints/SequencePoint[@vc > 0]" >
 			<Output TaskParameter="Result" ItemName="CoveredLinesFound"></Output>

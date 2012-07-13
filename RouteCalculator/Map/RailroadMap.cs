@@ -57,11 +57,36 @@
         /// Initializes this class with the railroads and cities.
         /// </summary>
         /// <param name="stream">The stream of the configuration file.</param>
-        public void Init(FileStream stream)
+        public virtual void Init(FileStream stream)
         {
             string configGraph = string.Empty;
             configGraph = RailroadMap.ReadContent(stream);
             this.BuildMap(configGraph);
+        }
+
+        /// <summary>
+        /// Builds the railroad map.
+        /// Expected graph format examples: [AB1,BC1] or [AB1, BC1]
+        /// </summary>
+        /// <param name="graph">The string with the railroads configuration graph.</param>
+        public virtual void BuildMap(string graph)
+        {
+            string[] paths = graph.Split(new string[] { ", ", "," }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string path in paths)
+            {
+                string originCityName = path.Substring(0, 1);
+                string destinationCityName = path.Substring(1, 1);
+                int railroadLength = int.Parse(path.Substring(2));
+
+                ICity originCity = this.GetOrCreateCity(originCityName);
+                ICity destinationCity = this.GetOrCreateCity(destinationCityName);
+                IRailroad newRailroad = new Railroad();
+                newRailroad.Origin = originCity;
+                newRailroad.Destination = destinationCity;
+                newRailroad.Length = railroadLength;
+                this.railroads.Add(newRailroad);
+                originCity.Outgoing.Add(newRailroad);
+            }
         }
         #endregion
         #region Private methods
@@ -97,30 +122,6 @@
             }
 
             return city;
-        }
-
-        /// <summary>
-        /// Builds the railroad map.
-        /// </summary>
-        /// <param name="graph">The string with the railroads configuration graph.</param>
-        private void BuildMap(string graph)
-        {
-            string[] paths = graph.Split(new string[] { ", ", "," }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string path in paths)
-            {
-                string originCityName = path.Substring(0, 1);
-                string destinationCityName = path.Substring(1, 1);
-                int railroadLength = int.Parse(path.Substring(2));
-
-                ICity originCity = this.GetOrCreateCity(originCityName);
-                ICity destinationCity = this.GetOrCreateCity(destinationCityName);
-                IRailroad newRailroad = new Railroad();
-                newRailroad.Origin = originCity;
-                newRailroad.Destination = destinationCity;
-                newRailroad.Length = railroadLength;
-                this.railroads.Add(newRailroad);
-                originCity.Outgoing.Add(newRailroad);
-            }
         }
         #endregion
     }

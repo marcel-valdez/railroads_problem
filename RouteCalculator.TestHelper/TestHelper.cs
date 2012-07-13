@@ -1,11 +1,13 @@
 ﻿namespace RouteCalculator.Testing
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Reflection;    
+    using System.Reflection;
     using NSubstitute;
     using RouteCalculator.Map;
+    using RouteCalculator.Plan;
 
     /// <summary>
     /// Represents a reflected method call
@@ -37,11 +39,12 @@
         /// <returns>A MethodCall delegate</returns>
         [SuppressMessage(
             category: "Microsoft.Design",
-            checkId: "CA1004:GenericMethodsShouldProvideTypeParameter", 
+            checkId: "CA1004:GenericMethodsShouldProvideTypeParameter",
             Justification = "The type parameter is necessary.")]
         public static MethodCall GetPrivateStaticMethod<T>(string methodName)
         {
-            return (object[] parameters) => typeof(T).GetMethod(methodName, PRIVATE_STATIC).Invoke(null, parameters);
+            MethodInfo methodInfo = typeof(T).GetMethod(methodName, PRIVATE_STATIC);
+            return (object[] parameters) => methodInfo.Invoke(null, parameters);
         }
 
         /// <summary>
@@ -107,10 +110,40 @@
                 string originCityName = railroadConfiguration[0].ToString();
                 string destinationCityName = railroadConfiguration[1].ToString();
                 AddIfNotIncluded(cities, originCityName);
-                AddIfNotIncluded(cities, destinationCityName);                
+                AddIfNotIncluded(cities, destinationCityName);
             }
 
             return cities;
+        }
+
+        /// <summary>
+        /// Builds the route from a route path string.
+        /// Graph examples: [AB1 BC1] or [AB1,BC1] or [AB1, BC1] all are good.
+        /// </summary>
+        /// <param name="routePath">The route path.</param>
+        /// <returns>The resulting route.</returns>
+        public static Route BuildRouteFromString(string routePath)
+        {
+            Route route = new Route();
+            string[] railroadsConfigs = routePath.Split(new string[] { ", ", " ", "," }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string railroadConfig in railroadsConfigs)
+            {
+                string originCityName = railroadConfig.Substring(0, 1);
+                string destinationCityName = railroadConfig.Substring(1, 1);
+                int legLength = int.Parse(railroadConfig.Substring(2));
+                City originCity = GetOrCreateCity(route, originCityName);
+                City destinationCity = GetOrCreateCity(route, destinationCityName);
+                Railroad railroad = new Railroad()
+                {
+                    Origin = originCity,
+                    Destination = destinationCity,
+                    Length = legLength
+                };
+
+                route.AddLeg(railroad);
+            }
+
+            return route;
         }
 
         /// <summary>
@@ -128,6 +161,28 @@
                 city.Outgoing.Returns(railroadList);
                 cities.Add(city);
             }
+        }
+
+        /// <summary>
+        /// Gets the city. Null if it is not found.
+        /// </summary>
+        /// <param name="route">The route on which to look.</param>
+        /// <param name="cityName">Name of the city.</param>
+        /// <returns>The city with the city name, null if not found.</returns>
+        private static City GetOrCreateCity(Route route, string cityName)
+        {
+            City city = route.Legs.SelectMany(leg => new ICity[] { leg.Origin, leg.Destination })
+                             .FirstOrDefault(item => item.Name.Equals(cityName)) as City;
+
+             if (city == null)
+             {
+                 city = new City()
+                 {
+                     Name = cityName
+                 };
+             }
+
+             return city;
         }
     }
 }

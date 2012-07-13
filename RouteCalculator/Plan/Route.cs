@@ -53,11 +53,6 @@
         {
             get
             {
-                if (this.legs.Count == 0)
-                {
-                    return default(ICity);
-                }
-
                 return this.legs[0].Origin;
             }
         }
@@ -69,11 +64,6 @@
         {
             get
             {
-                if (this.legs.Count == 0)
-                {
-                    return default(ICity);
-                }
-
                 return this.legs[this.legs.Count - 1].Destination;
             }
         }
@@ -103,5 +93,23 @@
             return flyCopy;
         }
         #endregion
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            string graph = "{";
+
+            foreach (var leg in this.legs)
+            {
+                graph += " " + leg.Origin.Name + leg.Destination.Name + leg.Length;
+            }
+
+            return graph + " }";
+        }
     }
 }

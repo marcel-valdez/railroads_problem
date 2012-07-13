@@ -35,7 +35,7 @@
         /// </returns>
         public IEnumerable<IRoute> FindRoutes(IRouteSpecification specification)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(this.map.ToString());
         }
 
         /// <summary>

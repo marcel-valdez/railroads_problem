@@ -1,10 +1,11 @@
-﻿namespace RouteCalculator.Testing.Plan
+﻿namespace RouteCalculator.Test.Plan
 {
     using System.Linq;
     using NSubstitute;
     using NUnit.Framework;
     using RouteCalculator.Map;
     using RouteCalculator.Plan;
+    using RouteCalculator.Testing;
 
     /// <summary>
     /// This class contains all of the unit tests for the Route class
@@ -91,6 +92,27 @@
             // Assert
             Assert.AreEqual(expectedOrigin, target.Origin.Name);
             Assert.AreEqual(expectedDestination, target.Destination.Name);
+        }
+
+        /// <summary>
+        /// Tests if it transforms to string correctly
+        /// </summary>
+        /// <param name="routePath">The route path.</param>
+        [TestCase("AB1 BC1 CD1")]
+        [TestCase("AB1 BC1")]
+        [TestCase("AB1")]
+        [TestCase("")]
+        [Test]
+        public void TestIfItTransformsToStringCorrectly(string routePath)
+        {
+            // Arrange
+            Route route = TestHelper.BuildRouteFromString(routePath);
+            string expectedString = string.IsNullOrEmpty(routePath) ? "{ }" : "{ " + routePath + " }";
+            // Act
+            string actualString = route.ToString();
+
+            // Assert
+            Assert.AreEqual(expectedString, actualString);
         }
     }
 }

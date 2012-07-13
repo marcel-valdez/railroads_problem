@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Testing.Specify
+﻿namespace RouteCalculator.Test.Specify
 {
     using System.Collections.Generic;
     using NSubstitute;

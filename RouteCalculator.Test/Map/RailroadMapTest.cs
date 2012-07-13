@@ -1,10 +1,11 @@
-﻿namespace RouteCalculator.Testing.Map
+﻿namespace RouteCalculator.Test.Map
 {
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using NUnit.Framework;
     using RouteCalculator.Map;
+    using Testing;
 
     /// <summary>
     /// This class contains the unit tests for the RailroadMap class
@@ -62,7 +63,7 @@
 
             // Act
             target = new RailroadMap();
-            target.GetPrivateMethod("BuildMap").Invoke(graphString);
+            target.BuildMap(graphString);
 
             // Assert
             Assert.AreEqual(1, target.Railroads.Count());
@@ -89,12 +90,11 @@
         {
             // Arrange
             var map = new RailroadMap();
-            var method = map.GetPrivateMethod("BuildMap");
             int expectedCityCount = orderedCityNames.Length;
             int expectedRailroadCount = railroadLengths.Length;
 
             // Act
-            method.Invoke(graphPath);
+            map.BuildMap(graphPath);
 
             // Assert
             Assert.AreEqual(expectedCityCount, map.Cities.Count());

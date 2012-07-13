@@ -40,7 +40,7 @@
         /// <summary>
         /// Tests the route calculator results.
         /// </summary>
-        /// <param name="filename">The filename with the test data.</param>
+        /// <param name="fileName">The filename with the test data.</param>
         /// <param name="expectedOutput">The expected output of the target.</param>
         [Test]
         [TestCase("default_data.txt", "Output #1: 9")]
@@ -53,13 +53,13 @@
         [TestCase("default_data.txt", "Output #8: 9")]
         [TestCase("default_data.txt", "Output #9: 9")]
         [TestCase("default_data.txt", "Output #10: 7")]
-        public void TestRouteCalculatorResults(string filename, string expectedOutput)
+        public void TestRouteCalculatorResults(string fileName, string expectedOutput)
         {
             // Arrange            
             string output = string.Empty;
 
             // Act
-            RouteCalculator.Program.Main(new string[] { filename });
+            RouteCalculator.Program.Main(new string[] { fileName });
             output = this.testOutput.ToString();
 
             // Assert

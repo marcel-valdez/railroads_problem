@@ -1,6 +1,5 @@
 ﻿namespace RouteCalculator.Plan
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using RouteCalculator.Map;
@@ -36,7 +35,19 @@
         /// </returns>
         public IEnumerable<IRoute> FindRoutes(IRouteSpecification specification)
         {
-            throw new NotImplementedException();
+            foreach (ICity rootCity in this.map.Cities.Where(city => city.Outgoing != null && city.Outgoing.Count > 0))
+            {
+                foreach (var railroad in rootCity.Outgoing)
+                {
+                    IRoute rootRoute = new Route();
+                    rootRoute.AddLeg(railroad);
+                    IEnumerable<IRoute> results = FindSatisfyingRoutes(rootRoute, specification);
+                    foreach (var result in results)
+                    {
+                        yield return result;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -66,6 +77,36 @@
         }
 
         #endregion
+
+        /// <summary>
+        /// Finds the satisfying routes.
+        /// </summary>
+        /// <param name="route">The current route state.</param>
+        /// <param name="specification">The specification to satisfy.</param>
+        /// <returns>All sub-routes that satisfy the specification</returns>
+        private static IEnumerable<IRoute> FindSatisfyingRoutes(IRoute route, IRouteSpecification specification)
+        {
+            if (specification.MightBeSatisfiedBy(route))
+            {
+                if (specification.IsSatisfiedBy(route))
+                {
+                    yield return route;
+                }
+
+                // Even if a rounte already satisfies a condition, we must keep on looking for more,
+                // unil no more routes could possibly satisfy.
+                ICity currentDestination = route.Destination;
+                foreach (IRailroad nextRailroad in currentDestination.Outgoing)
+                {
+                    IRoute nextRoute = route.FlyweightCopy();
+                    nextRoute.AddLeg(nextRailroad);
+                    foreach (IRoute found in FindSatisfyingRoutes(nextRoute, specification))
+                    {
+                        yield return found;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Finds the first sample that satisfies the specification.

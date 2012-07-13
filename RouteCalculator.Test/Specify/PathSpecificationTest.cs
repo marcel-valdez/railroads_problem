@@ -1,4 +1,4 @@
-﻿namespace RouteCalculator.Testing.Specify
+﻿namespace RouteCalculator.Test.Specify
 {
     using System.Collections.Generic;
     using NSubstitute;
@@ -6,6 +6,7 @@
     using RouteCalculator.Map;
     using RouteCalculator.Plan;
     using RouteCalculator.Specify;
+    using Testing;
 
     /// <summary>
     /// This class contains the unit tests for the Trip Specification class
