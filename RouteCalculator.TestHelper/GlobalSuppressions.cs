@@ -10,3 +10,4 @@
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1014:MarkAssembliesWithClsCompliant")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Scope = "member", Target = "RouteCalculator.Testing.TestHelper.#GenerateLegs(System.String[],System.Collections.Generic.IList`1<RouteCalculator.Map.ICity>)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Scope = "member", Target = "RouteCalculator.Testing.TestHelper.#GenerateLegs(System.String,System.Collections.Generic.IList`1<RouteCalculator.Map.ICity>)")]

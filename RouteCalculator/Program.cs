@@ -46,11 +46,31 @@
             {
                 filename = args[0];
             }
+            else
+            {
+                Console.WriteLine("Please specify a filename argument.");
+                return;
+            }
 
             RailroadMap map = new RailroadMap();
-            using (FileStream fileStream = File.OpenRead(filename))
+            if (!new FileInfo(filename).Exists)
             {
-                map.Init(fileStream);
+                Console.WriteLine("The specified file: {0} does not exist.", filename);
+                return;
+            }
+
+            try
+            {                
+                using (FileStream fileStream = File.OpenRead(filename))
+                {
+                    map.Init(fileStream);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("An error ocurred while trying to read the specified file: {0}", filename);
+                return;
             }
             
             outputCount = 1;

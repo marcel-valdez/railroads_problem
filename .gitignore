@@ -37,3 +37,5 @@ UnitTestCoverage.xml
 coverate-report/
 coverage-report/*
 *.gpState
+output/
+output/*

@@ -49,6 +49,7 @@
 			Properties="Configuration=$(Configuration)"
 			ContinueOnError="false"
 			/>
+		<Copy SourceFiles="$(ProjectName)\bin\$(Configuration)\$(ProjectName).exe" DestinationFolder="$(MSBuildProjectDirectory)" ></Copy>
 	</Target>
 	<Target Name="UnitTest" DependsOnTargets="Build">
 		<Exec

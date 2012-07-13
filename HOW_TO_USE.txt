@@ -1,0 +1,9 @@
+Requirements:
+- .Net framework 4.0+
+
+To use the application you must:
+1. Build the application. c:\>build.bat
+2. Run the application. (Example: c:\PATH\>output\RouteCalculator.exe sample_data.txt
+
+To generate test, analysis and coverage reports, you must:
+1. Run the build project with: c:\>build_all.bat
