@@ -43,6 +43,7 @@
         /// <param name="fileName">The filename with the test data.</param>
         /// <param name="expectedOutput">The expected output of the target.</param>
         [Test]
+        [TestCase(null, "Please specify a filename argument.")]
         [TestCase("test_data/bad_data.txt", "An error ocurred while trying to read the specified file: test_data/bad_data.txt")]
         [TestCase("unexistant_file", "The specified file: unexistant_file does not exist.")]
         [TestCase("test_data/default_data.txt", "Output #1: 9")]
@@ -60,9 +61,10 @@
         {
             // Arrange            
             string output = string.Empty;
+            string[] argument = fileName == null ? new string[] { } : new string[] { fileName };
 
             // Act
-            RouteCalculator.Program.Main(new string[] { fileName });
+            RouteCalculator.Program.Main(argument);
             output = this.testOutput.ToString();
 
             // Assert
