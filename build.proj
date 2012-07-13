@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Build;Analyze;UnitTest;IntegrationTest;Coverage" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build;Analyze;UnitTest;IntegrationTest;FunctionalTest;Coverage" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<ProjectName>RouteCalculator</ProjectName>
