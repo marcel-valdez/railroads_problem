@@ -1,6 +1,4 @@
 ﻿<Project DefaultTargets="Build;Analyze;UnitTest;IntegrationTest;Coverage" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<!-- NOTE: I'm currently disabling the Functional tests from the default targets because I know they won't work, but I want the
-	           CI server to finish the MSBuild task to know if anything of what I've done is working in a rapid way (without checking) -->
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<ProjectName>RouteCalculator</ProjectName>
@@ -22,10 +20,10 @@
 			<AnalyzedProject>$(ProjectName).FunctionalTest</AnalyzedProject>
 			<AnalyzedAssembly>$(ProjectName).FunctionalTest.exe</AnalyzedAssembly>
 		</AnalyzedProjects>
-		<!--<TestProjects Include="UnitTest">
+		<TestProjects Include="UnitTest">
 			<Type>Test</Type>
 			<ReportName>UnitTest</ReportName>
-		</TestProjects> -->
+		</TestProjects>
 		<TestProjects Include="IntegrationTest">
 			<Type>IntegrationTest</Type>
 			<ReportName>IntegrationTest</ReportName>

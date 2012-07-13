@@ -80,7 +80,7 @@
         /// </summary>
         /// <param name="routeFinder">The route finder.</param>
         /// <returns>The operations results</returns>
-        private static IEnumerable<int> RunCompoundSpecificationCountRoutesUseCase(IRouteFinder routeFinder)
+        public static IEnumerable<int> RunCompoundSpecificationCountRoutesUseCase(IRouteFinder routeFinder)
         {
             var anotherTripCountSpecs = new List<IRouteSpecification>();
             anotherTripCountSpecs.Add(
@@ -95,7 +95,7 @@
         /// </summary>
         /// <param name="shortestRouteFinder">The shortest route finder.</param>
         /// <returns>The operations results</returns>
-        private static IEnumerable<int> RunShortestRouteUseCases(IRouteFinder shortestRouteFinder)
+        public static IEnumerable<int> RunShortestRouteUseCases(IRouteFinder shortestRouteFinder)
         {
             var shortestRouteSpecs = new List<IRouteSpecification>();
             shortestRouteSpecs.Add(
@@ -110,7 +110,7 @@
         /// </summary>
         /// <param name="routeFinder">The route finder.</param>
         /// <returns>The operations results</returns>
-        private static IEnumerable<int> RunRouteCountUseCases(IRouteFinder routeFinder)
+        public static IEnumerable<int> RunRouteCountUseCases(IRouteFinder routeFinder)
         {
             var tripCountSpecs = new List<IRouteSpecification>();
             tripCountSpecs.Add(
@@ -129,7 +129,7 @@
         /// </summary>
         /// <param name="routeFinder">The route finder.</param>
         /// <returns>The operations results</returns>
-        private static IEnumerable<int> RunPathSpecificationUseCases(IRouteFinder routeFinder)
+        public static IEnumerable<int> RunPathSpecificationUseCases(IRouteFinder routeFinder)
         {
             // Create the path specifications
             var pathSpecs = new List<IRouteSpecification>();
@@ -149,7 +149,7 @@
         /// <param name="finder">The route finder.</param>
         /// <param name="specifications">The route specifications.</param>
         /// <returns>The operations results</returns>
-        private static IEnumerable<int> FindConformingRouteCount(IRouteFinder finder, IList<IRouteSpecification> specifications)
+        public static IEnumerable<int> FindConformingRouteCount(IRouteFinder finder, IList<IRouteSpecification> specifications)
         {
             foreach (IRouteSpecification spec in specifications)
             {
@@ -163,7 +163,7 @@
         /// <param name="routeFinder">The route finder.</param>
         /// <param name="specifications">The specifications.</param>
         /// <returns>The operations results</returns>
-        private static IEnumerable<int> FindFirstConformingRouteDistance(IRouteFinder routeFinder, IList<IRouteSpecification> specifications)
+        public static IEnumerable<int> FindFirstConformingRouteDistance(IRouteFinder routeFinder, IList<IRouteSpecification> specifications)
         {
             foreach (IRouteSpecification spec in specifications)
             {
@@ -184,7 +184,7 @@
         /// Writes the operation results.
         /// </summary>
         /// <param name="results">The operations results.</param>
-        private static void WriteOperationsResults(IEnumerable<int> results)
+        public static void WriteOperationsResults(IEnumerable<int> results)
         {
             foreach (int result in results)
             {
@@ -196,7 +196,7 @@
         /// Writes the message to the console.
         /// </summary>
         /// <param name="result">The operation result.</param>
-        private static void WriteMessage(int result)
+        public static void WriteMessage(int result)
         {
             Console.WriteLine(OUTPUT_MESSAGE_FORMAT, outputCount++, result == NO_SUCH_ROUTE ? "NO SUCH ROUTE" : result.ToString());
         }

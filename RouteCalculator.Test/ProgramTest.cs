@@ -41,7 +41,7 @@
         public void TestIfExecutesFirstConformingCorrectly(string targetMethod, int[] specResults)
         {
             // Arrange
-            MethodCall method = TestHelper.GetPrivateStaticMethod<RouteCalculator.Program>(targetMethod);
+            MethodCall method = TestHelper.GetPublicStaticMethod<RouteCalculator.Program>(targetMethod);
             IList<IRouteSpecification> specs = new List<IRouteSpecification>();
             IRouteFinder finder = Substitute.For<IRouteFinder>();
             FillTestData(specResults, specs, finder);

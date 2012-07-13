@@ -48,6 +48,22 @@
         }
 
         /// <summary>
+        /// Gets the public static method.
+        /// </summary>
+        /// <typeparam name="T">The type to reflet on for the method name</typeparam>
+        /// <param name="methodName">Name of the method.</param>
+        /// <returns>A MethodCall delegate for the method found.</returns>
+        [SuppressMessage(
+            category: "Microsoft.Design",
+            checkId: "CA1004:GenericMethodsShouldProvideTypeParameter",
+            Justification = "The type parameter is necessary.")]
+        public static MethodCall GetPublicStaticMethod<T>(string methodName)
+        {
+            MethodInfo methodInfo = typeof(T).GetMethod(methodName);
+            return (object[] parameters) => methodInfo.Invoke(null, parameters);
+        }
+
+        /// <summary>
         /// Gets a private method.
         /// </summary>
         /// <typeparam name="T">The type to reflect</typeparam>
