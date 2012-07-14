@@ -15,7 +15,7 @@
         /// <summary>
         /// It contains the test data used for configuring the routes for this PathSpecificationTest
         /// </summary>
-        private static object[] testDataForSatisfiedBy =
+        private static readonly object[] TestDataForSatisfiedBy =
         {
             // route origin, route destination, specified origin, specified destination, expected result
             new object[] 
@@ -39,7 +39,7 @@
         /// <summary>
         /// It contains the test data used for configuring the routes for this PathSpecificationTest
         /// </summary>
-        private static object[] testDataForMightBeSatisfiedBy =
+        private static readonly object[] TestDataForMightBeSatisfiedBy =
         {
             // route origin, route destination, specified origin, specified destination, expected result
             new object[] 
@@ -69,7 +69,7 @@
         /// <param name="destination">The destination.</param>
         /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
         [Test]
-        [TestCaseSource("testDataForSatisfiedBy")]
+        [TestCaseSource("TestDataForSatisfiedBy")]
         public void TestIfItCanSpecifyOriginAndDestinationCorrectly(string routeOrigin, string routeDestination, string origin, string destination, bool expectedResult)
         {
             // Arrange
@@ -103,7 +103,7 @@
         /// <param name="destination">The destination.</param>
         /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
         [Test]
-        [TestCaseSource("testDataForMightBeSatisfiedBy")]
+        [TestCaseSource("TestDataForMightBeSatisfiedBy")]
         public void TestIfItKnowsWhenARouteMightSatisfy(string routeOrigin, string routeDestination, string origin, string destination, bool expectedResult)
         {
             // Arrange

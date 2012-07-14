@@ -256,8 +256,8 @@ namespace RouteCalculator.Test.Plan
             bool shouldFindAValidRoute,
             object[] expectedRoutes)
         {
-            string graphMsg = graph.Aggregate((acum, item) => acum + " " + item);
-            string specifiedRouteMsg = specifiedRoute.Aggregate((acum, item) => acum + " " + item);
+            string graphMsg = graph.Aggregate((acum, item) => string.Format("{0} {1}", acum, item));
+            string specifiedRouteMsg = specifiedRoute.Aggregate((acum, item) => string.Format("{0} {1}", acum, item));
             string findValidRouteMsg = shouldFindAValidRoute.ToString();
             Console.WriteLine("#{0} Graph:{1} SpecifiedRoute:{2} Valid Route:{3}", this.testCount++, graphMsg, specifiedRouteMsg, findValidRouteMsg);
 

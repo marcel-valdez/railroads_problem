@@ -44,7 +44,7 @@
         public static MethodCall GetPrivateStaticMethod<T>(string methodName)
         {
             MethodInfo methodInfo = typeof(T).GetMethod(methodName, PRIVATE_STATIC);
-            return (object[] parameters) => methodInfo.Invoke(null, parameters);
+            return parameters => methodInfo.Invoke(null, parameters);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@
         public static MethodCall GetPublicStaticMethod<T>(string methodName)
         {
             MethodInfo methodInfo = typeof(T).GetMethod(methodName);
-            return (object[] parameters) => methodInfo.Invoke(null, parameters);
+            return parameters => methodInfo.Invoke(null, parameters);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@
         /// <returns>The value returned by the method</returns>
         public static MethodCall GetPrivateMethod<T>(this T obj, string methodName)
         {
-            return (object[] parameters) => typeof(T).GetMethod(methodName, PRIVATE).Invoke(obj, parameters);
+            return parameters => typeof(T).GetMethod(methodName, PRIVATE).Invoke(obj, parameters);
         }
 
         /// <summary>

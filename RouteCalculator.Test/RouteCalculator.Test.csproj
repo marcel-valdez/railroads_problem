@@ -66,7 +66,7 @@
     <Compile Include="Map\RailroadMapTest.cs" />
     <Compile Include="Specify\AndSpecificationTest.cs" />
     <Compile Include="Specify\DistanceSpecificationTest.cs" />
-    <Compile Include="Specify\OriginAndEndSpecification.cs" />
+    <Compile Include="Specify\OriginAndEndSpecificationTest.cs" />
     <Compile Include="Specify\PathSpecificationTest.cs" />
     <Compile Include="Specify\StopsCountSpecificationTest.cs" />
   </ItemGroup>

@@ -86,9 +86,11 @@
         /// </returns>
         public IRoute FlyweightCopy()
         {
-            Route flyCopy = new Route();
-            flyCopy.legs = new List<IRailroad>(this.legs);
-            flyCopy.Distance = this.Distance;
+            Route flyCopy = new Route
+            {
+                legs = new List<IRailroad>(this.legs),
+                Distance = this.Distance
+            };
 
             return flyCopy;
         }
