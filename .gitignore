@@ -34,6 +34,7 @@ IntegrationTestReport.xml
 IntegrationTestCoverage.xml
 UnitTestReport.xml
 UnitTestCoverage.xml
+SimilarityReport.xml
 coverate-report/
 coverage-report/*
 *.gpState
