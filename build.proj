@@ -86,6 +86,8 @@
 		<Error Condition="'@(Failures)' != ''" Text="Functional tests failed: %(Failures.Identity)"></Error>
 	</Target>
 	<Target Name="Analyze" DependsOnTargets="Build">
+		<!-- Execute similarity analysis using Simian -->
+		<CallTarget Targets="SimilarityAnalysis" />
 		<!-- FxCopAnalyze all projects -->
 		<CallTarget Targets="RunFxCop"></CallTarget>
 		<!-- StyleCop analyze all of the projects -->
@@ -100,7 +102,9 @@
 					  CacheResults="true"
 					  ContinueOnError="false"/>
 	</Target>
-	
+	<Target Name="SimilarityAnalysis">
+		<Exec Command="$(MSBuildProjectDirectory)\tools\simian\simian.bat" />
+	</Target>
 	<Target Name="CoverageAnalysis" Inputs="%(TestProjects.Type);%(TestProjects.ReportName)" DependsOnTargets="Build" Outputs="CoveredLines;UncoveredLines">
 		<!-- Execute current test with Code Coverage, using OpenCover -->
 		<Exec 

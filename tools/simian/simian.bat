@@ -1,0 +1,1 @@
+%~dp0\simian-2.3.33.exe -config=%~dp0\simian.config %*

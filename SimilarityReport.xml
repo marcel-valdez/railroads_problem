@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="simian.xsl" type="text/xsl"?>
+<!--
+Similarity Analyser 2.3.33 - http://www.harukizaemon.com/simian
+Copyright (c) 2003-2011 Simon Harris.  All rights reserved.
+Simian is not free unless used solely for non-commercial or evaluation purposes.
+-->
+<simian version="2.3.33">
+    <check failOnDuplication="true" ignoreCharacterCase="true" ignoreCurlyBraces="true" ignoreIdentifierCase="true" ignoreModifiers="true" ignoreRegions="true" ignoreStringCase="true" reportDuplicateText="true" threshold="6">
+        <set lineCount="6">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Specify\OriginAndEndSpecification.cs" startLineNumber="52" endLineNumber="59"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Specify\OriginAndEndSpecification.cs" startLineNumber="28" endLineNumber="35"/>
+            <text>
+<![CDATA[            },            new object[] 
+            {
+                "A", "A", "A", "A", true
+            },
+            new object[] 
+            {
+                "A", "A", "B", "A", false
+]]>
+            </text>
+        </set>
+        <set lineCount="6">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Plan\RouteFinderTest.cs" startLineNumber="188" endLineNumber="194"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Plan\RouteFinderTest.cs" startLineNumber="179" endLineNumber="185"/>
+            <text>
+<![CDATA[            true, // should find a valid route            new object[]
+            { 
+                new string[] { "AB1", "BC1" } // routes to find
+            })]
+        [TestCase(
+            new string[] { "AB1", "BC1" }, // Graph
+]]>
+            </text>
+        </set>
+        <set lineCount="6">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Plan\RouteFinderTest.cs" startLineNumber="137" endLineNumber="143"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Plan\RouteFinderTest.cs" startLineNumber="128" endLineNumber="134"/>
+            <text>
+<![CDATA[            true, // should find a valid route            new object[]
+            { 
+                new string[] { "AB1" } // routes to find
+            })]
+        [TestCase(
+            new string[] { "AB1" }, // Graph
+]]>
+            </text>
+        </set>
+        <set lineCount="8">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\AndSpec_OriginDestSpec_DistanceSpec_Route_IntegrationTest.cs" startLineNumber="163" endLineNumber="180"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\AndSpec_OriginDestSpec_DistanceSpec_Route_IntegrationTest.cs" startLineNumber="84" endLineNumber="101"/>
+            <text>
+<![CDATA[            Assert.AreEqual(expectedResult, actualResult);        }
+
+        /// <summary>
+        /// Tests if test helper gets correct results
+        /// </summary>
+        /// <param name="andSpecResult">if set to <c>true</c> [and spec result].</param>
+        /// <param name="originAndDestinationResult">if set to <c>true</c> [origin and destination result].</param>
+        /// <param name="badOrigin">if set to <c>true</c> [bad origin].</param>
+        /// <param name="badDistance">if set to <c>true</c> [bad distance].</param>
+        /// <param name="expectedResult">if set to <c>true</c> [expected result].</param>
+        [TestCase(true, true, false, false, true)] // Valid behavior
+        [TestCase(true, false, false, false, true)] // Valid behavior
+        [TestCase(false, true, false, false, false)] // Valid behavior
+        [TestCase(true, true, true, false, true, ExpectedException = typeof(CallNotReceivedException))] // Invalid behavior
+        [TestCase(true, true, false, true, true, ExpectedException = typeof(CallNotReceivedException))] // Invalid behavior
+        [TestCase(false, true, true, false, false, ExpectedException = typeof(CallNotReceivedException))] // Invalid behavior
+        [Test]
+]]>
+            </text>
+        </set>
+        <set lineCount="8">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator\Map\RailRoad.cs" startLineNumber="16" endLineNumber="41"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator\Map\IRailroad.cs" startLineNumber="16" endLineNumber="41"/>
+            <text>
+<![CDATA[            get;            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the City origin of the Railroad.
+        /// </summary>
+        /// <value>
+        /// The origin.
+        /// </value>
+        ICity Origin
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the City destination of the railroad.
+        /// </summary>
+        /// <value>
+        /// The destination.
+        /// </value>
+        ICity Destination
+        {
+            get;
+            set;
+]]>
+            </text>
+        </set>
+        <set lineCount="8">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Specify\OriginAndEndSpecification.cs" startLineNumber="110" endLineNumber="117"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Specify\OriginAndEndSpecification.cs" startLineNumber="76" endLineNumber="83"/>
+            <text>
+<![CDATA[            var target = new OriginAndDestinationSpecification(origin, destination);            IRoute route = Substitute.For<IRoute>();
+            var originCity = Substitute.For<ICity>();
+            var destinationCity = Substitute.For<ICity>();
+            originCity.Name = routeOrigin;
+            destinationCity.Name = routeDestination;
+            route.Origin.Returns(originCity);
+            route.Destination.Returns(destinationCity);
+]]>
+            </text>
+        </set>
+        <set lineCount="10">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\AndSpec_OriginDestSpec_DistanceSpec_Route_IntegrationTest.cs" startLineNumber="182" endLineNumber="195"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\AndSpec_OriginDestSpec_DistanceSpec_Route_IntegrationTest.cs" startLineNumber="103" endLineNumber="116"/>
+            <text>
+<![CDATA[            bool andSpecResult,            bool originAndDestinationResult,
+            bool badOrigin,
+            bool badDistance,
+            bool expectedResult)
+        {
+            // Arrange
+            IRouteSpecification originAndDestinationSpec = Substitute.For<IRouteSpecification>();
+            IRouteSpecification distanceSpec = Substitute.For<IRouteSpecification>();
+            IRouteSpecification andSpec = Substitute.For<IRouteSpecification>();
+            IRoute route = Substitute.For<IRoute>();
+
+            // Specify distanceSpec behavior
+            if (!badDistance)
+]]>
+            </text>
+        </set>
+        <set lineCount="10">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Program.cs" startLineNumber="11" endLineNumber="35"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.IntegrationTest\Program.cs" startLineNumber="11" endLineNumber="35"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.FunctionalTest\Program.cs" startLineNumber="11" endLineNumber="35"/>
+            <text>
+<![CDATA[    public sealed class Program    {
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Program"/> class from being created.
+        /// </summary>
+        private Program()
+        {
+        }
+
+        /// <summary>
+        /// Main entry point for this program.
+        /// </summary>
+        /// <param name="args">The arguments received from the console.</param>
+        [STAThread]
+        public static void Main(string[] args)
+        {
+            var argList = new List<string>();
+            argList.Add(Assembly.GetExecutingAssembly().Location);
+            argList.AddRange(args);
+
+            int returnCode = Runner.Main(argList.ToArray());
+
+            if (returnCode != 0)
+            {
+                Console.Beep();
+]]>
+            </text>
+        </set>
+        <set lineCount="17">
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Plan\RouteFinderTest.cs" startLineNumber="83" endLineNumber="107"/>
+            <block sourceFile="D:\proyects\default\railroad_services\RouteCalculator\RouteCalculator.Test\Plan\RouteFinderTest.cs" startLineNumber="267" endLineNumber="291"/>
+            <text>
+<![CDATA[            IRailroadMap map = Substitute.For<IRailroadMap>();            IList<ICity> cities = TestHelper.GenerateCities(graph);
+            IList<IRailroad> railroads = TestHelper.GenerateLegs(graph, cities);
+            map.Cities.Returns(cities);
+            map.Railroads.Returns(railroads);
+
+            // Arrange the specification
+            IRouteSpecification specification = Substitute.For<IRouteSpecification>();
+            IRoute routeSpec = TestHelper.BuildMockRoute(specifiedRoute);
+            specification
+                .IsSatisfiedBy(null)
+                .ReturnsForAnyArgs(method => FinderTestHelper.SatisfiesSpecification(routeSpec, method.Arg<IRoute>()));
+
+            // Arrange the specification that "might" be satisfied
+            IRoute routeMightBeSpec = TestHelper.BuildMockRoute(specifiedRoute);
+            specification
+                .MightBeSatisfiedBy(null)
+                .ReturnsForAnyArgs(method => FinderTestHelper.MightSatisfySpecification(routeMightBeSpec, method.Arg<IRoute>()));
+
+            // Arrange the target
+            IRouteFinder target = Substitute.For<RouteFinder>(map);
+
+            // Arrange root route
+            IRoute rootRoute = Substitute.For<IRoute>();
+            rootRoute.Legs.Returns(new List<IRailroad>());
+]]>
+            </text>
+        </set>
+        <summary duplicateFileCount="8" duplicateLineCount="168" duplicateBlockCount="19" totalFileCount="54" totalRawLineCount="5210" totalSignificantLineCount="2095" processingTime="395"/>
+    </check>
+</simian>
