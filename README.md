@@ -1,3 +1,4 @@
+Djikstra cannot be implemented, because of the way the specification is implemented: The specification of wether a route conforms or not, is too generic and can't be easily memoized because a "range" cannot be specified as the lookup key.
 This project contains all of the files needed to solve the following problem, using C#:
 
 PROBLEM ONE: TRAINS
