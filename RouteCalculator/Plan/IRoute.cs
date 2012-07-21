@@ -51,9 +51,24 @@
         void AddLeg(IRailroad railroad);
 
         /// <summary>
+        /// Gets the subroute.
+        /// </summary>
+        /// <param name="startIndex">The start index.</param>
+        /// <param name="count">The leg count.</param>
+        /// <returns>The subroute corresponding to the range specified</returns>
+        IRoute GetSubroute(int startIndex, int count);
+
+        /// <summary>
         /// Creates a flyweight copy of this instance.
         /// </summary>
         /// <returns>A fly weight copy</returns>
         IRoute FlyweightCopy();
+
+        /// <summary>
+        /// Appends the specified route.
+        /// </summary>
+        /// <param name="route">The route to append.</param>
+        /// <returns>The resulting union of both routes.</returns>
+        IRoute Append(IRoute route);
     }
 }

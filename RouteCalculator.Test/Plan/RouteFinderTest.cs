@@ -63,7 +63,7 @@ namespace RouteCalculator.Test.Plan
             new string[] { "ZZ0" })] // ZZ0 is ignored.
 
         /// <summary>
-        /// Tests if it can find first satisfying route
+        /// Tests if it can find first satisfying route in a correct manner.
         /// </summary>
         /// <param name="graph">The graph of the map.</param>
         /// <param name="specifiedRoute">The specified route.</param>

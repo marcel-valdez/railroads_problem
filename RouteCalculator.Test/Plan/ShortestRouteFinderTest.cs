@@ -98,6 +98,38 @@
             }
         }
 
+        [Test]
+        [TestCase("AB1", "", "AB1")]
+        [TestCase("AB1 BC1", "AB1", "BC1")]
+        [TestCase("AB1 BC1 CD1", "AB1 BC1", "CD1")]
+        [TestCase("AB1 BC1 CD1", "AB1", "BC1 CD1")]
+        [TestCase("AB1 BC1", "AB1 BC1", "")]
+        [TestCase("AB1", "AB1", "")]
+        public void TestIfItCanGetTheTrailingRoute(string fullRouteGraph, string rootRouteGraph, string expectedRouteGraph)
+        {
+            // Arrange
+            IRoute fullTestRoute = TestHelper.BuildMockRoute(fullRouteGraph);
+            IRoute rootRoute = !string.IsNullOrEmpty(rootRouteGraph) ? TestHelper.BuildMockRoute(rootRouteGraph) : null;
+            IRoute expectedRoute = !string.IsNullOrEmpty(expectedRouteGraph) ? TestHelper.BuildMockRoute(expectedRouteGraph) : null;
+            fullTestRoute.GetSubroute(Arg.Any<int>(), Arg.Any<int>())
+                         .ReturnsForAnyArgs(expectedRoute);
+            IRoute actualTrailRoute;
+            IRoute expectedTrailRoute = !string.IsNullOrEmpty(expectedRouteGraph) ? TestHelper.BuildMockRoute(expectedRouteGraph) : null;
+
+            // Act
+            actualTrailRoute = ShortestRouteFinder.GetSubroute(fullTestRoute, rootRoute);
+
+            // Assert
+            if (!string.IsNullOrEmpty(expectedRouteGraph))
+            {
+                Assert.IsTrue(FinderTestHelper.SatisfiesSpecification(expectedTrailRoute, actualTrailRoute));
+            }
+            else
+            {
+                Assert.IsNull(actualTrailRoute);
+            }
+        }
+
         /// <summary>
         /// Builds the comparison mock.
         /// </summary>

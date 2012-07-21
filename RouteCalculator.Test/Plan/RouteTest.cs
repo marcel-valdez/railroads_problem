@@ -1,4 +1,5 @@
-﻿namespace RouteCalculator.Test.Plan
+﻿using System;
+namespace RouteCalculator.Test.Plan
 {
     using System.Linq;
     using NSubstitute;
@@ -149,6 +150,83 @@
             {
                 Assert.AreNotEqual(routeA.GetHashCode(), routeB.GetHashCode());
             }
+        }
+
+        /// <summary>
+        /// Tests if it can make a subroute
+        /// </summary>
+        /// <param name="routeGraph">The route graph.</param>
+        /// <param name="startIndex">The start index.</param>
+        /// <param name="legCount">The leg count.</param>
+        /// <param name="expectedRouteGraph">The expected route graph.</param>
+        /// <param name="expectedDistance">The expected distance.</param>
+        [Test]
+        [TestCase("AB1", 0, 1, "AB1", 1)]
+        [TestCase("AB1 BC1", 0, 1, "AB1", 1)]
+        [TestCase("AB1 BC1", 1, 1, "BC1", 1)]
+        [TestCase("AB1 BC1", 0, 2, "AB1 BC1", 2)]
+        [TestCase("AB1 BC1 CD1", 1, 1, "BC1", 1)]
+        [TestCase("AB1 BC1 CD1", 1, 2, "BC1 CD1", 2)]
+        [TestCase("AB1 BC1 CD1 DA1", 1, 2, "BC1 CD1", 2)]
+        // Invalid
+        [TestCase("AB1", 0, 0, "", 0)]
+        [TestCase("AB1 BC1", 1, 0, "", 0)]
+        [TestCase("AB1", 1, 1, "", 0, ExpectedException = typeof(IndexOutOfRangeException))]
+        [TestCase("AB1", 0, 2, "", 0, ExpectedException = typeof(IndexOutOfRangeException))]
+        [TestCase("AB1 BC1", 2, 1, "", 0, ExpectedException = typeof(IndexOutOfRangeException))]
+        public void TestIfItCanMakeASubroute(string routeGraph, int startIndex, int legCount, string expectedRouteGraph, int expectedDistance = 0)
+        {
+            // Arrange
+            Route target = TestHelper.BuildRouteFromString(routeGraph);
+
+            // Act
+            IRoute actualRoute = target.GetSubroute(startIndex, legCount);
+
+            // Assert
+            StringAssert.AreEqualIgnoringCase(expectedRouteGraph, FormatRoute(actualRoute));
+            Assert.AreEqual(expectedDistance, actualRoute.Distance);
+
+        }
+
+        /// <summary>
+        /// Tests if it can append route
+        /// </summary>
+        /// <param name="sourceRouteGraph">The source route graph.</param>
+        /// <param name="routeToAppendGraph">The route to append graph.</param>
+        /// <param name="exptectedGraph">The exptected graph.</param>
+        /// <param name="expectedDistance">The expected distance.</param>
+        [Test]
+        [TestCase("AB1", "", "AB1", 1)]
+        [TestCase("AB1", "BC1", "AB1 BC1", 2)]
+        [TestCase("", "AB1", "AB1", 1)]
+        [TestCase("", "AB1 BC1", "AB1 BC1", 2)]
+        [TestCase("AB1", "AB1 BC1", "AB1 BC1", 2)]
+        public void TestIfItCanAppendRoute(string sourceRouteGraph, string routeToAppendGraph, string exptectedGraph, int expectedDistance)
+        {
+            // Arrange
+            Route routeToAppend = TestHelper.BuildRouteFromString(routeToAppendGraph);
+            Route sourceRoute = string.IsNullOrEmpty(sourceRouteGraph) ? new Route() : TestHelper.BuildRouteFromString(sourceRouteGraph);
+
+            // Act
+            IRoute actualRoute = sourceRoute.Append(routeToAppend);
+
+            // Assert
+            Assert.AreEqual(exptectedGraph, FormatRoute(actualRoute));
+            Assert.AreEqual(expectedDistance, actualRoute.Distance);
+        }
+
+        /// <summary>
+        /// Formats the route.
+        /// </summary>
+        /// <param name="route">The route.</param>
+        /// <returns>
+        /// The route, formatted to a string
+        /// </returns>
+        private static string FormatRoute(IRoute route)
+        {
+            return route.ToString()
+                              .Replace("{", "").Replace("}", "")
+                              .Trim();
         }
     }
 }

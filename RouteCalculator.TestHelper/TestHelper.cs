@@ -219,6 +219,9 @@
             ICity destination = specifiedLegs.Last().Destination;
             routeSpec.Destination.ReturnsForAnyArgs(destination);
 
+            // Specify FlyweightCopy
+            routeSpec.FlyweightCopy().Returns(routeSpec);
+
             return routeSpec;
         }
 

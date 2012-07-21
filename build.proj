@@ -53,7 +53,7 @@
 	</Target>
 	<Target Name="UnitTest" DependsOnTargets="Build">
 		<Exec
-			Command="$(ProjectName).Test\bin\$(Configuration)\$(ProjectName).Test.exe /xml=UnitTestReport.xml"
+			Command="$(ProjectName).Test\bin\$(Configuration)\$(ProjectName).Test.exe /nologo /xml=UnitTestReport.xml"
 			ContinueOnError="false" />
 		<XmlPeek Condition="Exists('UnitTestReport.xml')" XmlInputPath="UnitTestReport.xml" Query="//test-case[@executed='True' and @success='False']/failure/message" >
 			<Output TaskParameter="Result" ItemName="Failures"></Output>
@@ -62,7 +62,7 @@
 	</Target>
 	<Target Name="IntegrationTest" DependsOnTargets="Build">
 		<Exec
-			Command="$(ProjectName).IntegrationTest\bin\$(Configuration)\$(ProjectName).IntegrationTest.exe /xml=IntegrationTestReport.xml"
+			Command="$(ProjectName).IntegrationTest\bin\$(Configuration)\$(ProjectName).IntegrationTest.exe /nologo /xml=IntegrationTestReport.xml"
 			ContinueOnError="false"/>
 		<XmlPeek Condition="Exists('IntegrationTestReport.xml')" XmlInputPath="IntegrationTestReport.xml" Query="//test-case[@executed='True' and @success='False']/failure/message" >
 			<Output TaskParameter="Result" ItemName="Failures"></Output>
@@ -78,7 +78,7 @@
 	</Target>
 	<Target Name="FunctionalTest" DependsOnTargets="Build">
 		<Exec
-			Command="$(ProjectName).FunctionalTest\bin\$(Configuration)\$(ProjectName).FunctionalTest.exe /xml=FunctionalTestReport.xml"
+			Command="$(ProjectName).FunctionalTest\bin\$(Configuration)\$(ProjectName).FunctionalTest.exe /nologo /xml=FunctionalTestReport.xml"
 			ContinueOnError="false"/>
 		<XmlPeek Condition="Exists('FunctionalTestReport.xml')" XmlInputPath="FunctionalTestReport.xml" Query="//test-case[@executed='True' and @success='False']/failure/message" >
 			<Output TaskParameter="Result" ItemName="Failures"></Output>

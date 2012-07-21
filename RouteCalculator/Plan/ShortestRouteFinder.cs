@@ -15,17 +15,22 @@
         /// <summary>
         /// The railroads map
         /// </summary>
-        private IRailroadMap map;
+        private readonly IRailroadMap map;
 
         /// <summary>
         /// The numbers of railroads in the map
         /// </summary>
-        private int railroadCount;
+        private readonly int railroadCount;
 
         /// <summary>
         /// The criteria used to compare the routes
         /// </summary>
-        private IRouteComparer criteria;
+        private readonly IRouteComparer criteria;
+
+        /// <summary>
+        /// It is a hash used to memoize calculated routes.
+        /// </summary>
+        private readonly IDictionary<string, IRoute> evaluatedRoutes = new Dictionary<string, IRoute>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShortestRouteFinder"/> class.
@@ -63,6 +68,7 @@
         public IRoute FindFirstSatisfyingRoute(IRouteSpecification specification)
         {
             IRoute bestKnownRoute = Worst.Route;
+            this.evaluatedRoutes.Clear();
             foreach (ICity city in this.map.Cities.Where(city => city.Outgoing != null && city.Outgoing.Count > 0))
             {
                 foreach (IRailroad railroad in city.Outgoing)
@@ -71,7 +77,6 @@
                     root.AddLeg(railroad);
                     IRoute result = this.FindMinRoute(root, bestKnownRoute, specification);
                     if (result != default(IRoute)
-                        && !(result is Worst)
                         && this.criteria.Is(result).BetterThan(bestKnownRoute))
                     {
                         bestKnownRoute = result;
@@ -96,45 +101,111 @@
         /// </returns>
         private IRoute FindMinRoute(IRoute route, IRoute bestAtTheMoment, IRouteSpecification specification)
         {
-            if (route.Legs.Count() > this.railroadCount * 10)
+            IRoute result = bestAtTheMoment;
+            string rootLegKey = GetLegKey(route.Legs.Last(), specification);
+
+            if (this.evaluatedRoutes.ContainsKey(rootLegKey))
+            {
+                result = route.Append(this.evaluatedRoutes[rootLegKey]);
+            } 
+            else if (route.Legs.Count() > this.railroadCount * 10)
             {
                 // Limit the number of cycles it can do (at most allows to cycle 10 times the railroads)
-                return Worst.Route;
-            }
-
-            if (!specification.MightBeSatisfiedBy(route))
+                result = Worst.Route;
+            } 
+            else if (!specification.MightBeSatisfiedBy(route))
             {
-                return Worst.Route;
+                result = Worst.Route;
             }
-
-            if (this.criteria.Is(bestAtTheMoment)
+            else if (this.criteria.Is(bestAtTheMoment)
                              .BetterThan(route))
             {
                 // No point in trying to go deeper, if going deeper will only worsen the evaluation.
-                return Worst.Route;
+                result = Worst.Route;
             }
-
-            if (specification.IsSatisfiedBy(route))
+            else if (specification.IsSatisfiedBy(route))
             {
                 // We dig no deeper, because we assume that if we keep on going deeper,
-                // then the IRoute can only we worse (bigger)
-                return route;
+                // then the IRoute can only get worse (bigger)
+                result = route;
             }
-
-            foreach (IRailroad railroad in route.Destination.Outgoing)
+            else
             {
-                IRoute prospect = route.FlyweightCopy();
-                prospect.AddLeg(railroad);
-                prospect = this.FindMinRoute(prospect, bestAtTheMoment, specification);
-
-                if (prospect != null && this.criteria.Is(bestAtTheMoment)
-                                                     .WorseThan(prospect))
+                foreach (IRailroad railroad in route.Destination.Outgoing)
                 {
-                    bestAtTheMoment = prospect;
+                    IRoute prospect = route.FlyweightCopy();
+                    prospect.AddLeg(railroad);
+                    prospect = this.FindMinRoute(prospect, bestAtTheMoment, specification);
+
+                    if (prospect != Worst.Route)
+                    {
+                        MemoizeProspect(route, prospect, GetLegKey(prospect.Legs.Last(), specification));
+                    }
+
+                    if (prospect != default(IRoute)
+                        && this.criteria.Is(bestAtTheMoment).WorseThan(prospect))
+                    {
+                        bestAtTheMoment = prospect;
+                    }
                 }
+
+                result = bestAtTheMoment;
             }
 
-            return bestAtTheMoment;
+            return result;
+        }
+
+        /// <summary>
+        /// Memoizes the prospect.
+        /// </summary>
+        /// <param name="route">The route.</param>
+        /// <param name="prospect">The prospect.</param>
+        /// <param name="legKey">The leg key.</param>
+        private void MemoizeProspect(IRoute rootRoute, IRoute prospect, string legKey)
+        {
+            if (!this.evaluatedRoutes.ContainsKey(legKey))
+            {
+                IRoute toStore = GetSubroute(prospect, rootRoute);
+                this.evaluatedRoutes.Add(legKey, toStore);                
+            }
+        }
+
+        /// <summary>
+        /// Gets the subroute.
+        /// </summary>
+        /// <param name="fullRoute">The full route.</param>
+        /// <param name="rootRoute">The root route.</param>
+        /// <returns>The subroute corresponding to the substraction of fullRoute minus rootRoute</returns>
+        public static IRoute GetSubroute(IRoute fullRoute, IRoute rootRoute)
+        {
+            int fullRouteLegCount = fullRoute.Legs.Count();
+
+            if (rootRoute == default(IRoute) || rootRoute.Legs.Count() == 0)
+            {
+                return fullRoute.FlyweightCopy();
+            }
+
+            int rootRouteLegCount = rootRoute.Legs.Count();
+            if (fullRouteLegCount.Equals(rootRouteLegCount))
+            {
+                return default(IRoute);
+            }
+
+            int remainingLegCount = fullRouteLegCount - rootRouteLegCount;
+            int startLegIndex = rootRouteLegCount;
+
+            return fullRoute.GetSubroute(startLegIndex, remainingLegCount);
+        }
+
+        /// <summary>
+        /// Gets the leg key.
+        /// </summary>
+        /// <param name="leg">The leg to process.</param>
+        /// <param name="specification">The specification.</param>
+        /// <returns>The key for memoization</returns>
+        private static string GetLegKey(IRailroad leg, IRouteSpecification specification)
+        {
+            return leg.Origin.Name + leg.Destination.Name + leg.Length + specification.GetHashCode();
         }
     }
 }

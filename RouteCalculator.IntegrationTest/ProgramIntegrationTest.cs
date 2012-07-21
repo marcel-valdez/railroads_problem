@@ -101,14 +101,16 @@
         }
 
         /// <summary>
-        /// Tests if use cases eight and nine run correctly
+        /// Tests if use cases eight and nine run correctly.
+        /// #8: The length of the shortest route (in terms of distance to travel) from A to C.
+        /// #9: The length of the shortest route (in terms of distance to travel) from B to B.
         /// </summary>
         /// <param name="railroadGraph">The railroad graph.</param>
         /// <param name="expectedResults">The expected results.</param>
-        [TestCase("BC1, CB3, CA1, AB1", 2, 3)]
-        [TestCase("AC1, BC1, CB1", 1, 2)]
-        [TestCase("AB1, BC1", 2, NONE)]
-        [TestCase("BC1, CB1", NONE, 2)]
+        [TestCase("BC1, CB3, CA1, AB1", 2, 3)] // #8: AB1, BC1 [2] #9: BC1, CA1, AB1 [3]
+        [TestCase("AC1, BC1, CB1", 1, 2)] // #8: AC1 [1], #9: BC1, CB1 [2]
+        [TestCase("AB1, BC1", 2, NONE)] // #8: AB1, BC1 [2], #9: [-1]
+        [TestCase("BC1, CB1", NONE, 2)] // #8: -1, #9: BC1, CB1 [2]
         [TestCase("AB1, BC2, AC4", 3, NONE)]
         [TestCase("AC1", 1, NONE)]
         [TestCase("AB1, BD1", NONE, NONE)]

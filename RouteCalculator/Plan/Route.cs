@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using RouteCalculator.Map;
+    using System.Linq;
+    using System;
 
     /// <summary>
     /// This class represnts a set of connected and directed railroads.
@@ -94,6 +96,60 @@
 
             return flyCopy;
         }
+
+
+        /// <summary>
+        /// Gets the subroute.
+        /// </summary>
+        /// <param name="startIndex">The start index.</param>
+        /// <param name="count">The leg count.</param>
+        /// <returns>
+        /// The subroute corresponding to the range specified
+        /// </returns>
+        public IRoute GetSubroute(int startIndex, int count)
+        {
+            if (startIndex >= this.legs.Count || startIndex + count > this.legs.Count)
+            {
+                throw new IndexOutOfRangeException();
+            }
+
+            Route copy = this.FlyweightCopy() as Route;
+            copy.legs = copy.legs.Skip(startIndex).Take(count).ToList();
+            copy.Distance = copy.legs.Sum(leg => leg.Length);
+
+            return copy;
+        }
+
+        /// <summary>
+        /// Appends the specified route.
+        /// </summary>
+        /// <param name="route">The route to append.</param>
+        /// <returns>The resulting union of both routes.</returns>
+        public IRoute Append(IRoute route)
+        {            
+            if (route == default(IRoute) || route.Legs.Count() == 0)
+            {
+                return this;
+            }
+
+            Route copy = this.FlyweightCopy() as Route;
+            var newLegs = copy.legs.ToList();
+            var routeLegs = route.Legs;
+            int routeDistance = route.Distance;
+            if (copy.legs.Count > 0 &&
+                copy.legs.Last().Equals(route.Legs.First()))
+            {
+                routeLegs = route.Legs.Skip(1);
+                routeDistance -= route.Legs.First().Length;
+            }
+
+            copy.legs = newLegs;
+            newLegs.AddRange(routeLegs);
+            copy.Distance += routeDistance;
+
+            return copy;
+        }
+
         #endregion
 
         /// <summary>
