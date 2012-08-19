@@ -70,9 +70,7 @@
                     IRoute root = new Route();
                     root.AddLeg(railroad);
                     IRoute result = this.FindMinRoute(root, bestKnownRoute, specification);
-                    if (result != default(IRoute)
-                        && !(result is Worst)
-                        && this.criteria.Is(result).BetterThan(bestKnownRoute))
+                    if (!(result is Worst))
                     {
                         bestKnownRoute = result;
                     }

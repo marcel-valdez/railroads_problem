@@ -84,8 +84,7 @@
                 // Run the route finder for multiple results.
                 WriteOperationsResults(RunRouteCountUseCases(routeFinder));
 
-                IRouteFinder shortestRouteFinder = new ShortestRouteFinder(map, new ShortestRouteComparer());
-                WriteOperationsResults(RunShortestRouteUseCases(shortestRouteFinder));
+                WriteOperationsResults(RunShortestRouteUseCases(map));
 
                 WriteOperationsResults(RunCompoundSpecificationCountRoutesUseCase(routeFinder));
             }
@@ -115,16 +114,18 @@
         /// <summary>
         /// Runs the shortest route use cases.
         /// </summary>
-        /// <param name="shortestRouteFinder">The shortest route finder.</param>
-        /// <returns>The operations results</returns>
-        public static IEnumerable<int> RunShortestRouteUseCases(IRouteFinder shortestRouteFinder)
+        /// <param name="map">The map.</param>
+        /// <returns>
+        /// The operations results
+        /// </returns>
+        public static IEnumerable<int> RunShortestRouteUseCases(IRailroadMap map)
         {
-            var shortestRouteSpecs = new List<IRouteSpecification>();
-            shortestRouteSpecs.Add(
-                new OriginAndDestinationSpecification("A", "C"));
-            shortestRouteSpecs.Add(
-                new OriginAndDestinationSpecification("B", "B"));
-            return FindFirstConformingRouteDistance(shortestRouteFinder, shortestRouteSpecs);
+            var calculator = new ShortestLengthFinder(map);
+            int result = calculator.GetShortestLength(from: "A", to: "C");
+            yield return result == ShortestLengthFinder.Unreachable ? NO_SUCH_ROUTE : result;
+
+            result = calculator.GetShortestLength(from: "B", to: "B");
+            yield return result == ShortestLengthFinder.Unreachable ? NO_SUCH_ROUTE : result;
         }
 
         /// <summary>

@@ -18,6 +18,11 @@
         private const int NONE = -1;
 
         /// <summary>
+        /// Represents an unreachable node
+        /// </summary>
+        private const int UNREACHABLE = NONE;
+
+        /// <summary>
         /// Sample test data provided in the problem description.
         /// </summary>
         private const string SAMPLE_TEST_GRAPH = "AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7";
@@ -107,23 +112,22 @@
         /// <param name="expectedResults">The expected results.</param>
         [TestCase("BC1, CB3, CA1, AB1", 2, 3)]
         [TestCase("AC1, BC1, CB1", 1, 2)]
-        [TestCase("AB1, BC1", 2, NONE)]
-        [TestCase("BC1, CB1", NONE, 2)]
-        [TestCase("AB1, BC2, AC4", 3, NONE)]
-        [TestCase("AC1", 1, NONE)]
-        [TestCase("AB1, BD1", NONE, NONE)]
-        [TestCase("AB1", NONE, NONE)]
+        [TestCase("AB1, BC1", 2, UNREACHABLE)]
+        [TestCase("BC1, CB1", UNREACHABLE, 2)]
+        [TestCase("AB1, BC2, AC4", 3, UNREACHABLE)]
+        [TestCase("AC1", 1, UNREACHABLE)]
+        [TestCase("AB1, BD1", UNREACHABLE, UNREACHABLE)]
+        [TestCase("AB1", UNREACHABLE, UNREACHABLE)]
         [TestCase(SAMPLE_TEST_GRAPH, 9, 9)]
         [Test]
         public void TestIfUseCasesEightAndNineRunCorrectly(string railroadGraph, params int[] expectedResults)
         {
             // Arrange
             RailroadMap map = new RailroadMap();
-            map.BuildMap(railroadGraph);
-            IRouteFinder routeFinder = new ShortestRouteFinder(map, new ShortestRouteComparer());
+            map.BuildMap(railroadGraph);            
 
             // Act
-            IEnumerable<int> actualResults = RouteCalculator.Program.RunShortestRouteUseCases(routeFinder);
+            IEnumerable<int> actualResults = RouteCalculator.Program.RunShortestRouteUseCases(map);
 
             // Assert
             CollectionAssert.AreEquivalent(expectedResults, actualResults);

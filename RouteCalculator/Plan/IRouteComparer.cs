@@ -1,8 +1,5 @@
 ﻿namespace RouteCalculator.Plan
 {
-    using System.Collections;
-    using System.Collections.Generic;
-
     /// <summary>
     /// This interface represents the base comparer for routes.
     /// </summary>

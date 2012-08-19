@@ -106,7 +106,7 @@
         {
             string graph = "{";
 
-            foreach (var leg in this.legs)
+            foreach (IRailroad leg in this.legs)
             {
                 graph += " " + leg.Origin.Name + leg.Destination.Name + leg.Length;
             }

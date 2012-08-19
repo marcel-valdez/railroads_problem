@@ -59,6 +59,7 @@
     <Compile Include="RailroadMap_RouteFinder_ISpecificationImplementations_SingleResults_IntegrationTest.cs" />
     <Compile Include="RailroadMap_Route_RouteFinder_Specifications_MultipleResults_IntegrationTest.cs" />
     <Compile Include="RailroadMap_Route_ShortestRouteFinder_Specifications_IntegrationTest.cs" />
+    <Compile Include="ShortestLengthFinder_IntegrationTests.cs" />
     <Compile Include="Specification_Route_IntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>

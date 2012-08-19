@@ -76,6 +76,19 @@
         }
 
         /// <summary>
+        /// Gets the private field.
+        /// </summary>
+        /// <typeparam name="T">type of the field</typeparam>
+        /// <param name="obj">The object to reflect.</param>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <returns>The value of the field</returns>
+        public static T GetPrivateField<T>(this object obj, string fieldName)
+        {
+            FieldInfo fieldInfo = obj.GetType().GetField(fieldName, PRIVATE);
+            return (T)fieldInfo.GetValue(obj);
+        }
+
+        /// <summary>
         /// Generates the legs using the routeConfiguration.
         /// </summary>
         /// <param name="routeConfiguration">The route configuration.</param>
@@ -106,18 +119,11 @@
 
             foreach (string railroadConfiguration in routeConfiguration)
             {
-                IRailroad railroad = Substitute.For<IRailroad>();
                 string originName = railroadConfiguration[0].ToString();
                 string destinationName = railroadConfiguration[1].ToString();
                 ICity originCity = cities.First(city => city.Name.Equals(originName));
                 ICity destinationCity = cities.First(city => city.Name.Equals(destinationName));
-                if (railroadConfiguration.Length > 2)
-                {
-                    railroad.Length.ReturnsForAnyArgs(int.Parse(railroadConfiguration.Substring(2)));
-                }
-
-                railroad.Origin.ReturnsForAnyArgs(originCity);
-                railroad.Destination.ReturnsForAnyArgs(destinationCity);
+                IRailroad railroad = BuildRailroad(railroadConfiguration, originCity, destinationCity);
                 legs.Add(railroad);
                 IList<IRailroad> outgoingRailroads = originCity.Outgoing;
                 outgoingRailroads.Add(railroad);
@@ -130,18 +136,24 @@
         /// Generates the cities using the graph configuration.
         /// </summary>
         /// <param name="graphConfiguration">The graph configuration.</param>
-        /// <returns>The cities identified</returns>
-        public static IList<ICity> GenerateCities(string graphConfiguration)
+        /// <param name="addRailroads">if set to <c>true</c> [add railroads].</param>
+        /// <returns>
+        /// The cities identified
+        /// </returns>
+        public static IList<ICity> GenerateCities(string graphConfiguration, bool addRailroads = false)
         {
-            return GenerateCities(graphConfiguration.Split(' ', ','));
+            return GenerateCities(graphConfiguration.Split(' ', ','), addRailroads);
         }
 
         /// <summary>
         /// Generates the cities using the route configuration.
         /// </summary>
         /// <param name="routeConfiguration">The route configuration.</param>
-        /// <returns>The cities identified</returns>
-        public static IList<ICity> GenerateCities(string[] routeConfiguration)
+        /// <param name="addRailroads">if set to <c>true</c> [add railroads].</param>
+        /// <returns>
+        /// The cities identified
+        /// </returns>
+        public static IList<ICity> GenerateCities(string[] routeConfiguration, bool addRailroads = false)
         {
             IList<ICity> cities = new List<ICity>();
 
@@ -149,12 +161,18 @@
             {
                 string originCityName = railroadConfiguration[0].ToString();
                 string destinationCityName = railroadConfiguration[1].ToString();
-                AddIfNotIncluded(cities, originCityName);
-                AddIfNotIncluded(cities, destinationCityName);
+                ICity origin = AddIfNotIncluded(cities, originCityName);
+                ICity destination = AddIfNotIncluded(cities, destinationCityName);
+
+                if (addRailroads)
+                {
+                    IRailroad built = BuildRailroad(railroadConfiguration, origin, destination);
+                    origin.Outgoing.Add(built);
+                }
             }
 
             return cities;
-        }
+        }        
 
         /// <summary>
         /// Builds the route from a route path string.
@@ -223,20 +241,45 @@
         }
 
         /// <summary>
+        /// Builds the railroad.
+        /// </summary>
+        /// <param name="railroadConfiguration">The railroad configuration.</param>
+        /// <param name="originCity">The origin city.</param>
+        /// <param name="destinationCity">The destination city.</param>
+        /// <returns>The railroad</returns>
+        private static IRailroad BuildRailroad(string railroadConfiguration, ICity originCity, ICity destinationCity)
+        {
+            IRailroad railroad = Substitute.For<IRailroad>();
+            if (railroadConfiguration.Length > 2)
+            {
+                railroad.Length.ReturnsForAnyArgs(int.Parse(railroadConfiguration.Substring(2)));
+            }
+
+            railroad.Origin.ReturnsForAnyArgs(originCity);
+            railroad.Destination.ReturnsForAnyArgs(destinationCity);
+
+            return railroad;
+        }
+
+        /// <summary>
         /// Adds a city with the <paramref name="originCityName"/> if not included already in the city list.
         /// </summary>
         /// <param name="cities">The city list.</param>
         /// <param name="originCityName">Name of the city.</param>
-        private static void AddIfNotIncluded(IList<ICity> cities, string originCityName)
+        /// <returns>The city added or retrieved</returns>
+        private static ICity AddIfNotIncluded(IList<ICity> cities, string originCityName)
         {
-            if (!cities.Any(city => city.Name.Equals(originCityName)))
+            ICity city = cities.FirstOrDefault(citi => citi.Name.Equals(originCityName));
+            if (city == default(ICity))
             {
-                ICity city = Substitute.For<ICity>();
+                city = Substitute.For<ICity>();
                 city.Name.Returns(originCityName);
                 IList<IRailroad> railroadList = new List<IRailroad>();
                 city.Outgoing.ReturnsForAnyArgs(railroadList);
                 cities.Add(city);
             }
+
+            return city;
         }
 
         /// <summary>

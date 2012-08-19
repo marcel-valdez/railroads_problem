@@ -29,21 +29,11 @@
         /// </returns>
         public bool BetterThan(IRoute route)
         {
-            if (this.firstRoute is Worst)
-            {
-                return false;
-            }
-
-            if (route is Worst)
-            {
-                return true;
-            }
-
-            return this.firstRoute.Distance < route.Distance;
+            return !(this.firstRoute is Worst) && (route is Worst || this.firstRoute.Distance < route.Distance);
         }
 
         /// <summary>
-        /// Determins if a given route is worse than another.
+        /// Determines if a given route is worse than another.
         /// </summary>
         /// <param name="route">The route.</param>
         /// <returns>
@@ -51,17 +41,7 @@
         /// </returns>
         public bool WorseThan(IRoute route)
         {
-            if (this.firstRoute is Worst)
-            {
-                return true;
-            }
-
-            if (route is Worst)
-            {
-                return false;
-            }
-
-            return this.firstRoute.Distance > route.Distance;
+            return (this.firstRoute is Worst) || (!(route is Worst) && (this.firstRoute.Distance > route.Distance));
         }
         #endregion
     }

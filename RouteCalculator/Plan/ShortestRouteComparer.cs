@@ -1,16 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ShortestRouteComparer.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace RouteCalculator.Plan
+﻿namespace RouteCalculator.Plan
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// Starts a new shortest route comparison.
     /// </summary>

@@ -126,7 +126,7 @@
                     }
 
                     IRoute routeB = innerCall.Arg<IRoute>();
-                    return routeA.Distance > routeB.Distance && !(routeB is Worst);
+                    return !(routeB is Worst) && !(routeA is Worst) && routeA.Distance > routeB.Distance;
                 });
 
             return comparison;
