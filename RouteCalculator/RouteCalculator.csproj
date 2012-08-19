@@ -57,12 +57,6 @@
     <Compile Include="Plan\Route.cs" />
     <Compile Include="Plan\RouteFinder.cs" />
     <Compile Include="Plan\ShortestLengthFinder.cs" />
-    <Compile Include="Plan\ShortestRouteComparer.cs" />
-    <Compile Include="Plan\ShortestRouteComparison.cs">
-      <DependentUpon>ShortestRouteComparer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Plan\ShortestRouteFinder.cs" />
-    <Compile Include="Plan\Worst.cs" />
     <Compile Include="Specify\AndSpecification.cs" />
     <Compile Include="Map\City.cs" />
     <Compile Include="Map\RailroadMap.cs" />
